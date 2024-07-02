@@ -1,9 +1,11 @@
 project:
   type: website
+  resources: 
+    - "robots.txt"
   output-dir: docs
 
 website:
-  title: "jonaselm.github.io"
+  title: "Research"
   navbar:
     left:
       - href: index.qmd
