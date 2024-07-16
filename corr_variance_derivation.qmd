@@ -1,0 +1,27 @@
+---
+title: "Deriving Correlation Estimator Variance"
+---
+
+## Preliminaries
+
+Starting with couple preliminaries that will be useful to derive an analyticaly tractable expression for the variance of these correlation estimators, $\hat r$ and $\hat{ \text{scov}}$ based on the sample FLOM estimators.
+
+### Expected Value of a Stable Subordinator
+
+First, deriving the expected value for W $\sim S_{\alpha/2}(\pi \alpha/4)^{(2/\alpha)},1, 0;1)$, a maximally skewed scalar random variable with support on the positive real numbers. We can use the fact that we can decompose a sg-S$\alpha$S(1) random variable into the product of W and normal random variable $G \sim N(0,1)$ independent of W:
+
+$$
+\begin{aligned}
+\mathbb E(|X|^p) &= \mathbb E(|W^{1/2}G|^p) \\
+&= \mathbb E(W^{p/2}|G|^p) \\
+&= \mathbb E(W^{p/2}) \mathbb E(|G|^p) \\
+&= \mathbb E(W^{p/2}) \sigma^p 2^{p/2} \frac{\Gamma(\frac{1+p}{2})}{\sqrt \pi} \\
+&= \mathbb E(W^{p/2}) (2^{p/2}\gamma^p)2^{p/2} \frac{\Gamma(\frac{1+p}{2})}{\sqrt \pi} \\
+\\ \text{So we get:} \\
+\mathbb E(W^{p/2}) &= \frac{ (2^{p/2}\gamma^p)2^{p/2} \frac{\Gamma(\frac{1+p}{2})}{\sqrt \pi}}{\mathbb E(|X|^p)}\\
+&=  \frac{(2^{p/2}\gamma^p)2^{p/2} \frac{\Gamma(\frac{1+p}{2})}{\sqrt \pi}}{\frac{\gamma^p 2^{p+1}\Gamma(\frac{p+1}{2})\Gamma(-p/\alpha)}{\alpha \sqrt \pi \Gamma(-p/2)}} \\
+&= \frac{2\Gamma(-p/\alpha)}{\alpha\Gamma(-p/2)} 
+\end{aligned}
+$$
+
+This uses the well-known results for normal absolute moments, stable FLOMs, and a change of variables from the standard deviation of G to the scale parameter $\gamma$ of X.

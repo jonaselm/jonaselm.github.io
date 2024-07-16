@@ -40,7 +40,7 @@ One nice thing is that if we're estimating a correlation-type quantity like scov
 
 ### Variance of the FLOM Estimator
 
-One area that (surprisingly) has received little attention in the literature is the variance of these FLOM estimators. While the covariance of $X$ may be infinite, we can estimate its scale and dependence using FLOMs with finite variance. 
+One area that (surprisingly) has received little attention in the literature is the variance of these FLOM estimators. While the variance of $X$ may be infinite, we can estimate its scale and dependence using FLOMs with finite variance. 
 
 It's known that for $p<\alpha, \mathbb E |X|^p < \infty$. Therefore, the variance of $|X|^p$ exists for $p<\alpha/2$. Several papers estimate sample FLOM variance using Monte Carlo simulations, but I haven't seen analytical representations in any papers. In this case, it's a  straightforward application of the expected value of the FLOM:
 
@@ -67,10 +67,12 @@ The variance of the FLOM is monotonically increasing in p, and some have suggest
 
 ### Variance of the Correlation Estimators
 
-When our estimator is a correlation-type estimator like scov and r above, the random variable is bounded on $[-1,1]$ and all moments are finite for any p -- even $p>\alpha$!
+When our estimator is a correlation-type estimator like scov and r above, any sample estimate is bounded on $[-1,1]$ and all moments of the estimator itself are finite for any p -- even $p>\alpha$!
 
 Like with raw FLOMs, Monte Carlo has been used to estimate variance of these estimators in [some papers](https://ieeexplore.ieee.org/document/1673451), but only with relatively small simulation sizes and without comment on potential errors in the calculation of an optimal p.
 
 Since we can induce finite variance on the components of these estimators, it seems reasonable to approximate their asymptotic variance using Taylor series expansions to get a better estimate of a variance-minimizing choice of p.
+
+My derivation of the correlation-type estimator variance approximation [can be found here](corr_variance_derivation.qmd).
 
 [Last Updated on July 16, 2024]

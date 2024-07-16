@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Current Progress – Research</title>
+<title>Deriving Correlation Estimator Variance – Research</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -126,7 +126,7 @@ window.Quarto = {
 <span class="menu-text">Background</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="./progress.html" aria-current="page"> 
+    <a class="nav-link" href="./progress.html"> 
 <span class="menu-text">Current Progress</span></a>
   </li>  
   <li class="nav-item">
@@ -149,11 +149,9 @@ window.Quarto = {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#estimating-sigma" id="toc-estimating-sigma" class="nav-link active" data-scroll-target="#estimating-sigma">Estimating <span class="math inline">\(\Sigma\)</span></a>
+  <li><a href="#preliminaries" id="toc-preliminaries" class="nav-link active" data-scroll-target="#preliminaries">Preliminaries</a>
   <ul class="collapse">
-  <li><a href="#bias-of-the-flom-estimator" id="toc-bias-of-the-flom-estimator" class="nav-link" data-scroll-target="#bias-of-the-flom-estimator">Bias of the FLOM Estimator</a></li>
-  <li><a href="#variance-of-the-flom-estimator" id="toc-variance-of-the-flom-estimator" class="nav-link" data-scroll-target="#variance-of-the-flom-estimator">Variance of the FLOM Estimator</a></li>
-  <li><a href="#variance-of-the-correlation-estimators" id="toc-variance-of-the-correlation-estimators" class="nav-link" data-scroll-target="#variance-of-the-correlation-estimators">Variance of the Correlation Estimators</a></li>
+  <li><a href="#expected-value-of-a-stable-subordinator" id="toc-expected-value-of-a-stable-subordinator" class="nav-link" data-scroll-target="#expected-value-of-a-stable-subordinator">Expected Value of a Stable Subordinator</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -163,7 +161,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Current Progress</h1>
+<h1 class="title">Deriving Correlation Estimator Variance</h1>
 </div>
 
 
@@ -180,56 +178,26 @@ window.Quarto = {
 </header>
 
 
-<p>I’ve split the problem into two pieces: getting an “optimal” estimate of the covariance/correlation matrix underlying a stable-sub-Gaussian random vector, and adjusting for high-dimensionality. It’s a little hand-wavy, but I think this is reasonable since the RIE is a monotonically increasing function of the eigenvalues of the input. So, by the invariance of quantiles under monotone transformations, the median RIE estimate at each eigenvalue should be the same as the RIE of the median eigenvalue estimate.</p>
-<section id="estimating-sigma" class="level2">
-<h2 class="anchored" data-anchor-id="estimating-sigma">Estimating <span class="math inline">\(\Sigma\)</span></h2>
-<p><a href="https://hal.science/hal-00951885">Kodia and Garel</a> propose a signed symmetric covariation coefficient:</p>
-<p><span class="math display">\[
-\text{scov} (X_1, X_2) = \kappa_{(X_1, X_2)}\bigg | \frac{[X_1, X_2]_\alpha [X_2, X_1]_\alpha}{||X_1||_\alpha ||X_2||_\alpha} \bigg|^{1/2}
-\]</span></p>
-<p>Here, <span class="math inline">\([X_1, X_2]_\alpha\)</span> and <span class="math inline">\(||X_1||_\alpha\)</span> are the covariation of <span class="math inline">\(X_1\)</span> on <span class="math inline">\(X-2\)</span> and the covariation norm of <span class="math inline">\(X_1\)</span>, respectively, and <span class="math inline">\(\kappa\)</span> represents the “agreement” of the signs of the covariation terms.</p>
-<p>When <span class="math inline">\(1 &lt; \alpha &lt; 2\)</span>, this can equivalently be represented using Fractional Lower Order Moments (FLOMs):</p>
-<p><span class="math display">\[
-r = \frac{(\mathbb E |X_1|^p)^{2/p}+(\mathbb E |X_2|^p)^{2/p}-(\mathbb E |X_1- X_2|^p)^{2/p}}{2(\mathbb E |X_1|^p\mathbb E |X_2|^p)^{1/p}}
-\]</span></p>
-<p>In both cases, when <span class="math inline">\(X\)</span> is a sub-Gaussian random vector with underlying Gaussian vector <span class="math inline">\(G\)</span>, these quantities coincide with the correlation coefficient between <span class="math inline">\(G_1\)</span> and <span class="math inline">\(G_2\)</span>.</p>
-<p>Kodia and Garel show that straightforward estimators based on these quantities are strongly consistent estimators of the Gaussian correlation matrix.</p>
-<section id="bias-of-the-flom-estimator" class="level3">
-<h3 class="anchored" data-anchor-id="bias-of-the-flom-estimator">Bias of the FLOM Estimator</h3>
-<p>Note that FLOMs aren’t unbiased estimators of scale/dependence unless <span class="math inline">\(p=2\)</span>.</p>
-<p>Proposition 1 on p.32 of <a href="https://catalyst.library.jhu.edu/permalink/01JHU_INST/t3c16/alma991014131159707861">Nikias and Shao</a> is:</p>
-<p><span class="math display">\[
-\mathbb E(|X|^p) = C(p,\alpha)\gamma^{p/\alpha}
-\]</span></p>
-<p>where <span class="math inline">\(C(p,\alpha)\)</span> is a known constant that depends only on p and the tail exponent of X and is used below, and <span class="math inline">\(\gamma\)</span> is the scale parameter of X. Note that the authors use a non-typical parameterization for <span class="math inline">\(\gamma\)</span> but this result holds in general for any distribution – <a href="./open_questions.html">rough proof here</a>.</p>
-<p>One nice thing is that if we’re estimating a correlation-type quantity like scov and r above, these bias terms cancel out in the numerator and denominator, and we’re left only with the scale terms.</p>
-</section>
-<section id="variance-of-the-flom-estimator" class="level3">
-<h3 class="anchored" data-anchor-id="variance-of-the-flom-estimator">Variance of the FLOM Estimator</h3>
-<p>One area that (surprisingly) has received little attention in the literature is the variance of these FLOM estimators. While the variance of <span class="math inline">\(X\)</span> may be infinite, we can estimate its scale and dependence using FLOMs with finite variance.</p>
-<p>It’s known that for <span class="math inline">\(p&lt;\alpha, \mathbb E |X|^p &lt; \infty\)</span>. Therefore, the variance of <span class="math inline">\(|X|^p\)</span> exists for <span class="math inline">\(p&lt;\alpha/2\)</span>. Several papers estimate sample FLOM variance using Monte Carlo simulations, but I haven’t seen analytical representations in any papers. In this case, it’s a straightforward application of the expected value of the FLOM:</p>
+<section id="preliminaries" class="level2">
+<h2 class="anchored" data-anchor-id="preliminaries">Preliminaries</h2>
+<p>Starting with couple preliminaries that will be useful to derive an analyticaly tractable expression for the variance of these correlation estimators, <span class="math inline">\(\hat r\)</span> and <span class="math inline">\(\hat{ \text{scov}}\)</span> based on the sample FLOM estimators.</p>
+<section id="expected-value-of-a-stable-subordinator" class="level3">
+<h3 class="anchored" data-anchor-id="expected-value-of-a-stable-subordinator">Expected Value of a Stable Subordinator</h3>
+<p>First, deriving the expected value for W <span class="math inline">\(\sim S_{\alpha/2}(\pi \alpha/4)^{(2/\alpha)},1, 0;1)\)</span>, a maximally skewed scalar random variable with support on the positive real numbers. We can use the fact that we can decompose a sg-S<span class="math inline">\(\alpha\)</span>S(1) random variable into the product of W and normal random variable <span class="math inline">\(G \sim N(0,1)\)</span> independent of W:</p>
 <p><span class="math display">\[
 \begin{aligned}
-\text{Var}(\frac{1}{N}\sum_{i=1}^N |X|^p) &amp; = N^{-2} \text{Var}(\sum_{i=1}^N |X|^p) \\
-&amp;= N^{-1} [\mathbb E(|X|^{2p}) - \mathbb E(|X|^p)^2] \\
-&amp;= N^{-1} [C(2p,\alpha)\gamma^{2p/\alpha}-(C(p, \alpha)\gamma^{p/\alpha})^2]\\
-&amp;= \frac{2^{2p+2}\gamma^{2p/\alpha}}{N \alpha \sqrt \pi}\bigg\{ \frac{\Gamma(\frac{2p+1}{2})\Gamma(-2p/\alpha)}{\Gamma(-p)} - \frac{\Gamma(\frac{p+1}{2})^2 \Gamma(-p/\alpha)^2 }{\alpha \sqrt\pi\Gamma(-p/2)^2} \bigg\}
+\mathbb E(|X|^p) &amp;= \mathbb E(|W^{1/2}G|^p) \\
+&amp;= \mathbb E(W^{p/2}|G|^p) \\
+&amp;= \mathbb E(W^{p/2}) \mathbb E(|G|^p) \\
+&amp;= \mathbb E(W^{p/2}) \sigma^p 2^{p/2} \frac{\Gamma(\frac{1+p}{2})}{\sqrt \pi} \\
+&amp;= \mathbb E(W^{p/2}) (2^{p/2}\gamma^p)2^{p/2} \frac{\Gamma(\frac{1+p}{2})}{\sqrt \pi} \\
+\\ \text{So we get:} \\
+\mathbb E(W^{p/2}) &amp;= \frac{ (2^{p/2}\gamma^p)2^{p/2} \frac{\Gamma(\frac{1+p}{2})}{\sqrt \pi}}{\mathbb E(|X|^p)}\\
+&amp;=  \frac{(2^{p/2}\gamma^p)2^{p/2} \frac{\Gamma(\frac{1+p}{2})}{\sqrt \pi}}{\frac{\gamma^p 2^{p+1}\Gamma(\frac{p+1}{2})\Gamma(-p/\alpha)}{\alpha \sqrt \pi \Gamma(-p/2)}} \\
+&amp;= \frac{2\Gamma(-p/\alpha)}{\alpha\Gamma(-p/2)}
 \end{aligned}
 \]</span></p>
-<p>What’s interesting is that simulation results are problematically misleading when <span class="math inline">\(X\)</span> is nearly Gaussian:</p>
-<p><img src="images/FLOM_simulated_vs_analytical_sd.png" class="img-fluid"></p>
-<p>The chart above simulates 10,000 samples to estimate the standard error of the FLOM estimator as a function of p at various values of <span class="math inline">\(\alpha\)</span>. When p gets near the infinite variance regime, simulations will materially underestimate the variability of the estimator, especially when <span class="math inline">\(\alpha \uparrow 2\)</span>. Heuristically, this is because tails are only a little heavier than the Gaussian case, and you’re much less likely to get extreme realizations that traverse the full support of the distribution via simulation unless your sample size is massive. In these examples, the simulation approach requires tens of millions of simulations to get close to the analyical standard deviation of the estimator.</p>
-<p>I think this is an incredibly interesting aside that I haven’t seen covered in the literature so far.</p>
-<p>This is relevant because <a href="https://ieeexplore.ieee.org/document/8579596">some papers</a> have suggested choosing optimal p to be <span class="math inline">\(p \lesssim \alpha/2\)</span> (e.g.&nbsp;right on the boundary of finite variance).</p>
-<p>The variance of the FLOM is monotonically increasing in p, and some have suggested making p as small as possible. The difficulty is that <span class="math inline">\(\lim_{p \rightarrow 0} C(p, \alpha) = \infty\)</span>. This problem doesn’t exist in the correlation estimator case.</p>
-</section>
-<section id="variance-of-the-correlation-estimators" class="level3">
-<h3 class="anchored" data-anchor-id="variance-of-the-correlation-estimators">Variance of the Correlation Estimators</h3>
-<p>When our estimator is a correlation-type estimator like scov and r above, any sample estimate is bounded on <span class="math inline">\([-1,1]\)</span> and all moments of the estimator itself are finite for any p – even <span class="math inline">\(p&gt;\alpha\)</span>!</p>
-<p>Like with raw FLOMs, Monte Carlo has been used to estimate variance of these estimators in <a href="https://ieeexplore.ieee.org/document/1673451">some papers</a>, but only with relatively small simulation sizes and without comment on potential errors in the calculation of an optimal p.</p>
-<p>Since we can induce finite variance on the components of these estimators, it seems reasonable to approximate their asymptotic variance using Taylor series expansions to get a better estimate of a variance-minimizing choice of p.</p>
-<p>My derivation of the correlation-type estimator variance approximation <a href="./corr_variance_derivation.html">can be found here</a>.</p>
-<p>[Last Updated on July 16, 2024]</p>
+<p>This uses the well-known results for normal absolute moments, stable FLOMs, and a change of variables from the standard deviation of G to the scale parameter <span class="math inline">\(\gamma\)</span> of X.</p>
 
 
 </section>
