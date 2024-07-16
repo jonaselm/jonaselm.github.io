@@ -183,7 +183,7 @@ window.Quarto = {
 <p>Starting with couple preliminaries that will be useful to derive an analyticaly tractable expression for the variance of these correlation estimators, <span class="math inline">\(\hat r\)</span> and <span class="math inline">\(\hat{ \text{scov}}\)</span> based on the sample FLOM estimators.</p>
 <section id="expected-value-of-a-stable-subordinator" class="level3">
 <h3 class="anchored" data-anchor-id="expected-value-of-a-stable-subordinator">Expected Value of a Stable Subordinator</h3>
-<p>First, deriving the expected value for W <span class="math inline">\(\sim S_{\alpha/2}((\pi \alpha/4)^{(2/\alpha)},1, 0;1)\)</span>, a maximally skewed scalar random variable with support on the positive real numbers. We can use the fact that we can decompose a sg-S<span class="math inline">\(\alpha\)</span>S(1) random variable into the product of W and normal random variable <span class="math inline">\(G \sim N(0,1)\)</span> independent of W:</p>
+<p>First, deriving the expected value for W <span class="math inline">\(\sim S_{\alpha/2}((\pi \alpha/4)^{(2/\alpha)},1, 0;1)\)</span>, a maximally skewed scalar random variable with support on the positive real numbers. We can use the fact that we can decompose a sg-S<span class="math inline">\(\alpha\)</span>S(1) random variable into the product of the square root of W and normal random variable <span class="math inline">\(G \sim N(0,\sigma^2)\)</span> independent of W:</p>
 <p><span class="math display">\[
 \begin{aligned}
 \mathbb E(|X|^p) &amp;= \mathbb E(|W^{1/2}G|^p) \\
@@ -193,7 +193,7 @@ window.Quarto = {
 &amp;= \mathbb E(W^{p/2}) (2^{p/2}\gamma^p)2^{p/2} \frac{\Gamma(\frac{1+p}{2})}{\sqrt \pi} \\
 \\ \text{So we get:} \\
 \mathbb E(W^{p/2}) &amp;= \frac{ (2^{p/2}\gamma^p)2^{p/2} \frac{\Gamma(\frac{1+p}{2})}{\sqrt \pi}}{\mathbb E(|X|^p)}\\
-&amp;=  \frac{(2^{p/2}\gamma^p)2^{p/2} \frac{\Gamma(\frac{1+p}{2})}{\sqrt \pi}}{\frac{\gamma^p 2^{p+1}\Gamma(\frac{p+1}{2})\Gamma(-p/\alpha)}{\alpha \sqrt \pi \Gamma(-p/2)}} \\
+&amp;=  2^{-p}\gamma^{-p}\frac{\sqrt \pi}{\Gamma(\frac{1+p}{2})}\times{\frac{\gamma^p 2^{p+1}\Gamma(\frac{p+1}{2})\Gamma(-p/\alpha)}{\alpha \sqrt \pi \Gamma(-p/2)}} \\
 &amp;= \frac{2\Gamma(-p/\alpha)}{\alpha\Gamma(-p/2)}, &amp; p&lt;\alpha/2
 \end{aligned}
 \]</span></p>
