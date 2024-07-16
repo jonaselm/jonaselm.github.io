@@ -38,7 +38,7 @@ $$
 X = \sqrt W G
 $$
 
-Where W $\sim S_{\alpha/2}(\pi \alpha/4)^{(2/\alpha)},1, 0;1)$, a maximally skewed scalar random variable with support on the positive real numbers, and $G \sim N(0, \Sigma)$, a multivariate normal random vector independent of W.
+Where W $\sim S_{\alpha/2}((\pi \alpha/4)^{(2/\alpha)},1, 0;1)$, a maximally skewed scalar random variable with support on the positive real numbers, and $G \sim N(0, \Sigma)$, a multivariate normal random vector independent of W.
 
 In this sub-Gaussian random vector, the spectral measure $\Gamma$ is fully determined by $\Sigma$. In fact, $\Gamma$ symmetric (e.g. antipodal points have equal measure), and continuous. While it's a bit counter-intuitive, even in the isotropic case where $\Sigma = I_d$, the identity matrix, the components of X are not independent. Indeed, the idea of orthogonality isn't defined (although some generalizations of this idea are), since X is not defined on a (pre-)Hilbert space when $\alpha < 2$. This is a feature, not a bug, since tail dependence is asymptotically zero in the Gaussian case, a contributor to the failure of the Gaussian copula model for derivative pricing during the 2008 financial crisis. This model errs on the side of overestimating risk.
 
