@@ -1,0 +1,41 @@
+---
+title: "Some Questions (And Answers)"
+---
+
+1. **Can we generalize the equivalence property of Fractional Lower-Order Moments (FLOMs) to other distributions where covariance exists?**
+
+::: {.callout-note collapse="true"}
+## Answer: Yes. 
+
+This becomes obvious from the definition of the characteristic function. Let $X = \mu + \gamma Z$ be a random variable with mean $\mu$ (note that $\mathbb EX \nless \infty$ is not actually required. If X is stable with $\alpha \leq 1$, we replace mean with location and it still works - but X need not be a location scale family), and characteristic function $\varphi_X(t)$. Then for any p for which $\varphi_X(t)$ is differentiable at $t=0$, the p-th fractional moment exists (Laue, 1980) and can be factored to some constant that depends only on the distribution parameters $\mathbf \theta$ times the scale parameter survives raised to the p-th power thanks to the product rule:
+
+$$ 
+\begin{aligned}
+\mathbb E(|X-\mu|^p) & = \mathbb E(\gamma Z_+^p)+\mathbb E (\gamma Z_-^p)\\
+ & = (-i)^p \bigg(\frac{d^p}{dt^p}\varphi_{\gamma Z_+}(t)+\frac{d^p}{dt^p}\varphi_{\gamma Z_-}(t)\bigg)\bigg |_{t=0} \\
+ & = (-i)^p\frac{d^p}{dt^p}\bigg(\varphi_{Z_+}(\gamma t)+\varphi_{Z_-}(\gamma t)\bigg)\bigg |_{t=0} \\
+ & = \gamma^p c(\mathbf \theta)
+\end{aligned}
+$$
+
+When the second moment exists, note that $\gamma^2$ is at worst a rescaled parameterization of the variance of the distribution, since:
+
+$$
+\gamma^2 c(\mathbf \theta) = \mathbb E(|X-\mu|^2) = \text{Var}(X) \implies \gamma^2 \propto \text{Var}(X)
+$$
+
+This result is helpful for a couple of reasons. 
+
+1. If we're comparing random varables that differ only by a scale parameter (e.g. otherwise, they share $\mathbf \theta$), we can get a good estimate of "correlation" because these constants will cancel.
+
+2. If we apply FLOMs to arbitrary random variables with finite variance, the p-th root of the FLOM will be proportionate to the actual standard deviation. This makes this estimator robust to model misspecification (think lognormal distribution)
+
+:::
+
+2. **What p is actually optimal, given some $\theta$.**
+
+3. **To what extent does the resulting correlation matrix result in eigenvalue regularization compared to a sample covariance matrix? What does that regularization function look like?**
+
+4. **Is RIE appropriate to use on sample covariance estimates derived from stable data?** 
+
+(Two approaches: universality when $\alpha >1$, $\Sigma$ as a covariance matrix of a Gaussian vector)

@@ -1,0 +1,88 @@
+---
+title: "Background"
+---
+
+Since I realize that this problem setting may be a little unfamiliar, I'm including a brief background on $\alpha$-stable random variables and the research question.
+
+I'm interested in estimating the dependence of a random vector when covariance may not exist and the dimension of the vector may be high relative to the number of observations. We're principally interested in a symmetric, positive semi-definite covariance matrix-like object $\Sigma$ or its corresponding correlation matrix, since:
+
+* existing methods in finance
+* especially in the high-dimensional setting, we can't expect to estimate a more general dependence structure
+* given elliptical symmetry of the data, it's a pretty reasonable model
+* etc.
+
+In financial markets, distributions of returns (and log-returns, which are used interchangeably and often without distinction) often have heavy tails. This leads to the relaxation of the finite variance assumption. Even if a process has finite variance, I my conjecture is that an estimator that admits heavy tails may be better (e.g. more efficient) in finite/small samples.
+
+In the literature, correlation and covariance matrices are used interchangably, since the correlation matrix is just a covariance matrix of an alternative dataset that has been standardized.
+
+## Stable Distributions and Heavy-Tailed Random Vectors
+
+If we relax the assumption that variance is finite, then a reasonable model for returns is the stable distribution, which has no closed form pdf in general but has \href{https://en.wikipedia.org/wiki/Multivariate_stable_distribution}{a complicated characteristic function} where the dependence is fully defined by the spectral measure (typically denoted $\Gamma$), a finite measure on the unit circle $\mathbb S^d$.
+
+
+Stable distributions are a reasonable choice because they are infinitely divisible, and by the Generalized Central Limit Theorem of Gnedenko and Kolmogorov (1954), if sums of i.i.d. random variables converge to a distribution, it must be stable.
+
+
+The normal distribution is a special case when $\alpha = 2$. It is the only case where variance is finite. The two other closed form pdfs of the stable family are the Cauchy ($\alpha = 1$) and the Lévy ($\alpha = 1/2$). 
+
+
+Stable distributions are admittedly confusing because of the complicated characteristic function and infinite variance, as well as the fact that some terms (e.g. sub-Gaussian) mean something totally different in the stable distribution context than in the broader statistics context. 
+
+
+Likewise there are nearly a dozen known parameterizations of the stable distribution, which makes it hard to distinguish what an author means.
+
+
+A special case is the sub-Gaussian (aka subordinated Gaussian) symmetric $\alpha$-stable distribution, which for a random vector X can be written:
+
+$$
+X = \sqrt W G
+$$
+
+Where W $\sim S_{\alpha/2}(\pi \alpha/4)^{(2/\alpha)},1, 0;1)$, a maximally skewed scalar random variable with support on the positive real numbers, and $G \sim N(0, \Sigma)$, a multivariate normal random vector independent of W.
+
+In this sub-Gaussian random vector, the spectral measure $\Gamma$ is fully determined by $\Sigma$. In fact, $\Gamma$ symmetric (e.g. antipodal points have equal measure), and continuous. While it's a bit counter-intuitive, even in the isotropic case where $\Sigma = I_d$, the identity matrix, the components of X are not independent. Indeed, the idea of orthogonality isn't defined (although some generalizations of this idea are), since X is not defined on a (pre-)Hilbert space when $\alpha < 2$. This is a feature, not a bug, since tail dependence is asymptotically zero in the Gaussian case, a contributor to the failure of the Gaussian copula model for derivative pricing during the 2008 financial crisis. This model errs on the side of overestimating risk.
+
+X has the following simplified, more familiar characteristic function:
+
+$$
+\mathbb E[e^{iu^\text T X}] = exp\bigg\{-\frac12 |u^\text T \Sigma u|^{\alpha/2}\bigg\}
+$$
+
+When $\alpha =2$, this is the Gaussian CF.
+
+We want the best estimate of $\Sigma$ or its corresponding correlation matrix. 
+
+The best reference on multivariate stable distributions is *Stable Non-Gaussian Random Processes* by Samoradnitsky and Taqqu (1994), which contains virtually all known theoretical results as of its publication (despite the book's 30th anniversary, not much has changed). For a more modern treatment that's limited to univariate stable random variables, John Nolan's aptly-named *Univariate Stable Distributions: 
+Models for Heavy Tailed Data* from 2020 is recommended.
+
+One important note is that parameterizations of stable distributions are very inconsistent in the literature.
+
+## High-Dimensional Dependence Estimation
+
+The other piece of the research question puzzle is "high-dimensional" data. By high-dimensional, I mean that the dimension of the data is high relative to the number of observations; so 30 dimensions is quite high-dimensional when you only have 35 observations to estimate something like a covariance matrix from. 
+
+The current state-of-the-art approach used in finance is the Optimal Rotationally-Invariant Estimator (RIE), which uses results from Random Matrix Theory to find the optimal way to "clean" the eigenvalues of a sample covariance matrix C so that the squared Frobenius distance $||\Sigma - C||_F^2$ is minimized, even without being able to observe the true $\Sigma$, provided that the data are at least asymptotically normal.
+
+Initially, my plan was to explore how this recipe might change if the underlying data do not have finite variance (e.g. finding $\Sigma$ from a sub-Gaussian $\alpha$-stable random vector described above). More recently, I've found some research that suggests that if $1 < \alpha \leq 2$, then the universality rules apply asymptotically and this same RIE formulation is appropriate to use for a Lévy matrix. If true, this would provide a theoretical justification for using this approach for heavy-tailed data. 
+
+## Current Estimator
+
+My candidate estimator, Median Oracle, takes a very simple heuristic approach to estimating the quasi-correlation from a matrix $X$ of returns. Assume $X$ is a $t\times n$ matrix consisting of $t$ independent observations of a market of $n$ assets, and a sub-sample size $d_in$:
+
+0. (Optional_ Rescale the columns of $X$ to be mean-zero with unit variance, such that we're estimating $\Sigma$ as a correlation matrix.
+
+1. For $i=1,..., B$:
+    i) Draw $b \sim Unif[1,t-d_in)$
+    ii) At each $b$, subsample $X_b = X_{b:(b+d_in-1)}, \cdot$ 
+    iii) Compute the sample covariance matrix $\Sigma_b = \frac{1}{d_{in}-1}X_b^\text T X_b$. 
+    iv) Compute the Rotationally Invariant Estimator (RIE) adjustment to the eigenvalues $\hat\lambda_{1}^{(1)}, ..., \hat\lambda_{i}^{(n)}$ of $\Sigma_b$, and store them in $Q \in \mathbb R^{B \times n}$
+
+2. For for each eigenvalue $\lambda^{(j)}$ of the covariance matrix, $j = 1, ..., n$, estimate $\hat \lambda^{(j)} = \text{median}(\hat\lambda_{i}^{(j)})$, the median across all $B$ samples.
+
+3. Reconstruct the covariance matrix using $\hat\Lambda = \text{diag}(\hat \Lambda^{(n)},...,\hat \lambda^{(1)})$ and the eigenvectors of the full-sample covariance matrix $\Sigma = V^\text{T} \Lambda V$. 
+
+4. Rescale by forecasted asset-wise standard deviation to get a final estimate of the underlying covariance matrix.
+
+
+Taking the sample covariance and correlations of a dataset assumed to be generated by an infinite-variance process seems crazy initially, but in fact the eigenvalue spectrum of these subsampled covariance matrices are well defined distributions.
+

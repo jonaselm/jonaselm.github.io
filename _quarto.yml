@@ -10,7 +10,9 @@ website:
     left:
       - href: index.qmd
         text: Home
-      - about.qmd
+      - background.qmd
+      - progress.qmd
+      - open_questions.qmd
 
 format:
   html:

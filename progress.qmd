@@ -1,0 +1,76 @@
+---
+title: "Current Progress"
+---
+
+I've split the problem into two pieces: getting an "optimal" estimate of the covariance/correlation matrix underlying a stable-sub-Gaussian random vector, and adjusting for high-dimensionality. It's a little hand-wavy, but I think this is reasonable since the RIE is a monotonically increasing function of the eigenvalues of the input. So, by the invariance of quantiles under monotone transformations, the median RIE estimate at each eigenvalue should be the same as the RIE of the median eigenvalue estimate. 
+
+## Estimating $\Sigma$
+
+[Kodia and Garel](https://hal.science/hal-00951885) propose a signed symmetric covariation coefficient:
+
+$$
+\text{scov} (X_1, X_2) = \kappa_{(X_1, X_2)}\bigg | \frac{[X_1, X_2]_\alpha [X_2, X_1]_\alpha}{||X_1||_\alpha ||X_2||_\alpha} \bigg|^{1/2}
+$$
+
+Here, $[X_1, X_2]_\alpha$ and $||X_1||_\alpha$ are the covariation of $X_1$ on $X-2$ and the covariation norm of $X_1$, respectively, and $\kappa$ represents the "agreement" of the signs of the covariation terms.
+
+When $1 < \alpha < 2$, this can equivalently be represented using Fractional Lower Order Moments (FLOMs):
+
+$$
+r = \frac{(\mathbb E |X_1|^p)^{2/p}+(\mathbb E |X_2|^p)^{2/p}-(\mathbb E |X_1- X_2|^p)^{2/p}}{2(\mathbb E |X_1|^p\mathbb E |X_2|^p)^{1/p}}
+$$
+
+In both cases, when $X$ is a sub-Gaussian random vector with underlying Gaussian vector $G$, these quantities coincide with the correlation coefficient between $G_1$ and $G_2$.
+
+Kodia and Garel show that straightforward estimators based on these quantities are strongly consistent estimators of the Gaussian correlation matrix. 
+
+### Bias of the FLOM Estimator
+
+Note that FLOMs aren't unbiased estimators of scale/dependence unless $p=2$.
+
+Proposition 1 on p.32 of [Nikias and Shao](https://catalyst.library.jhu.edu/permalink/01JHU_INST/t3c16/alma991014131159707861) is:
+
+$$
+\mathbb E(|X|^p) = C(p,\alpha)\gamma^{p/\alpha}
+$$
+
+where $C(p,\alpha)$ is a known constant that depends only on p and the tail exponent of X and is used below, and $\gamma$ is the scale parameter of X. Note that the authors use a non-typical parameterization for $\gamma$ but this result holds in general for any distribution -- [rough proof here](open_questions.qmd).
+
+One nice thing is that if we're estimating a correlation-type quantity like scov and r above, these bias terms cancel out in the numerator and denominator, and we're left only with the scale terms.
+
+### Variance of the FLOM Estimator
+
+One area that (surprisingly) has received little attention in the literature is the variance of these FLOM estimators. While the covariance of $X$ may be infinite, we can estimate its scale and dependence using FLOMs with finite variance. 
+
+It's known that for $p<\alpha, \mathbb E |X|^p < \infty$. Therefore, the variance of $|X|^p$ exists for $p<\alpha/2$. Several papers estimate sample FLOM variance using Monte Carlo simulations, but I haven't seen analytical representations in any papers. In this case, it's a  straightforward application of the expected value of the FLOM:
+
+$$
+\begin{aligned}
+\text{Var}(\frac{1}{N}\sum_{i=1}^N |X|^p) & = N^{-2} \text{Var}(\sum_{i=1}^N |X|^p) \\
+&= N^{-1} [\mathbb E(|X|^{2p}) - \mathbb E(|X|^p)^2] \\
+&= N^{-1} [C(2p,\alpha)\gamma^{2p/\alpha}-(C(p, \alpha)\gamma^{p/\alpha})^2]\\
+ &= \frac{2^{2p+2}\gamma^{2p/\alpha}}{N \alpha \sqrt \pi}\bigg\{ \frac{\Gamma(\frac{2p+1}{2})\Gamma(-2p/\alpha)}{\Gamma(-p)} - \frac{\Gamma(\frac{p+1}{2})^2 \Gamma(-p/\alpha)^2 }{\alpha \sqrt\pi\Gamma(-p/2)^2} \bigg\}
+\end{aligned}
+$$
+
+What's interesting is that simulation results are problematically misleading when $X$ is nearly Gaussian:
+
+![](images/FLOM_simulated_vs_analytical_sd.png)
+
+The chart above simulates 10,000 samples to estimate the standard error of the FLOM estimator as a function of p at various values of $\alpha$. When p gets near the infinite variance regime, simulations will materially underestimate the variability of the estimator, especially when $\alpha \uparrow 2$. Heuristically, this is because tails are only a little heavier than the Gaussian case, and you're much less likely to get extreme realizations that traverse the full support of the distribution via simulation unless your sample size is massive. In these examples, the simulation approach requires tens of millions of simulations to get close to the analyical standard deviation of the estimator. 
+
+I think this is an incredibly interesting aside that I haven't seen covered in the literature so far.
+
+This is relevant because [some papers](https://ieeexplore.ieee.org/document/8579596) have suggested choosing optimal p to be $p \lesssim \alpha/2$ (e.g. right on the boundary of finite variance).
+
+The variance of the FLOM is monotonically increasing in p, and some have suggested making p as small as possible. The difficulty is that $\lim_{p \rightarrow 0} C(p, \alpha) = \infty$. This problem doesn't exist in the correlation estimator case.
+
+### Variance of the Correlation Estimators
+
+When our estimator is a correlation-type estimator like scov and r above, the random variable is bounded on $[-1,1]$ and all moments are finite for any p -- even $p>\alpha$!
+
+Like with raw FLOMs, Monte Carlo has been used to estimate variance of these estimators in [some papers](https://ieeexplore.ieee.org/document/1673451), but only with relatively small simulation sizes and without comment on potential errors in the calculation of an optimal p.
+
+Since we can induce finite variance on the components of these estimators, it seems reasonable to approximate their asymptotic variance using Taylor series expansions to get a better estimate of a variance-minimizing choice of p.
+
+[Last Updated on July 16, 2024]

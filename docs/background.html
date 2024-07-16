@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Research Progress Site – Research</title>
+<title>Background – Research</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -67,6 +67,35 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="styles.css">
 </head>
@@ -89,11 +118,11 @@ ul.task-list li input[type="checkbox"] {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link active" href="./index.html" aria-current="page"> 
+    <a class="nav-link" href="./index.html"> 
 <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./background.html"> 
+    <a class="nav-link active" href="./background.html" aria-current="page"> 
 <span class="menu-text">Background</span></a>
   </li>  
   <li class="nav-item">
@@ -115,15 +144,23 @@ ul.task-list li input[type="checkbox"] {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#stable-distributions-and-heavy-tailed-random-vectors" id="toc-stable-distributions-and-heavy-tailed-random-vectors" class="nav-link active" data-scroll-target="#stable-distributions-and-heavy-tailed-random-vectors">Stable Distributions and Heavy-Tailed Random Vectors</a></li>
+  <li><a href="#high-dimensional-dependence-estimation" id="toc-high-dimensional-dependence-estimation" class="nav-link" data-scroll-target="#high-dimensional-dependence-estimation">High-Dimensional Dependence Estimation</a></li>
+  <li><a href="#current-estimator" id="toc-current-estimator" class="nav-link" data-scroll-target="#current-estimator">Current Estimator</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Research Progress Site</h1>
+<h1 class="title">Background</h1>
 </div>
 
 
@@ -140,10 +177,64 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>I’ll likely add more structure to this site as I collect more results than I can fit in this format.</p>
-<p>The links above provide general background on my problem setting, current progress, and some additional questions (and hopefully their answers) that might not be perfectly aligned with that path.</p>
+<p>Since I realize that this problem setting may be a little unfamiliar, I’m including a brief background on <span class="math inline">\(\alpha\)</span>-stable random variables and the research question.</p>
+<p>I’m interested in estimating the dependence of a random vector when covariance may not exist and the dimension of the vector may be high relative to the number of observations. We’re principally interested in a symmetric, positive semi-definite covariance matrix-like object <span class="math inline">\(\Sigma\)</span> or its corresponding correlation matrix, since:</p>
+<ul>
+<li>existing methods in finance</li>
+<li>especially in the high-dimensional setting, we can’t expect to estimate a more general dependence structure</li>
+<li>given elliptical symmetry of the data, it’s a pretty reasonable model</li>
+<li>etc.</li>
+</ul>
+<p>In financial markets, distributions of returns (and log-returns, which are used interchangeably and often without distinction) often have heavy tails. This leads to the relaxation of the finite variance assumption. Even if a process has finite variance, I my conjecture is that an estimator that admits heavy tails may be better (e.g.&nbsp;more efficient) in finite/small samples.</p>
+<p>In the literature, correlation and covariance matrices are used interchangably, since the correlation matrix is just a covariance matrix of an alternative dataset that has been standardized.</p>
+<section id="stable-distributions-and-heavy-tailed-random-vectors" class="level2">
+<h2 class="anchored" data-anchor-id="stable-distributions-and-heavy-tailed-random-vectors">Stable Distributions and Heavy-Tailed Random Vectors</h2>
+<p>If we relax the assumption that variance is finite, then a reasonable model for returns is the stable distribution, which has no closed form pdf in general but has where the dependence is fully defined by the spectral measure (typically denoted <span class="math inline">\(\Gamma\)</span>), a finite measure on the unit circle <span class="math inline">\(\mathbb S^d\)</span>.</p>
+<p>Stable distributions are a reasonable choice because they are infinitely divisible, and by the Generalized Central Limit Theorem of Gnedenko and Kolmogorov (1954), if sums of i.i.d. random variables converge to a distribution, it must be stable.</p>
+<p>The normal distribution is a special case when <span class="math inline">\(\alpha = 2\)</span>. It is the only case where variance is finite. The two other closed form pdfs of the stable family are the Cauchy (<span class="math inline">\(\alpha = 1\)</span>) and the Lévy (<span class="math inline">\(\alpha = 1/2\)</span>).</p>
+<p>Stable distributions are admittedly confusing because of the complicated characteristic function and infinite variance, as well as the fact that some terms (e.g.&nbsp;sub-Gaussian) mean something totally different in the stable distribution context than in the broader statistics context.</p>
+<p>Likewise there are nearly a dozen known parameterizations of the stable distribution, which makes it hard to distinguish what an author means.</p>
+<p>A special case is the sub-Gaussian (aka subordinated Gaussian) symmetric <span class="math inline">\(\alpha\)</span>-stable distribution, which for a random vector X can be written:</p>
+<p><span class="math display">\[
+X = \sqrt W G
+\]</span></p>
+<p>Where W <span class="math inline">\(\sim S_{\alpha/2}(\pi \alpha/4)^{(2/\alpha)},1, 0;1)\)</span>, a maximally skewed scalar random variable with support on the positive real numbers, and <span class="math inline">\(G \sim N(0, \Sigma)\)</span>, a multivariate normal random vector independent of W.</p>
+<p>In this sub-Gaussian random vector, the spectral measure <span class="math inline">\(\Gamma\)</span> is fully determined by <span class="math inline">\(\Sigma\)</span>. In fact, <span class="math inline">\(\Gamma\)</span> symmetric (e.g.&nbsp;antipodal points have equal measure), and continuous. While it’s a bit counter-intuitive, even in the isotropic case where <span class="math inline">\(\Sigma = I_d\)</span>, the identity matrix, the components of X are not independent. Indeed, the idea of orthogonality isn’t defined (although some generalizations of this idea are), since X is not defined on a (pre-)Hilbert space when <span class="math inline">\(\alpha &lt; 2\)</span>. This is a feature, not a bug, since tail dependence is asymptotically zero in the Gaussian case, a contributor to the failure of the Gaussian copula model for derivative pricing during the 2008 financial crisis. This model errs on the side of overestimating risk.</p>
+<p>X has the following simplified, more familiar characteristic function:</p>
+<p><span class="math display">\[
+\mathbb E[e^{iu^\text T X}] = exp\bigg\{-\frac12 |u^\text T \Sigma u|^{\alpha/2}\bigg\}
+\]</span></p>
+<p>When <span class="math inline">\(\alpha =2\)</span>, this is the Gaussian CF.</p>
+<p>We want the best estimate of <span class="math inline">\(\Sigma\)</span> or its corresponding correlation matrix.</p>
+<p>The best reference on multivariate stable distributions is <em>Stable Non-Gaussian Random Processes</em> by Samoradnitsky and Taqqu (1994), which contains virtually all known theoretical results as of its publication (despite the book’s 30th anniversary, not much has changed). For a more modern treatment that’s limited to univariate stable random variables, John Nolan’s aptly-named <em>Univariate Stable Distributions: Models for Heavy Tailed Data</em> from 2020 is recommended.</p>
+<p>One important note is that parameterizations of stable distributions are very inconsistent in the literature.</p>
+</section>
+<section id="high-dimensional-dependence-estimation" class="level2">
+<h2 class="anchored" data-anchor-id="high-dimensional-dependence-estimation">High-Dimensional Dependence Estimation</h2>
+<p>The other piece of the research question puzzle is “high-dimensional” data. By high-dimensional, I mean that the dimension of the data is high relative to the number of observations; so 30 dimensions is quite high-dimensional when you only have 35 observations to estimate something like a covariance matrix from.</p>
+<p>The current state-of-the-art approach used in finance is the Optimal Rotationally-Invariant Estimator (RIE), which uses results from Random Matrix Theory to find the optimal way to “clean” the eigenvalues of a sample covariance matrix C so that the squared Frobenius distance <span class="math inline">\(||\Sigma - C||_F^2\)</span> is minimized, even without being able to observe the true <span class="math inline">\(\Sigma\)</span>, provided that the data are at least asymptotically normal.</p>
+<p>Initially, my plan was to explore how this recipe might change if the underlying data do not have finite variance (e.g.&nbsp;finding <span class="math inline">\(\Sigma\)</span> from a sub-Gaussian <span class="math inline">\(\alpha\)</span>-stable random vector described above). More recently, I’ve found some research that suggests that if <span class="math inline">\(1 &lt; \alpha \leq 2\)</span>, then the universality rules apply asymptotically and this same RIE formulation is appropriate to use for a Lévy matrix. If true, this would provide a theoretical justification for using this approach for heavy-tailed data.</p>
+</section>
+<section id="current-estimator" class="level2">
+<h2 class="anchored" data-anchor-id="current-estimator">Current Estimator</h2>
+<p>My candidate estimator, Median Oracle, takes a very simple heuristic approach to estimating the quasi-correlation from a matrix <span class="math inline">\(X\)</span> of returns. Assume <span class="math inline">\(X\)</span> is a <span class="math inline">\(t\times n\)</span> matrix consisting of <span class="math inline">\(t\)</span> independent observations of a market of <span class="math inline">\(n\)</span> assets, and a sub-sample size <span class="math inline">\(d_in\)</span>:</p>
+<ol start="0" type="1">
+<li><p>(Optional_ Rescale the columns of <span class="math inline">\(X\)</span> to be mean-zero with unit variance, such that we’re estimating <span class="math inline">\(\Sigma\)</span> as a correlation matrix.</p></li>
+<li><p>For <span class="math inline">\(i=1,..., B\)</span>:</p>
+<ol type="i">
+<li>Draw <span class="math inline">\(b \sim Unif[1,t-d_in)\)</span></li>
+<li>At each <span class="math inline">\(b\)</span>, subsample <span class="math inline">\(X_b = X_{b:(b+d_in-1)}, \cdot\)</span></li>
+<li>Compute the sample covariance matrix <span class="math inline">\(\Sigma_b = \frac{1}{d_{in}-1}X_b^\text T X_b\)</span>.</li>
+<li>Compute the Rotationally Invariant Estimator (RIE) adjustment to the eigenvalues <span class="math inline">\(\hat\lambda_{1}^{(1)}, ..., \hat\lambda_{i}^{(n)}\)</span> of <span class="math inline">\(\Sigma_b\)</span>, and store them in <span class="math inline">\(Q \in \mathbb R^{B \times n}\)</span></li>
+</ol></li>
+<li><p>For for each eigenvalue <span class="math inline">\(\lambda^{(j)}\)</span> of the covariance matrix, <span class="math inline">\(j = 1, ..., n\)</span>, estimate <span class="math inline">\(\hat \lambda^{(j)} = \text{median}(\hat\lambda_{i}^{(j)})\)</span>, the median across all <span class="math inline">\(B\)</span> samples.</p></li>
+<li><p>Reconstruct the covariance matrix using <span class="math inline">\(\hat\Lambda = \text{diag}(\hat \Lambda^{(n)},...,\hat \lambda^{(1)})\)</span> and the eigenvectors of the full-sample covariance matrix <span class="math inline">\(\Sigma = V^\text{T} \Lambda V\)</span>.</p></li>
+<li><p>Rescale by forecasted asset-wise standard deviation to get a final estimate of the underlying covariance matrix.</p></li>
+</ol>
+<p>Taking the sample covariance and correlations of a dataset assumed to be generated by an infinite-variance process seems crazy initially, but in fact the eigenvalue spectrum of these subsampled covariance matrices are well defined distributions.</p>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
