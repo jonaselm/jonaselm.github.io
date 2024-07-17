@@ -2,12 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.5.53">
+<meta name="generator" content="quarto-1.4.553">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Deriving Correlation Estimator Variance – Research</title>
+<title>Research - Deriving Correlation Estimator Variance</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -67,7 +67,7 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 <script type="text/javascript">
@@ -112,7 +112,7 @@ window.Quarto = {
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
@@ -135,7 +135,7 @@ window.Quarto = {
   </li>  
 </ul>
           </div> <!-- /navcollapse -->
-            <div class="quarto-navbar-tools">
+          <div class="quarto-navbar-tools">
 </div>
       </div> <!-- /container-fluid -->
     </nav>
@@ -152,7 +152,9 @@ window.Quarto = {
   <li><a href="#preliminaries" id="toc-preliminaries" class="nav-link active" data-scroll-target="#preliminaries">Preliminaries</a>
   <ul class="collapse">
   <li><a href="#expected-value-of-a-stable-subordinator" id="toc-expected-value-of-a-stable-subordinator" class="nav-link" data-scroll-target="#expected-value-of-a-stable-subordinator">Expected Value of a Stable Subordinator</a></li>
+  <li><a href="#covariance-of-floms" id="toc-covariance-of-floms" class="nav-link" data-scroll-target="#covariance-of-floms">Covariance of FLOMs</a></li>
   </ul></li>
+  <li><a href="#estimator-variance-for-r" id="toc-estimator-variance-for-r" class="nav-link" data-scroll-target="#estimator-variance-for-r">Estimator Variance for r</a></li>
   </ul>
 </nav>
     </div>
@@ -180,7 +182,7 @@ window.Quarto = {
 
 <section id="preliminaries" class="level2">
 <h2 class="anchored" data-anchor-id="preliminaries">Preliminaries</h2>
-<p>Starting with couple preliminaries that will be useful to derive an analyticaly tractable expression for the variance of these correlation estimators, <span class="math inline">\(\hat r\)</span> and <span class="math inline">\(\hat{ \text{scov}}\)</span> based on the sample FLOM estimators.</p>
+<p>Starting with couple preliminaries that will be useful to derive an analyticaly tractable approximation for the variance of these correlation estimators, <span class="math inline">\(\hat r\)</span> and <span class="math inline">\(\hat{ \text{scov}}\)</span> based on the sample FLOM estimators.</p>
 <section id="expected-value-of-a-stable-subordinator" class="level3">
 <h3 class="anchored" data-anchor-id="expected-value-of-a-stable-subordinator">Expected Value of a Stable Subordinator</h3>
 <p>First, deriving the expected value for W <span class="math inline">\(\sim S_{\alpha/2}((\pi \alpha/4)^{(2/\alpha)},1, 0;1)\)</span>, a maximally skewed scalar random variable with support on the positive real numbers. We can use the fact that we can decompose a sg-S<span class="math inline">\(\alpha\)</span>S(1) random variable into the product of the square root of W and normal random variable <span class="math inline">\(G \sim N(0,\sigma^2)\)</span> independent of W:</p>
@@ -198,9 +200,56 @@ window.Quarto = {
 \end{aligned}
 \]</span></p>
 <p>This uses the well-known results for normal absolute moments, stable FLOMs, and a change of variables from the standard deviation of G to the scale parameter <span class="math inline">\(\gamma\)</span> of X.</p>
-
-
 </section>
+<section id="covariance-of-floms" class="level3">
+<h3 class="anchored" data-anchor-id="covariance-of-floms">Covariance of FLOMs</h3>
+<p>When <span class="math inline">\(p&lt;\alpha/2\)</span>, <span class="math inline">\(\text{Cov}(|X_1|^p, |X_2|^p)\)</span> is finite and can be written in terms of the hypergeometric function for <span class="math inline">\(-1&lt;p&lt;\alpha/2\)</span>:</p>
+<p><span class="math display">\[
+\begin{aligned}
+\text{Cov}(|X_1|^p, |X_2|^p) &amp;= \mathbb E(|X_1|^p |X_2|^p) - \mathbb E (|X_1|^p) \mathbb E (|X_2|^p)\\
+&amp;= \mathbb E(|X_1 X_2|^p) - C^2(p,\alpha)\gamma_1^{p/\alpha}\gamma_2^{p/\alpha} \\
+&amp;= \mathbb E(|\sqrt W G_1 \sqrt W G_2|^p) - C^2(p,\alpha)\gamma_1^{p/\alpha}\gamma_2^{p/\alpha} \\
+&amp; = \mathbb E(W^p|G_1 G_2|^p) - C^2(p,\alpha)\gamma_1^{p/\alpha}\gamma_2^{p/\alpha} \\
+&amp; = \mathbb E(W^p) \mathbb E(|G_1 G_2|^p) - C^2(p,\alpha)\gamma_1^{p/\alpha}\gamma_2^{p/\alpha} \\
+&amp;= \frac{2\Gamma(-2p/\alpha)}{\alpha\Gamma(-p)}\bigg(\frac{2^p \sigma_1^p \sigma_2^p}{\pi}\bigg)2\Gamma(\frac{p+1}{2}){}_2F_1(-\frac p 2, -\frac p 2, \frac 1 2, \rho^2)- C^2(p,\alpha)\gamma_1^{p/\alpha}\gamma_2^{p/\alpha}\\
+&amp;= \frac{2\Gamma(-2p/\alpha)}{\alpha\Gamma(-p)}\bigg(\frac{2^{2p} \gamma_1^{p/\alpha} \gamma_2^{p/\alpha}}{\pi}\bigg)2\Gamma(\frac{p+1}{2}){}_2F_1(-\frac p 2, -\frac p 2, \frac 1 2, \rho^2)- C^2(p,\alpha)\gamma_1^{p/\alpha}\gamma_2^{p/\alpha}
+\end{aligned}
+\]</span></p>
+<p>Therefore, letting <span class="math inline">\(G_3 = G_1-G_2 \implies X_3 = X_1-X_2\)</span>, with <span class="math inline">\(G_i\)</span> a mean-zero normal random variable correlated with the other two:</p>
+<p><span class="math display">\[
+\begin{aligned}
+\text{Cov}(G_3, G_1) &amp;= \text{Cov}(G_1 - G_2, G_1)  \\
+&amp;= \text{Cov}(G_1, G_1)-\text{Cov}(G_2, G_1)\\
+&amp;= \text{Var}(G_1)-\text{Cov}(G_2, G_1) \\
+&amp;= \sigma_1^2 - \rho \sigma_1\sigma_2 \\
+\text{Thus, we have:}\\
+\text{Cov}(G_3, G_2) &amp;= \text{Cov}(G_1 - G_2, G_2) \\
+&amp;= \rho \sigma_1\sigma_2 - \sigma_2^2 \\
+\text{Var}(G_3) &amp;= \sigma_1^2 + \sigma_2^2 - 2\rho \sigma_1 \sigma_2
+\end{aligned}
+\]</span></p>
+<p>This implies that the correlation coefficients for <span class="math inline">\(G_3\)</span> are:</p>
+<p><span class="math display">\[
+\begin{aligned}
+\rho_{3,1} \equiv \frac{\sigma_1^2 - \rho \sigma_1\sigma_2}{\sigma_1 \sqrt{\sigma_1^2 + \sigma_2^2 - 2\rho \sigma_1 \sigma_2}} \\
+\rho_{3,2} \equiv \frac{\rho \sigma_1\sigma_2 - \sigma_2^2 }{\sigma_1 \sqrt{\sigma_1^2 + \sigma_2^2 - 2\rho \sigma_1 \sigma_2}}
+\end{aligned}
+\]</span></p>
+<p>This gives us <span class="math inline">\(\text{Cov}(|X_1-X_2|^p, |X_i|^p), i=1,2\)</span> for stable random variables <span class="math inline">\(X_i\)</span> by using <span class="math inline">\(\rho_{3,i}\)</span> as the final parameter in the hypergeometric function above.</p>
+<p>We can use all of this to get an approximation for the variance of our estimators when <span class="math inline">\(p&lt;\alpha/2\)</span>.</p>
+</section>
+</section>
+<section id="estimator-variance-for-r" class="level2">
+<h2 class="anchored" data-anchor-id="estimator-variance-for-r">Estimator Variance for r</h2>
+<p>Since <span class="math inline">\(\hat r = \frac{(\sum_{i=1}^N |X_{1i}|^p)^{2/p}+(\sum_{i=1}^N |X_{2i}|^p)^{2/p}-(\sum_{i=1}^N |X_{1i}- X_{2i}|^p)^{2/p}}{2(\sum_{i=1}^N |X_{1i}|^p \sum_{i=1}^N |X_{2i}|^p)^{1/p}}\)</span>, we can set <span class="math inline">\(Y_{ji} = |X_{ji}|^p, Z_j = \sum_{i=1}^N Y_{ji}\)</span> and replace this with:</p>
+<p><span class="math display">\[
+\begin{aligned}
+\hat r &amp;= \frac{(\sum_{i=1}^N Y_{1i})^{2/p}+(\sum_{i=1}^N Y_{2i})^{2/p}-(\sum_{i=1}^N Y_{3i})^{2/p}}{2(\sum_{i=1}^N Y_{1i} \sum_{i=1}^N Y_{2i})^{1/p}} \\
+&amp; = \frac{Z_1^{2/p}+Z_2^{2/p}-Z_3^{2/p}}{2(Z_1Z_2)^{1/p}}
+\end{aligned}
+\]</span></p>
+
+
 </section>
 
 </main> <!-- /main -->
@@ -239,7 +288,18 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
     return false;
   }
-  const onCopySuccess = function(e) {
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
     // button target
     const button = e.trigger;
     // don't keep focus
@@ -271,29 +331,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }, 1000);
     // clear code selection
     e.clearSelection();
-  }
-  const getTextToCopy = function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
-        }
-      }
-      return codeEl.innerText;
-  }
-  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
-    text: getTextToCopy
   });
-  clipboard.on('success', onCopySuccess);
-  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
-    // For code content inside modals, clipBoardJS needs to be initialized with a container option
-    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
-    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
-      text: getTextToCopy,
-      container: window.document.getElementById('quarto-embedded-source-code-modal')
-    });
-    clipboardModal.on('success', onCopySuccess);
-  }
     var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
     var mailtoRegex = new RegExp(/^mailto:/);
       var filterRegex = new RegExp('/' + window.location.host + '/');
@@ -301,7 +339,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
     }
     // Inspect non-navigation links and adorn them if external
- 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
     for (var i=0; i<links.length; i++) {
       const link = links[i];
       if (!isInternal(link.href)) {

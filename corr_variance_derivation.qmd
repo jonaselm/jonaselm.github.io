@@ -4,7 +4,7 @@ title: "Deriving Correlation Estimator Variance"
 
 ## Preliminaries
 
-Starting with couple preliminaries that will be useful to derive an analyticaly tractable expression for the variance of these correlation estimators, $\hat r$ and $\hat{ \text{scov}}$ based on the sample FLOM estimators.
+Starting with couple preliminaries that will be useful to derive an analyticaly tractable approximation for the variance of these correlation estimators, $\hat r$ and $\hat{ \text{scov}}$ based on the sample FLOM estimators.
 
 ### Expected Value of a Stable Subordinator
 
@@ -25,3 +25,58 @@ $$
 $$
 
 This uses the well-known results for normal absolute moments, stable FLOMs, and a change of variables from the standard deviation of G to the scale parameter $\gamma$ of X.
+
+### Covariance of FLOMs
+
+When $p<\alpha/2$, $\text{Cov}(|X_1|^p, |X_2|^p)$ is finite and can be written in terms of the hypergeometric function for $-1<p<\alpha/2$:
+
+$$
+\begin{aligned}
+\text{Cov}(|X_1|^p, |X_2|^p) &= \mathbb E(|X_1|^p |X_2|^p) - \mathbb E (|X_1|^p) \mathbb E (|X_2|^p)\\
+&= \mathbb E(|X_1 X_2|^p) - C^2(p,\alpha)\gamma_1^{p/\alpha}\gamma_2^{p/\alpha} \\
+&= \mathbb E(|\sqrt W G_1 \sqrt W G_2|^p) - C^2(p,\alpha)\gamma_1^{p/\alpha}\gamma_2^{p/\alpha} \\
+& = \mathbb E(W^p|G_1 G_2|^p) - C^2(p,\alpha)\gamma_1^{p/\alpha}\gamma_2^{p/\alpha} \\
+& = \mathbb E(W^p) \mathbb E(|G_1 G_2|^p) - C^2(p,\alpha)\gamma_1^{p/\alpha}\gamma_2^{p/\alpha} \\
+&= \frac{2\Gamma(-2p/\alpha)}{\alpha\Gamma(-p)}\bigg(\frac{2^p \sigma_1^p \sigma_2^p}{\pi}\bigg)2\Gamma(\frac{p+1}{2}){}_2F_1(-\frac p 2, -\frac p 2, \frac 1 2, \rho^2)- C^2(p,\alpha)\gamma_1^{p/\alpha}\gamma_2^{p/\alpha}\\
+&= \frac{2\Gamma(-2p/\alpha)}{\alpha\Gamma(-p)}\bigg(\frac{2^{2p} \gamma_1^{p/\alpha} \gamma_2^{p/\alpha}}{\pi}\bigg)2\Gamma(\frac{p+1}{2}){}_2F_1(-\frac p 2, -\frac p 2, \frac 1 2, \rho^2)- C^2(p,\alpha)\gamma_1^{p/\alpha}\gamma_2^{p/\alpha}
+\end{aligned}
+$$
+
+Therefore, letting $G_3 = G_1-G_2 \implies X_3 = X_1-X_2$, with $G_i$  a mean-zero normal random variable correlated with the other two:
+
+$$
+\begin{aligned}
+ \text{Cov}(G_3, G_1) &= \text{Cov}(G_1 - G_2, G_1)  \\
+&= \text{Cov}(G_1, G_1)-\text{Cov}(G_2, G_1)\\
+&= \text{Var}(G_1)-\text{Cov}(G_2, G_1) \\ 
+&= \sigma_1^2 - \rho \sigma_1\sigma_2 \\
+\text{Thus, we have:}\\
+\text{Cov}(G_3, G_2) &= \text{Cov}(G_1 - G_2, G_2) \\
+&= \rho \sigma_1\sigma_2 - \sigma_2^2 \\
+\text{Var}(G_3) &= \sigma_1^2 + \sigma_2^2 - 2\rho \sigma_1 \sigma_2
+\end{aligned}
+$$
+
+This implies that the correlation coefficients for $G_3$ are:
+
+$$
+\begin{aligned}
+\rho_{3,1} \equiv \frac{\sigma_1^2 - \rho \sigma_1\sigma_2}{\sigma_1 \sqrt{\sigma_1^2 + \sigma_2^2 - 2\rho \sigma_1 \sigma_2}} \\
+\rho_{3,2} \equiv \frac{\rho \sigma_1\sigma_2 - \sigma_2^2 }{\sigma_1 \sqrt{\sigma_1^2 + \sigma_2^2 - 2\rho \sigma_1 \sigma_2}}
+\end{aligned}
+$$
+
+This gives us $\text{Cov}(|X_1-X_2|^p, |X_i|^p), i=1,2$ for stable random variables $X_i$ by using $\rho_{3,i}$ as the final parameter in the hypergeometric function above.
+
+We can use all of this to get an approximation for the variance of our estimators when $p<\alpha/2$.
+
+## Estimator Variance for r
+
+Since $\hat r = \frac{(\sum_{i=1}^N |X_{1i}|^p)^{2/p}+(\sum_{i=1}^N |X_{2i}|^p)^{2/p}-(\sum_{i=1}^N |X_{1i}- X_{2i}|^p)^{2/p}}{2(\sum_{i=1}^N |X_{1i}|^p \sum_{i=1}^N |X_{2i}|^p)^{1/p}}$, we can set $Y_{ji} = |X_{ji}|^p, Z_j = \sum_{i=1}^N Y_{ji}$ and replace this with:
+
+$$
+\begin{aligned}
+\hat r &= \frac{(\sum_{i=1}^N Y_{1i})^{2/p}+(\sum_{i=1}^N Y_{2i})^{2/p}-(\sum_{i=1}^N Y_{3i})^{2/p}}{2(\sum_{i=1}^N Y_{1i} \sum_{i=1}^N Y_{2i})^{1/p}} \\
+& = \frac{Z_1^{2/p}+Z_2^{2/p}-Z_3^{2/p}}{2(Z_1Z_2)^{1/p}}
+\end{aligned}
+$$
