@@ -8,7 +8,7 @@ Starting with couple preliminaries that will be useful to derive an analyticaly 
 
 ### Expected Value of a Stable Subordinator
 
-First, deriving the expected value for W $\sim S_{\alpha/2}((\pi \alpha/4)^{(2/\alpha)},1, 0;1)$, a maximally skewed scalar random variable with support on the positive real numbers. We can use the fact that we can decompose a sg-S$\alpha$S(1) random variable into the product of the square root of W and normal random variable $G \sim N(0,\sigma^2)$ independent of W:
+First, deriving the expected value for W $\sim S_{\alpha/2}(\cos(\pi \alpha/4)^{(2/\alpha)},1, 0;1)$, a maximally skewed scalar random variable with support on the positive real numbers. We can use the fact that we can decompose a $\alpha$-SG($\sigma^2$) random variable into the product of the square root of W and normal random variable $G \sim N(0,\sigma^2)$ independent of W:
 
 $$
 \begin{aligned}
@@ -18,9 +18,9 @@ $$
 &= \mathbb E(W^{p/2}) \sigma^p 2^{p/2} \frac{\Gamma(\frac{1+p}{2})}{\sqrt \pi} \\
 &= \mathbb E(W^{p/2}) (2^{p/2}\gamma^p)2^{p/2} \frac{\Gamma(\frac{1+p}{2})}{\sqrt \pi} \\
 \\ \text{So we get:} \\
-\mathbb E(W^{p/2}) &= \frac{ (2^{p/2}\gamma^p)2^{p/2} \frac{\Gamma(\frac{1+p}{2})}{\sqrt \pi}}{\mathbb E(|X|^p)}\\
-&=  2^{-p}\gamma^{-p}\frac{\sqrt \pi}{\Gamma(\frac{1+p}{2})}\times{\frac{\gamma^p 2^{p+1}\Gamma(\frac{p+1}{2})\Gamma(-p/\alpha)}{\alpha \sqrt \pi \Gamma(-p/2)}} \\
-&= \frac{2\Gamma(-p/\alpha)}{\alpha\Gamma(-p/2)}, & p<\alpha/2
+\mathbb E(W^{p/2}) &= \frac{\mathbb E(|X|^p)}{ (2^{p/2}\gamma^p)2^{p/2} \frac{\Gamma(\frac{1+p}{2})}{\sqrt \pi}}\\
+&=  2^{-p/2}\gamma^{-p}\frac{\sqrt \pi}{\Gamma(\frac{1+p}{2})}\times{\frac{\gamma^p 2^{p+1}\Gamma(\frac{p+1}{2})\Gamma(-p/\alpha)}{\alpha \sqrt \pi \Gamma(-p/2)}} \\
+&= \frac{2^{\frac{p+2}{2}}\Gamma(-p/\alpha)}{\alpha\Gamma(-p/2)}, & p<\alpha/2
 \end{aligned}
 $$
 
@@ -37,8 +37,8 @@ $$
 &= \mathbb E(|\sqrt W G_1 \sqrt W G_2|^p) - C^2(p,\alpha)\gamma_1^{p/\alpha}\gamma_2^{p/\alpha} \\
 & = \mathbb E(W^p|G_1 G_2|^p) - C^2(p,\alpha)\gamma_1^{p/\alpha}\gamma_2^{p/\alpha} \\
 & = \mathbb E(W^p) \mathbb E(|G_1 G_2|^p) - C^2(p,\alpha)\gamma_1^{p/\alpha}\gamma_2^{p/\alpha} \\
-&= \frac{2\Gamma(-2p/\alpha)}{\alpha\Gamma(-p)}\bigg(\frac{2^p \sigma_1^p \sigma_2^p}{\pi}\bigg)2\Gamma(\frac{p+1}{2}){}_2F_1(-\frac p 2, -\frac p 2, \frac 1 2, \rho^2)- C^2(p,\alpha)\gamma_1^{p/\alpha}\gamma_2^{p/\alpha}\\
-&= \frac{2\Gamma(-2p/\alpha)}{\alpha\Gamma(-p)}\bigg(\frac{2^{2p} \gamma_1^{p/\alpha} \gamma_2^{p/\alpha}}{\pi}\bigg)2\Gamma(\frac{p+1}{2}){}_2F_1(-\frac p 2, -\frac p 2, \frac 1 2, \rho^2)- C^2(p,\alpha)\gamma_1^{p/\alpha}\gamma_2^{p/\alpha}
+&= \frac{2\Gamma(-2p/\alpha)}{\alpha\Gamma(-p)}\bigg(\frac{2^p \sigma_1^p \sigma_2^p}{\pi}\bigg)\Gamma(\frac{p+1}{2})^2{}_2F_1(-\frac p 2, -\frac p 2, \frac 1 2, \rho^2)- C^2(p,\alpha)\gamma_1^{p/\alpha}\gamma_2^{p/\alpha}\\
+&= \frac{2\Gamma(-2p/\alpha)}{\alpha\Gamma(-p)}\bigg(\frac{2^{2p} \gamma_1^{p/\alpha} \gamma_2^{p/\alpha}}{\pi}\bigg)\Gamma(\frac{p+1}{2})^2{}_2F_1(-\frac p 2, -\frac p 2, \frac 1 2, \rho^2)- C^2(p,\alpha)\gamma_1^{p/\alpha}\gamma_2^{p/\alpha}
 \end{aligned}
 $$
 
@@ -77,6 +77,48 @@ Since $\hat r = \frac{(\sum_{i=1}^N |X_{1i}|^p)^{2/p}+(\sum_{i=1}^N |X_{2i}|^p)^
 $$
 \begin{aligned}
 \hat r &= \frac{(\sum_{i=1}^N Y_{1i})^{2/p}+(\sum_{i=1}^N Y_{2i})^{2/p}-(\sum_{i=1}^N Y_{3i})^{2/p}}{2(\sum_{i=1}^N Y_{1i} \sum_{i=1}^N Y_{2i})^{1/p}} \\
-& = \frac{Z_1^{2/p}+Z_2^{2/p}-Z_3^{2/p}}{2(Z_1Z_2)^{1/p}}
+& = \frac{Z_1^{2/p}+Z_2^{2/p}-Z_3^{2/p}}{2(Z_1Z_2)^{1/p}} \\ 
+\text{We can define the epectation as:} \\
+\zeta_i \equiv \mathbb EZ_i = N C(\alpha, p) \gamma_i^{p/\alpha}
+\end{aligned}
+$$
+
+
+
+The second-order Taylor expansion of $\mathbb E [\hat r]$ around $(\zeta_1, \zeta_2, \zeta_3)$ is:
+
+$$
+\begin{aligned}
+\mathbb E [\hat r] \equiv \mathbb E [f(Z_1,Z_2,Z_3)] &\approx \mathbb E \bigg\{f(\zeta_1, \zeta_2, \zeta_3) + \sum_{i=1}^3 \frac{\partial f}{\partial Z_i}\bigg |_{(\zeta_1, \zeta_2, \zeta_3)} (Z_i - \zeta_i) + \frac 1 2 \sum_{i=1}^3\sum_{j=1}^3 \frac{\partial^2 f}{\partial Z_i\partial Z_j}\bigg |_{(\zeta_1, \zeta_2, \zeta_3)} (Z_i - \zeta_i)(Z_j - \zeta_j)\bigg\} \\
+&=\frac{\zeta_1^{2/p}+\zeta_2^{2/p}-\zeta_3^{2/p}}{2(\zeta_1 \zeta_2)^{1/p}} +\frac 1 2 \bigg(\frac{\partial^2 f}{\partial Z_1^2}\text{Var}(Z_1)+\frac{\partial^2 f}{\partial Z_2^2}\text{Var}(Z_2)+\frac{\partial^2 f}{\partial Z_3^2}\text{Var}(Z_3)+ \\ & (\frac{\partial^2 f}{\partial Z_1\partial Z_2} + \frac{\partial^2 f}{\partial Z_2\partial Z_1})\text{Cov}(Z_1, Z_2)+(\frac{\partial^2 f}{\partial Z_1\partial Z_3} + \frac{\partial^2 f}{\partial Z_3\partial Z_1})\text{Cov}(Z_1, Z_3)+ \\ &(\frac{\partial^2 f}{\partial Z_2\partial Z_3} + \frac{\partial^2 f}{\partial Z_3\partial Z_2})\text{Cov}(Z_2, Z_3)\bigg) \\
+& = 
+\end{aligned}
+$$
+
+A quick and dirty evaluation of all higher-order terms shows both the moments and the derivatives go to zero as $N \rightarrow \infty$, so this estimator should quickly become unbiased as the sample size increases.
+
+Using the first-order Taylor expansion (to keep things less crazy) for the variance, and the fact that for large N, $\mathbb E[\hat r] \approx f(\zeta_1, \zeta_2, \zeta_3)$:
+
+$$
+\begin{aligned}
+\text{Var}(\hat r)& \approx \mathbb E\bigg[\bigg(f(Z_1,Z_2,Z_3)-f(\zeta_1, \zeta_2, \zeta_3) \bigg)^2\bigg]
+ \\ &
+= \mathbb E\bigg[\bigg(f(Z_1,Z_2,Z_3)-f(\zeta_1, \zeta_2, \zeta_3) + \frac{\partial f}{\partial Z_1}(Z_1 - \zeta_1) + \frac{\partial f}{\partial Z_2}(Z_2 - \zeta_2) +
+\frac{\partial f}{\partial Z_3}(Z_3 - \zeta_3) - f(Z_1,Z_2,Z_3)
+\bigg)^2\bigg] \\ 
+&= \mathbb E \bigg[
+    \bigg(\frac{\partial f}{\partial Z_1}\bigg)^2(Z_1 - \zeta_1)^2 +
+    \bigg(\frac{\partial f}{\partial Z_2}\bigg)^2(Z_2 - \zeta_2)^2 +
+    \bigg(\frac{\partial f}{\partial Z_2}\bigg)^2(Z_2 - \zeta_2)^2 +
+    2\frac{\partial f}{\partial Z_1}\frac{\partial f}{\partial Z_3}(Z_3 - \zeta_3)(Z_1 - \zeta_1) + \\ &
+    2\frac{\partial f}{\partial Z_1}\frac{\partial f}{\partial Z_2}(Z_2 - \zeta_2)(Z_1 - \zeta_1) +  2\frac{\partial f}{\partial Z_2}\frac{\partial f}{\partial Z_3}(Z_3 - \zeta_3)(Z_2 - \zeta_2)
+    \bigg] \\ 
+    &= \bigg(\frac{\partial f}{\partial Z_1}\bigg)^2\text{Var}(Z_1) +
+    \bigg(\frac{\partial f}{\partial Z_2}\bigg)^2\text{Var}(Z_2) +
+    \bigg(\frac{\partial f}{\partial Z_3}\bigg)^2\text{Var}(Z_3) +
+    2\frac{\partial f}{\partial Z_1}\frac{\partial f}{\partial Z_2}\text{Cov}(Z_1, Z_2) + \\ &
+     2\frac{\partial f}{\partial Z_1}\frac{\partial f}{\partial Z_3}\text{Cov}(Z_1, Z_3) +  2\frac{\partial f}{\partial Z_2}\frac{\partial f}{\partial Z_3}\text{Cov}(Z_2, Z_3) \\
+&= \frac{(\zeta_1^{2/p}-\zeta_2^{2/p}+\zeta_3^{2/p})^2}{4p^2\zeta_1^2(\zeta_1 \zeta_2)^{2/p}}\text{Var}(Z_1)+\frac{(\zeta_2^{2/p}-\zeta_1^{2/p}+\zeta_3^{2/p})^2}{4p^2\zeta_2^2(\zeta_1 \zeta_2)^{2/p}}\text{Var}(Z_2)+\frac{\zeta_3^{\frac 4p -2}}{p^2(\zeta_1 \zeta_2)^{2/p}}\text{Var}(Z_3)+\\ & 
+2\frac{(\zeta_3^{4/p}+(\zeta_1^{2/p}-\zeta_2^{2/p})^2)}{4p^2(\zeta_1\zeta_2)^{\frac{2+p}{p}}}\text{Cov}(Z_1, Z_2)-
 \end{aligned}
 $$

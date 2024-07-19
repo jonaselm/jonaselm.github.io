@@ -34,6 +34,8 @@ This result is helpful for a couple of reasons.
 
 2. **What p is actually optimal, given some $\theta$.**
 
+Does p actually depend on $\alpha$? Can we choose some clever $\theta$ that will turn the Taylor series approximation into an exact result?
+
 3. **To what extent does the resulting correlation matrix result in eigenvalue regularization compared to a sample covariance matrix? What does that regularization function look like?**
 
 4. **Is RIE appropriate to use on sample covariance estimates derived from stable data?** 

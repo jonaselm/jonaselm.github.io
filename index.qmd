@@ -2,6 +2,6 @@
 title: "Research Progress Site"
 ---
 
-I'll likely add more structure to this site as I collect more results than I can fit in this format.
+I'll add more structure to this site as I collect more results than I can fit in this format.
 
-The links above provide general background on my problem setting, current progress, and some additional questions (and hopefully their answers) that might not be perfectly aligned with that path.
+The links **above** provide general background on my problem setting, current progress, and some additional questions (and hopefully their answers) that might not be perfectly aligned with that path.

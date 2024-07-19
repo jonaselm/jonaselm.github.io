@@ -6,43 +6,42 @@ Since I realize that this problem setting may be a little unfamiliar, I'm includ
 
 I'm interested in estimating the dependence of a random vector when covariance may not exist and the dimension of the vector may be high relative to the number of observations. We're principally interested in a symmetric, positive semi-definite covariance matrix-like object $\Sigma$ or its corresponding correlation matrix, since:
 
-* existing methods in finance
-* especially in the high-dimensional setting, we can't expect to estimate a more general dependence structure
-* given elliptical symmetry of the data, it's a pretty reasonable model
-* etc.
+* existing methods in finance lean heavily on covariance/correlation matrices (portfolio optimization, asset pricing, etc.)
+* especially in the high-dimensional setting, we can't expect to estimate a more general dependence structure very well
+* given elliptical symmetry of the data, it's a pretty reasonable model for (equity) returns
 
-In financial markets, distributions of returns (and log-returns, which are used interchangeably and often without distinction) often have heavy tails. This leads to the relaxation of the finite variance assumption. Even if a process has finite variance, I my conjecture is that an estimator that admits heavy tails may be better (e.g. more efficient) in finite/small samples.
+In financial markets, distributions of returns (and log-returns, which are used interchangeably and often without distinction) often have heavy tails. This leads to the relaxation of the finite variance assumption. Even if a process has finite variance,  my conjecture is that an estimator that admits heavy tails may be better (e.g. more efficient) in finite/small samples.
 
-In the literature, correlation and covariance matrices are used interchangably, since the correlation matrix is just a covariance matrix of an alternative dataset that has been standardized.
+In the literature, correlation and covariance matrices are used interchangably, since the correlation matrix is just a covariance matrix of an alternative dataset where the data have been standardized.
 
 ## Stable Distributions and Heavy-Tailed Random Vectors
 
-If we relax the assumption that variance is finite, then a reasonable model for returns is the stable distribution, which has no closed form pdf in general but has \href{https://en.wikipedia.org/wiki/Multivariate_stable_distribution}{a complicated characteristic function} where the dependence is fully defined by the spectral measure (typically denoted $\Gamma$), a finite measure on the unit circle $\mathbb S^d$.
+If we relax the assumption that variance is finite, then a reasonable model for returns is the stable distribution, which has no closed form pdf in general but has [a complicated characteristic function](https://en.wikipedia.org/wiki/Multivariate_stable_distribution) where the dependence is fully defined by the spectral measure (typically denoted $\Gamma$), a finite measure on the unit circle $\mathbb S^d$.
 
 
-Stable distributions are a reasonable choice because they are infinitely divisible, and by the Generalized Central Limit Theorem of Gnedenko and Kolmogorov (1954), if sums of i.i.d. random variables converge to a distribution, it must be stable.
+Stable distributions are a reasonable choice because they are infinitely divisible, and by the Generalized Central Limit Theorem of Gnedenko and Kolmogorov (1954), if sums of i.i.d. random variables converge to a distribution, it must be stable. This mirrors the justifications often used for the normal distribution in financial models.
 
 
-The normal distribution is a special case when $\alpha = 2$. It is the only case where variance is finite. The two other closed form pdfs of the stable family are the Cauchy ($\alpha = 1$) and the Lévy ($\alpha = 1/2$). 
+In fact, the normal distribution is a special case when the characteristic exponent $\alpha = 2$. It is the only case where variance is finite. The two other closed form pdfs of the stable family are the Cauchy ($\alpha = 1$) and the Lévy ($\alpha = 1/2$). 
 
 
 Stable distributions are admittedly confusing because of the complicated characteristic function and infinite variance, as well as the fact that some terms (e.g. sub-Gaussian) mean something totally different in the stable distribution context than in the broader statistics context. 
 
 
-Likewise there are nearly a dozen known parameterizations of the stable distribution, which makes it hard to distinguish what an author means.
+Likewise there are nearly a dozen known parameterizations of the stable distribution, which makes it hard to distinguish what an author means when they describe a result.
 
 
-A special case is the sub-Gaussian (aka subordinated Gaussian) symmetric $\alpha$-stable distribution, which for a random vector X can be written:
+A special case is the sub-Gaussian (aka subordinated Gaussian) symmetric $\alpha$-stable distribution (to avoid confusion with sub-Gaussian tails, I'll note this as $\alpha$-SG($\Sigma$), as some texts do), which for a random vector X can be written:
 
 $$
 X = \sqrt W G
 $$
 
-Where W $\sim S_{\alpha/2}((\pi \alpha/4)^{(2/\alpha)},1, 0;1)$, a maximally skewed scalar random variable with support on the positive real numbers, and $G \sim N(0, \Sigma)$, a multivariate normal random vector independent of W.
+Where W $\sim S_{\alpha/2}(\cos(\pi \alpha/4)^{(2/\alpha)},1, 0;1)$, a maximally skewed scalar random variable with support on the positive real numbers, and $G \sim N(0, \Sigma)$, a multivariate normal random vector independent of W.
 
-In this sub-Gaussian random vector, the spectral measure $\Gamma$ is fully determined by $\Sigma$. In fact, $\Gamma$ symmetric (e.g. antipodal points have equal measure), and continuous. While it's a bit counter-intuitive, even in the isotropic case where $\Sigma = I_d$, the identity matrix, the components of X are not independent. Indeed, the idea of orthogonality isn't defined (although some generalizations of this idea are), since X is not defined on a (pre-)Hilbert space when $\alpha < 2$. This is a feature, not a bug, since tail dependence is asymptotically zero in the Gaussian case, a contributor to the failure of the Gaussian copula model for derivative pricing during the 2008 financial crisis. This model errs on the side of overestimating risk.
+In this sub-Gaussian random vector, the spectral measure $\Gamma$ is fully determined by $\Sigma$. In fact, $\Gamma$ symmetric (e.g. antipodal points have equal measure), and continuous. While it's a bit counter-intuitive, even in the isotropic case where $\Sigma = I_d$, the identity matrix, the components of X are not independent. Indeed, the idea of orthogonality isn't defined (although some generalizations of this idea are), since X is not defined on a (pre-)Hilbert space when $\alpha < 2$. This actually turns out to be a desirable characteristic for a couple of reasons. For one, since tail dependence is asymptotically zero in the Gaussian case, a contributor to the failure of the Gaussian copula model for derivative pricing during the 2008 financial crisis. This model errs on the side of overestimating risk.
 
-X has the following simplified, more familiar characteristic function:
+When $X \sim$ $\alpha$-SG($\sigma^2$), it has the following simplified, more familiar characteristic function:
 
 $$
 \mathbb E[e^{iu^\text T X}] = exp\bigg\{-\frac12 |u^\text T \Sigma u|^{\alpha/2}\bigg\}

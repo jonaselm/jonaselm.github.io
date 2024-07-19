@@ -2,12 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.5.53">
+<meta name="generator" content="quarto-1.4.553">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Background – Research</title>
+<title>Research - Background</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -67,7 +67,7 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 <script type="text/javascript">
@@ -112,7 +112,7 @@ window.Quarto = {
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
@@ -135,7 +135,7 @@ window.Quarto = {
   </li>  
 </ul>
           </div> <!-- /navcollapse -->
-            <div class="quarto-navbar-tools">
+          <div class="quarto-navbar-tools">
 </div>
       </div> <!-- /container-fluid -->
     </nav>
@@ -180,27 +180,26 @@ window.Quarto = {
 <p>Since I realize that this problem setting may be a little unfamiliar, I’m including a brief background on <span class="math inline">\(\alpha\)</span>-stable random variables and the research question.</p>
 <p>I’m interested in estimating the dependence of a random vector when covariance may not exist and the dimension of the vector may be high relative to the number of observations. We’re principally interested in a symmetric, positive semi-definite covariance matrix-like object <span class="math inline">\(\Sigma\)</span> or its corresponding correlation matrix, since:</p>
 <ul>
-<li>existing methods in finance</li>
-<li>especially in the high-dimensional setting, we can’t expect to estimate a more general dependence structure</li>
-<li>given elliptical symmetry of the data, it’s a pretty reasonable model</li>
-<li>etc.</li>
+<li>existing methods in finance lean heavily on covariance/correlation matrices (portfolio optimization, asset pricing, etc.)</li>
+<li>especially in the high-dimensional setting, we can’t expect to estimate a more general dependence structure very well</li>
+<li>given elliptical symmetry of the data, it’s a pretty reasonable model for (equity) returns</li>
 </ul>
-<p>In financial markets, distributions of returns (and log-returns, which are used interchangeably and often without distinction) often have heavy tails. This leads to the relaxation of the finite variance assumption. Even if a process has finite variance, I my conjecture is that an estimator that admits heavy tails may be better (e.g.&nbsp;more efficient) in finite/small samples.</p>
-<p>In the literature, correlation and covariance matrices are used interchangably, since the correlation matrix is just a covariance matrix of an alternative dataset that has been standardized.</p>
+<p>In financial markets, distributions of returns (and log-returns, which are used interchangeably and often without distinction) often have heavy tails. This leads to the relaxation of the finite variance assumption. Even if a process has finite variance, my conjecture is that an estimator that admits heavy tails may be better (e.g.&nbsp;more efficient) in finite/small samples.</p>
+<p>In the literature, correlation and covariance matrices are used interchangably, since the correlation matrix is just a covariance matrix of an alternative dataset where the data have been standardized.</p>
 <section id="stable-distributions-and-heavy-tailed-random-vectors" class="level2">
 <h2 class="anchored" data-anchor-id="stable-distributions-and-heavy-tailed-random-vectors">Stable Distributions and Heavy-Tailed Random Vectors</h2>
-<p>If we relax the assumption that variance is finite, then a reasonable model for returns is the stable distribution, which has no closed form pdf in general but has where the dependence is fully defined by the spectral measure (typically denoted <span class="math inline">\(\Gamma\)</span>), a finite measure on the unit circle <span class="math inline">\(\mathbb S^d\)</span>.</p>
-<p>Stable distributions are a reasonable choice because they are infinitely divisible, and by the Generalized Central Limit Theorem of Gnedenko and Kolmogorov (1954), if sums of i.i.d. random variables converge to a distribution, it must be stable.</p>
-<p>The normal distribution is a special case when <span class="math inline">\(\alpha = 2\)</span>. It is the only case where variance is finite. The two other closed form pdfs of the stable family are the Cauchy (<span class="math inline">\(\alpha = 1\)</span>) and the Lévy (<span class="math inline">\(\alpha = 1/2\)</span>).</p>
+<p>If we relax the assumption that variance is finite, then a reasonable model for returns is the stable distribution, which has no closed form pdf in general but has <a href="https://en.wikipedia.org/wiki/Multivariate_stable_distribution">a complicated characteristic function</a> where the dependence is fully defined by the spectral measure (typically denoted <span class="math inline">\(\Gamma\)</span>), a finite measure on the unit circle <span class="math inline">\(\mathbb S^d\)</span>.</p>
+<p>Stable distributions are a reasonable choice because they are infinitely divisible, and by the Generalized Central Limit Theorem of Gnedenko and Kolmogorov (1954), if sums of i.i.d. random variables converge to a distribution, it must be stable. This mirrors the justifications often used for the normal distribution in financial models.</p>
+<p>In fact, the normal distribution is a special case when the characteristic exponent <span class="math inline">\(\alpha = 2\)</span>. It is the only case where variance is finite. The two other closed form pdfs of the stable family are the Cauchy (<span class="math inline">\(\alpha = 1\)</span>) and the Lévy (<span class="math inline">\(\alpha = 1/2\)</span>).</p>
 <p>Stable distributions are admittedly confusing because of the complicated characteristic function and infinite variance, as well as the fact that some terms (e.g.&nbsp;sub-Gaussian) mean something totally different in the stable distribution context than in the broader statistics context.</p>
-<p>Likewise there are nearly a dozen known parameterizations of the stable distribution, which makes it hard to distinguish what an author means.</p>
-<p>A special case is the sub-Gaussian (aka subordinated Gaussian) symmetric <span class="math inline">\(\alpha\)</span>-stable distribution, which for a random vector X can be written:</p>
+<p>Likewise there are nearly a dozen known parameterizations of the stable distribution, which makes it hard to distinguish what an author means when they describe a result.</p>
+<p>A special case is the sub-Gaussian (aka subordinated Gaussian) symmetric <span class="math inline">\(\alpha\)</span>-stable distribution (to avoid confusion with sub-Gaussian tails, I’ll note this as <span class="math inline">\(\alpha\)</span>-SG(<span class="math inline">\(\Sigma\)</span>), as some texts do), which for a random vector X can be written:</p>
 <p><span class="math display">\[
 X = \sqrt W G
 \]</span></p>
-<p>Where W <span class="math inline">\(\sim S_{\alpha/2}((\pi \alpha/4)^{(2/\alpha)},1, 0;1)\)</span>, a maximally skewed scalar random variable with support on the positive real numbers, and <span class="math inline">\(G \sim N(0, \Sigma)\)</span>, a multivariate normal random vector independent of W.</p>
-<p>In this sub-Gaussian random vector, the spectral measure <span class="math inline">\(\Gamma\)</span> is fully determined by <span class="math inline">\(\Sigma\)</span>. In fact, <span class="math inline">\(\Gamma\)</span> symmetric (e.g.&nbsp;antipodal points have equal measure), and continuous. While it’s a bit counter-intuitive, even in the isotropic case where <span class="math inline">\(\Sigma = I_d\)</span>, the identity matrix, the components of X are not independent. Indeed, the idea of orthogonality isn’t defined (although some generalizations of this idea are), since X is not defined on a (pre-)Hilbert space when <span class="math inline">\(\alpha &lt; 2\)</span>. This is a feature, not a bug, since tail dependence is asymptotically zero in the Gaussian case, a contributor to the failure of the Gaussian copula model for derivative pricing during the 2008 financial crisis. This model errs on the side of overestimating risk.</p>
-<p>X has the following simplified, more familiar characteristic function:</p>
+<p>Where W <span class="math inline">\(\sim S_{\alpha/2}(\cos(\pi \alpha/4)^{(2/\alpha)},1, 0;1)\)</span>, a maximally skewed scalar random variable with support on the positive real numbers, and <span class="math inline">\(G \sim N(0, \Sigma)\)</span>, a multivariate normal random vector independent of W.</p>
+<p>In this sub-Gaussian random vector, the spectral measure <span class="math inline">\(\Gamma\)</span> is fully determined by <span class="math inline">\(\Sigma\)</span>. In fact, <span class="math inline">\(\Gamma\)</span> symmetric (e.g.&nbsp;antipodal points have equal measure), and continuous. While it’s a bit counter-intuitive, even in the isotropic case where <span class="math inline">\(\Sigma = I_d\)</span>, the identity matrix, the components of X are not independent. Indeed, the idea of orthogonality isn’t defined (although some generalizations of this idea are), since X is not defined on a (pre-)Hilbert space when <span class="math inline">\(\alpha &lt; 2\)</span>. This actually turns out to be a desirable characteristic for a couple of reasons. For one, since tail dependence is asymptotically zero in the Gaussian case, a contributor to the failure of the Gaussian copula model for derivative pricing during the 2008 financial crisis. This model errs on the side of overestimating risk.</p>
+<p>When <span class="math inline">\(X \sim\)</span> <span class="math inline">\(\alpha\)</span>-SG(<span class="math inline">\(\sigma^2\)</span>), it has the following simplified, more familiar characteristic function:</p>
 <p><span class="math display">\[
 \mathbb E[e^{iu^\text T X}] = exp\bigg\{-\frac12 |u^\text T \Sigma u|^{\alpha/2}\bigg\}
 \]</span></p>
@@ -272,7 +271,18 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
     return false;
   }
-  const onCopySuccess = function(e) {
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
     // button target
     const button = e.trigger;
     // don't keep focus
@@ -304,29 +314,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }, 1000);
     // clear code selection
     e.clearSelection();
-  }
-  const getTextToCopy = function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
-        }
-      }
-      return codeEl.innerText;
-  }
-  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
-    text: getTextToCopy
   });
-  clipboard.on('success', onCopySuccess);
-  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
-    // For code content inside modals, clipBoardJS needs to be initialized with a container option
-    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
-    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
-      text: getTextToCopy,
-      container: window.document.getElementById('quarto-embedded-source-code-modal')
-    });
-    clipboardModal.on('success', onCopySuccess);
-  }
     var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
     var mailtoRegex = new RegExp(/^mailto:/);
       var filterRegex = new RegExp('/' + window.location.host + '/');
@@ -334,7 +322,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
     }
     // Inspect non-navigation links and adorn them if external
- 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
     for (var i=0; i<links.length; i++) {
       const link = links[i];
       if (!isInternal(link.href)) {
