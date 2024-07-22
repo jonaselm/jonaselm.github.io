@@ -75,4 +75,38 @@ Since we can induce finite variance on the components of these estimators, it se
 
 My derivation of the correlation-type estimator variance approximation [can be found here](corr_variance_derivation.qmd).
 
-[Last Updated on July 16, 2024]
+Unfortunately, this variance approximation doesn't work very nicely in practice for moderate-sized simulations:
+
+![](images/corr_simulated_vs_analytical_sd.png)
+
+And worse, plugging it into the current Median Oracle algorithm in place of sample covariance results in worse estimates. I think this is happening because throwing away the magnitude information for a correlation-type estimator results in worse estimates. The good news is that an estimator based on the numerator of r should fix this problem.
+
+## The Subordinated Covariance Estimator
+
+If we just take the rescaled numerator of r, we get the following:
+
+$$
+\begin{aligned}
+&(\mathbb E |X_1|^p)^{2/p}+(\mathbb E |X_2|^p)^{2/p}-(\mathbb E |X_1- X_2|^p)^{2/p} \\
+&= (C(p,\alpha)\gamma_1^p)^{2/p}+(C(p,\alpha)\gamma_2^p)^{2/p}-(C(p,\alpha)\gamma_3^p)^{2/p}
+ \\
+& = C(p,\alpha)^{2/p}\bigg[\gamma_1^2 + \gamma_2^2 -\gamma_3^2 \bigg] \\
+&=C(p,\alpha)^{2/p}\bigg[\frac{\sigma_1^2}{2} + \frac{\sigma_2^2}{2} -\frac{\sigma_3^2}{2}  \bigg] \\
+&=C(p,\alpha)^{2/p}\bigg[\frac{\sigma_1^2}{2} + \frac{\sigma_2^2}{2} -(\frac{\sigma_1^2}{2} + \frac{\sigma_2^2}{2}-\frac{2\rho_{12}\sigma_1\sigma_2}{2}) \bigg] \\
+&= C(p,\alpha)^{2/p}\rho_{12}\sigma_1\sigma_2
+\end{aligned}
+$$
+
+From here, the subordinated covariance estimator I define as $\hat s$ below is an asymptotically unbiased estimator of the covariance of any components of the subordinated Gaussian vector [(see proof)](sce_derivation.qmd):
+
+$$
+\begin{aligned}
+\hat s &= \frac{(\frac{1}{N}\sum_{i=1}^N |X_{1i}|^p)^{2/p} + (\frac{1}{N}\sum_{i=1}^N |X_{2i}|^p)^{2/p} +(\frac{1}{N}\sum_{i=1}^N |X_{1i} - X_{2i}|^p)^{2/p}}{C(p,\alpha)^{2/p}}
+\end{aligned}
+$$
+
+One immediate benefit of this estimator is that, when $p=2$, this estimator is exactly the sample covariance (which is an input into the Median Oracle estimator). This provides a very reasonable path to improving the performance of Median Oracle - when $\alpha<2$, the sample covariance is a biased estimator of the subordinated covariance, and $p=2$ may not be optimial anymore.  
+
+Looking at the impact of the choice of p on the variance of the estimator:
+
+[Last Updated on July 22, 2024]

@@ -1,0 +1,6 @@
+---
+title: "Subordinated Covariance Estimator Derivation"
+---
+
+We can use the same preliminaries from [this page](corr_variance_derivation.qmd) to get exact analytical expressions for the expected value and variance of what I'm calling the Subordinated Covariance Estimator, $\hat s$.
+

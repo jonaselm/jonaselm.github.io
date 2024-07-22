@@ -19,8 +19,8 @@ $$
 &= \mathbb E(W^{p/2}) (2^{p/2}\gamma^p)2^{p/2} \frac{\Gamma(\frac{1+p}{2})}{\sqrt \pi} \\
 \\ \text{So we get:} \\
 \mathbb E(W^{p/2}) &= \frac{\mathbb E(|X|^p)}{ (2^{p/2}\gamma^p)2^{p/2} \frac{\Gamma(\frac{1+p}{2})}{\sqrt \pi}}\\
-&=  2^{-p/2}\gamma^{-p}\frac{\sqrt \pi}{\Gamma(\frac{1+p}{2})}\times{\frac{\gamma^p 2^{p+1}\Gamma(\frac{p+1}{2})\Gamma(-p/\alpha)}{\alpha \sqrt \pi \Gamma(-p/2)}} \\
-&= \frac{2^{\frac{p+2}{2}}\Gamma(-p/\alpha)}{\alpha\Gamma(-p/2)}, & p<\alpha/2
+&=  2^{-p}\gamma^{-p}\frac{\sqrt \pi}{\Gamma(\frac{1+p}{2})}\times{\frac{\gamma^p 2^{p+1}\Gamma(\frac{p+1}{2})\Gamma(-p/\alpha)}{\alpha \sqrt \pi \Gamma(-p/2)}} \\
+&= \frac{2\Gamma(-p/\alpha)}{\alpha\Gamma(-p/2)}, & p<\alpha/2
 \end{aligned}
 $$
 
@@ -38,7 +38,7 @@ $$
 & = \mathbb E(W^p|G_1 G_2|^p) - C^2(p,\alpha)\gamma_1^{p/\alpha}\gamma_2^{p/\alpha} \\
 & = \mathbb E(W^p) \mathbb E(|G_1 G_2|^p) - C^2(p,\alpha)\gamma_1^{p/\alpha}\gamma_2^{p/\alpha} \\
 &= \frac{2\Gamma(-2p/\alpha)}{\alpha\Gamma(-p)}\bigg(\frac{2^p \sigma_1^p \sigma_2^p}{\pi}\bigg)\Gamma(\frac{p+1}{2})^2{}_2F_1(-\frac p 2, -\frac p 2, \frac 1 2, \rho^2)- C^2(p,\alpha)\gamma_1^{p/\alpha}\gamma_2^{p/\alpha}\\
-&= \frac{2\Gamma(-2p/\alpha)}{\alpha\Gamma(-p)}\bigg(\frac{2^{2p} \gamma_1^{p/\alpha} \gamma_2^{p/\alpha}}{\pi}\bigg)\Gamma(\frac{p+1}{2})^2{}_2F_1(-\frac p 2, -\frac p 2, \frac 1 2, \rho^2)- C^2(p,\alpha)\gamma_1^{p/\alpha}\gamma_2^{p/\alpha}
+&= \frac{2\Gamma(-2p/\alpha)}{\alpha\Gamma(-p)}\bigg(\frac{2^{p+1} \gamma_1^{p/\alpha} \gamma_2^{p/\alpha}}{\pi}\bigg)\Gamma(\frac{p+1}{2})^2{}_2F_1(-\frac p 2, -\frac p 2, \frac 1 2, \rho^2)- C^2(p,\alpha)\gamma_1^{p/\alpha}\gamma_2^{p/\alpha}
 \end{aligned}
 $$
 
@@ -119,6 +119,15 @@ $$
     2\frac{\partial f}{\partial Z_1}\frac{\partial f}{\partial Z_2}\text{Cov}(Z_1, Z_2) + \\ &
      2\frac{\partial f}{\partial Z_1}\frac{\partial f}{\partial Z_3}\text{Cov}(Z_1, Z_3) +  2\frac{\partial f}{\partial Z_2}\frac{\partial f}{\partial Z_3}\text{Cov}(Z_2, Z_3) \\
 &= \frac{(\zeta_1^{2/p}-\zeta_2^{2/p}+\zeta_3^{2/p})^2}{4p^2\zeta_1^2(\zeta_1 \zeta_2)^{2/p}}\text{Var}(Z_1)+\frac{(\zeta_2^{2/p}-\zeta_1^{2/p}+\zeta_3^{2/p})^2}{4p^2\zeta_2^2(\zeta_1 \zeta_2)^{2/p}}\text{Var}(Z_2)+\frac{\zeta_3^{\frac 4p -2}}{p^2(\zeta_1 \zeta_2)^{2/p}}\text{Var}(Z_3)+\\ & 
-2\frac{(\zeta_3^{4/p}+(\zeta_1^{2/p}-\zeta_2^{2/p})^2)}{4p^2(\zeta_1\zeta_2)^{\frac{2+p}{p}}}\text{Cov}(Z_1, Z_2)-
+2\frac{(\zeta_3^{4/p}+(\zeta_1^{2/p}-\zeta_2^{2/p})^2)}{4p^2(\zeta_1\zeta_2)^{\frac{2+p}{p}}}\text{Cov}(Z_1, Z_2)-\dots
 \end{aligned}
 $$
+
+Initially, I started writing out this expansion to see if I could get any of the known terms to cancel or find a pattern that could lead to an exact solutionm, but unfortunately neither case seems to hold. I calculated this variance approximation numerically, and compared it to simulations with less than compelling results.
+
+However, this led to a better candidate estimator, the [subordinated covariance estimator](sce_derivation.qmd)...
+
+
+
+
+

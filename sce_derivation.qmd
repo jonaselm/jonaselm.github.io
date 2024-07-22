@@ -1,0 +1,27 @@
+---
+title: "Subordinated Covariance Estimator Derivation"
+---
+
+We can use the same preliminaries from [this page](corr_variance_derivation.qmd) to get approximations for the expected value and variance of what I'm calling the Subordinated Covariance Estimator, $\hat s$.
+
+Using a second-order Taylor expansion around the means for the expectation, and once again setting $Y_{ji} = |X_{ji}|^p, Z_j = \sum_{i=1}^N Y_{ji}$, we get "simplified" univariate expansions compared to the correlation-type estimators that approximate the covariance of the subordinated Gaussian vector:
+
+$$
+\begin{aligned}
+\mathbb E(\hat s) &= \frac{(\frac{1}{N}\sum_{i=1}^N |X_{1i}|^p)^{2/p} + (\frac{1}{N}\sum_{i=1}^N |X_{2i}|^p)^{2/p} -(\frac{1}{N}\sum_{i=1}^N |X_{1i} - X_{2i}|^p)^{2/p}}{C(p,\alpha)^{2/p}} \\
+&= N^{-2/p}C(p,\alpha)^{-2/p}\mathbb E\bigg[(\sum_{i=1}^N |X_{1i}|^p)^{2/p}\bigg]+ \mathbb E\bigg[(\sum_{i=1}^N |X_{2i}|^p)^{2/p}\bigg]-\mathbb E\bigg[(\sum_{i=1}^N |X_{1i} - X_{1i}|^p)^{2/p}\bigg] \\ 
+&= N^{-2/p}C(p,\alpha)^{-2/p} \bigg[ \zeta_1^{2/p}+\zeta_2^{2/p}-\zeta_3^{2/p}-
+    \sum_{i=1}^3\frac{(p-2)\zeta_i^{\frac{2}{p}-2}}{p^2}\text{Var}(Z_i) 
+ \bigg]\\
+ &= N^{-2/p}C(p,\alpha)^{-2/p} \bigg[ \{NC(p,\alpha)\}^{2/p}(\gamma_1^2+\gamma_2^2-\gamma_3^2)- \\
+ &\frac{(p-2)\{NC(p,\alpha)\}^{\frac{2}{p}-2}}{p^2} \frac{2^{2p+2}}{N \alpha \sqrt \pi}\bigg\{ \frac{\Gamma(\frac{2p+1}{2})\Gamma(-2p/\alpha)}{\Gamma(-p)} - \frac{\Gamma(\frac{p+1}{2})^2 \Gamma(-p/\alpha)^2 }{\alpha \sqrt\pi\Gamma(-p/2)^2} \bigg\} \bigg(\gamma_1^{2p+\frac{2}{p}-2} + \gamma_2^{2p+\frac{2}{p}-2} - \gamma_3^{2p+\frac{2}{p}-2}\bigg)\bigg] \\
+ &= (\gamma_1^2+\gamma_2^2-\gamma_3^2) - \frac{(p-2)}{N^3\{pC(p,\alpha)\}^{2}} \frac{2^{2p+2}}{\alpha \sqrt \pi}\bigg\{ \frac{\Gamma(\frac{2p+1}{2})\Gamma(-2p/\alpha)}{\Gamma(-p)} - \frac{\Gamma(\frac{p+1}{2})^2 \Gamma(-p/\alpha)^2 }{\alpha \sqrt\pi\Gamma(-p/2)^2} \bigg\} \\ &\times\bigg(\gamma_1^{2p+\frac{2}{p}-2} + \gamma_2^{2p+\frac{2}{p}-2} - \gamma_3^{2p+\frac{2}{p}-2}\bigg) \\
+ & = \text{Cov}(G_1,G_2) -
+ \frac{(p-2)}{N^3\{pC(p,\alpha)\}^{2}} \frac{2^{2p+2}}{\alpha \sqrt \pi}\bigg\{ \frac{\Gamma(\frac{2p+1}{2})\Gamma(-2p/\alpha)}{\Gamma(-p)} - \frac{\Gamma(\frac{p+1}{2})^2 \Gamma(-p/\alpha)^2 }{\alpha \sqrt\pi\Gamma(-p/2)^2} \bigg\} \\ &\times\bigg(\gamma_1^{2p+\frac{2}{p}-2} + \gamma_2^{2p+\frac{2}{p}-2} - \gamma_3^{2p+\frac{2}{p}-2}\bigg)
+\end{aligned}
+$$
+
+The result above uses the expansion of the rescaled numerator of r from the [progress page](progress.qmd) to move from the stable scale parameters to the covariance of the Gaussian vector.
+
+Moving on to the variance of $\hat s$, once again the fact that s is a sum simplifies the Taylor expansion considerably:
+
