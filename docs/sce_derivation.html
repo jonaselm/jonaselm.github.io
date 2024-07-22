@@ -175,7 +175,7 @@ window.Quarto = {
 \begin{aligned}
 \mathbb E(\hat s) &amp;= \frac{(\frac{1}{N}\sum_{i=1}^N |X_{1i}|^p)^{2/p} + (\frac{1}{N}\sum_{i=1}^N |X_{2i}|^p)^{2/p} -(\frac{1}{N}\sum_{i=1}^N |X_{1i} - X_{2i}|^p)^{2/p}}{C(p,\alpha)^{2/p}} \\
 &amp;= N^{-2/p}C(p,\alpha)^{-2/p}\mathbb E\bigg[(\sum_{i=1}^N |X_{1i}|^p)^{2/p}\bigg]+ \mathbb E\bigg[(\sum_{i=1}^N |X_{2i}|^p)^{2/p}\bigg]-\mathbb E\bigg[(\sum_{i=1}^N |X_{1i} - X_{1i}|^p)^{2/p}\bigg] \\
-&amp;= N^{-2/p}C(p,\alpha)^{-2/p} \bigg[ \zeta_1^{2/p}+\zeta_2^{2/p}-\zeta_3^{2/p}-
+&amp;\approx N^{-2/p}C(p,\alpha)^{-2/p} \bigg[ \zeta_1^{2/p}+\zeta_2^{2/p}-\zeta_3^{2/p}-
     \sum_{i=1}^3\frac{(p-2)\zeta_i^{\frac{2}{p}-2}}{p^2}\text{Var}(Z_i)
 \bigg]\\
 &amp;= N^{-2/p}C(p,\alpha)^{-2/p} \bigg[ \{NC(p,\alpha)\}^{2/p}(\gamma_1^2+\gamma_2^2-\gamma_3^2)- \\
