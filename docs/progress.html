@@ -188,7 +188,7 @@ window.Quarto = {
 <p><span class="math display">\[
 \text{scov} (X_1, X_2) = \kappa_{(X_1, X_2)}\bigg | \frac{[X_1, X_2]_\alpha [X_2, X_1]_\alpha}{||X_1||_\alpha ||X_2||_\alpha} \bigg|^{1/2}
 \]</span></p>
-<p>Here, <span class="math inline">\([X_1, X_2]_\alpha\)</span> and <span class="math inline">\(||X_1||_\alpha\)</span> are the covariation of <span class="math inline">\(X_1\)</span> on <span class="math inline">\(X-2\)</span> and the covariation norm of <span class="math inline">\(X_1\)</span>, respectively, and <span class="math inline">\(\kappa\)</span> represents the “agreement” of the signs of the covariation terms.</p>
+<p>Here, <span class="math inline">\([X_1, X_2]_\alpha\)</span> and <span class="math inline">\(||X_1||_\alpha\)</span> are the covariation of <span class="math inline">\(X_1\)</span> on <span class="math inline">\(X_2\)</span> and the covariation norm of <span class="math inline">\(X_1\)</span>, respectively, and <span class="math inline">\(\kappa\)</span> represents the “agreement” of the signs of the covariation terms.</p>
 <p>When <span class="math inline">\(1 &lt; \alpha &lt; 2\)</span>, this can equivalently be represented using Fractional Lower Order Moments (FLOMs):</p>
 <p><span class="math display">\[
 r = \frac{(\mathbb E |X_1|^p)^{2/p}+(\mathbb E |X_2|^p)^{2/p}-(\mathbb E |X_1- X_2|^p)^{2/p}}{2(\mathbb E |X_1|^p\mathbb E |X_2|^p)^{1/p}}
@@ -228,7 +228,7 @@ r = \frac{(\mathbb E |X_1|^p)^{2/p}+(\mathbb E |X_2|^p)^{2/p}-(\mathbb E |X_1- X
 <h3 class="anchored" data-anchor-id="variance-of-the-correlation-estimators">Variance of the Correlation Estimators</h3>
 <p>When our estimator is a correlation-type estimator like scov and r above, any sample estimate is bounded on <span class="math inline">\([-1,1]\)</span> and all moments of the estimator itself are finite for any p – even <span class="math inline">\(p&gt;\alpha\)</span>!</p>
 <p>Like with raw FLOMs, Monte Carlo has been used to estimate variance of these estimators in <a href="https://ieeexplore.ieee.org/document/1673451">some papers</a>, but only with relatively small simulation sizes and without comment on potential errors in the calculation of an optimal p.</p>
-<p>Since we can induce finite variance on the components of these estimators, it seems reasonable to approximate their asymptotic variance using Taylor series expansions to get a better estimate of a variance-minimizing choice of p.</p>
+<p>Since we can induce finite variance on the components of these estimators, it seems reasonable to invoke the delta method to approximate their asymptotic variance using Taylor series expansions to get a better estimate of a variance-minimizing choice of p.</p>
 <p>My derivation of the correlation-type estimator variance approximation <a href="./corr_variance_derivation.html">can be found here</a>.</p>
 <p>Unfortunately, this variance approximation doesn’t work very nicely in practice for moderate-sized simulations:</p>
 <p><img src="images/corr_simulated_vs_analytical_sd.png" class="img-fluid"></p>
@@ -256,7 +256,7 @@ r = \frac{(\mathbb E |X_1|^p)^{2/p}+(\mathbb E |X_2|^p)^{2/p}-(\mathbb E |X_1- X
 \end{aligned}
 \]</span></p>
 <p>One immediate benefit of this estimator is that, when <span class="math inline">\(p=2\)</span>, this estimator is exactly the sample covariance (which is an input into the Median Oracle estimator). This provides a very reasonable path to improving the performance of Median Oracle - when <span class="math inline">\(\alpha&lt;2\)</span>, the sample covariance is a biased estimator of the subordinated covariance, and <span class="math inline">\(p=2\)</span> may not be optimial anymore.</p>
-<p>This also leads to a potential alternative idea of optimality vs.&nbsp;the minimum variance p: instead, choose p that minimizes the forecast error.</p>
+<p>This also leads to a potential alternative idea of optimality vs.&nbsp;the minimum variance p: instead, we may want to choose p that minimizes the forecast error.</p>
 <p>Looking at the impact of the choice of p on the variance of the estimator:</p>
 <p>[Last Updated on July 24, 2024]</p>
 

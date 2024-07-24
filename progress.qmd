@@ -12,7 +12,7 @@ $$
 \text{scov} (X_1, X_2) = \kappa_{(X_1, X_2)}\bigg | \frac{[X_1, X_2]_\alpha [X_2, X_1]_\alpha}{||X_1||_\alpha ||X_2||_\alpha} \bigg|^{1/2}
 $$
 
-Here, $[X_1, X_2]_\alpha$ and $||X_1||_\alpha$ are the covariation of $X_1$ on $X-2$ and the covariation norm of $X_1$, respectively, and $\kappa$ represents the "agreement" of the signs of the covariation terms.
+Here, $[X_1, X_2]_\alpha$ and $||X_1||_\alpha$ are the covariation of $X_1$ on $X_2$ and the covariation norm of $X_1$, respectively, and $\kappa$ represents the "agreement" of the signs of the covariation terms.
 
 When $1 < \alpha < 2$, this can equivalently be represented using Fractional Lower Order Moments (FLOMs):
 
@@ -71,7 +71,7 @@ When our estimator is a correlation-type estimator like scov and r above, any sa
 
 Like with raw FLOMs, Monte Carlo has been used to estimate variance of these estimators in [some papers](https://ieeexplore.ieee.org/document/1673451), but only with relatively small simulation sizes and without comment on potential errors in the calculation of an optimal p.
 
-Since we can induce finite variance on the components of these estimators, it seems reasonable to approximate their asymptotic variance using Taylor series expansions to get a better estimate of a variance-minimizing choice of p.
+Since we can induce finite variance on the components of these estimators, it seems reasonable to invoke the delta method to approximate their asymptotic variance using Taylor series expansions to get a better estimate of a variance-minimizing choice of p.
 
 My derivation of the correlation-type estimator variance approximation [can be found here](corr_variance_derivation.qmd).
 
