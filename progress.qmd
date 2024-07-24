@@ -101,12 +101,14 @@ From here, the subordinated covariance estimator I define as $\hat s$ below is a
 
 $$
 \begin{aligned}
-\hat s &= \frac{(\frac{1}{N}\sum_{i=1}^N |X_{1i}|^p)^{2/p} + (\frac{1}{N}\sum_{i=1}^N |X_{2i}|^p)^{2/p} +(\frac{1}{N}\sum_{i=1}^N |X_{1i} - X_{2i}|^p)^{2/p}}{C(p,\alpha)^{2/p}}
+\hat s &= \frac{(\frac{1}{N}\sum_{i=1}^N |X_{1i}|^p)^{2/p} + (\frac{1}{N}\sum_{i=1}^N |X_{2i}|^p)^{2/p} -(\frac{1}{N}\sum_{i=1}^N |X_{1i} - X_{2i}|^p)^{2/p}}{C(p,\alpha)^{2/p}}
 \end{aligned}
 $$
 
 One immediate benefit of this estimator is that, when $p=2$, this estimator is exactly the sample covariance (which is an input into the Median Oracle estimator). This provides a very reasonable path to improving the performance of Median Oracle - when $\alpha<2$, the sample covariance is a biased estimator of the subordinated covariance, and $p=2$ may not be optimial anymore.  
 
+This also leads to a potential alternative idea of optimality vs. the minimum variance p: instead, we may want to choose p that minimizes the forecast error. 
+
 Looking at the impact of the choice of p on the variance of the estimator:
 
-[Last Updated on July 22, 2024]
+[Last Updated on July 24, 2024]
