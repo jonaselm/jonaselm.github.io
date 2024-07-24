@@ -109,7 +109,7 @@ One immediate benefit of this estimator is that, when $p=2$, this estimator is e
 
 The problem, though, is that this formulation likely won't have finite moments due to the elements being raised to the second power.
 
-This also leads to a potential alternative idea of optimality vs. the minimum variance p: instead, we may want to choose p that minimizes the absolute forecast error. 
+I'm continuing to explore potential estimators of this type.
 
 
 [Last Updated on July 24, 2024]
