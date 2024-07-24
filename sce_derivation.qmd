@@ -23,7 +23,7 @@ $$
 
 The result above uses the expansion of the rescaled numerator of r from the [progress page](progress.qmd) to move from the stable scale parameters to the covariance of the Gaussian vector.
 
-Moving on to the variance of $\hat s$, with $f(Z_1, Z_1, Z_1) = N^{-2/p}[ Z_1^{2/p}+Z_2^{2/p}-Z_3^{2/p}]$:
+Moving on to the variance of $\hat s$, with $f(Z_1, Z_1, Z_1) = (C(p, \alpha)N)^{-2/p}[ Z_1^{2/p}+Z_2^{2/p}-Z_3^{2/p}]$:
 
 $$
 \begin{aligned}
