@@ -232,7 +232,7 @@ r = \frac{(\mathbb E |X_1|^p)^{2/p}+(\mathbb E |X_2|^p)^{2/p}-(\mathbb E |X_1- X
 <p>My derivation of the correlation-type estimator variance approximation <a href="./corr_variance_derivation.html">can be found here</a>.</p>
 <p>Unfortunately, this variance approximation doesn’t work very nicely in practice for moderate-sized simulations:</p>
 <p><img src="images/corr_simulated_vs_analytical_sd.png" class="img-fluid"></p>
-<p>And worse, plugging it into the current Median Oracle algorithm in place of sample covariance results in worse estimates. I think this is happening because throwing away the magnitude information for a correlation-type estimator results in worse estimates. The good news is that an estimator based on the numerator of r should fix this problem.</p>
+<p>And worse, plugging it into the current Median Oracle algorithm in place of sample covariance results in worse estimates. I think this is happening because throwing away the magnitude information for a correlation-type estimator results in worse estimates. The good news is that an estimator based on the numerator of r should fix this problem. The bad news is that it reintroduces infinite estimator variance.</p>
 </section>
 </section>
 <section id="the-subordinated-covariance-estimator" class="level2">
@@ -256,8 +256,8 @@ r = \frac{(\mathbb E |X_1|^p)^{2/p}+(\mathbb E |X_2|^p)^{2/p}-(\mathbb E |X_1- X
 \end{aligned}
 \]</span></p>
 <p>One immediate benefit of this estimator is that, when <span class="math inline">\(p=2\)</span>, this estimator is exactly the sample covariance (which is an input into the Median Oracle estimator). This provides a very reasonable path to improving the performance of Median Oracle - when <span class="math inline">\(\alpha&lt;2\)</span>, the sample covariance is a biased estimator of the subordinated covariance, and <span class="math inline">\(p=2\)</span> may not be optimial anymore.</p>
-<p>This also leads to a potential alternative idea of optimality vs.&nbsp;the minimum variance p: instead, we may want to choose p that minimizes the forecast error.</p>
-<p>Looking at the impact of the choice of p on the variance of the estimator:</p>
+<p>The problem, though, is that this formulation likely won’t have finite moments due to the elements being raised to the second power.</p>
+<p>This also leads to a potential alternative idea of optimality vs.&nbsp;the minimum variance p: instead, we may want to choose p that minimizes the absolute forecast error.</p>
 <p>[Last Updated on July 24, 2024]</p>
 
 
