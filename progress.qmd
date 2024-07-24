@@ -34,7 +34,7 @@ $$
 \mathbb E(|X|^p) = C(p,\alpha)\gamma^{p/\alpha}
 $$
 
-where $C(p,\alpha)$ is a known constant that depends only on p and the tail exponent of X and is used below, and $\gamma$ is the scale parameter of X. Note that the authors use a non-typical parameterization for $\gamma$ but this result holds in general for any distribution -- [rough proof here](open_questions.qmd).
+where $C(p,\alpha)$ is a known constant that depends only on p and the tail exponent of X and is used below, and $\gamma$ is the scale parameter of X. Note that the authors use a non-typical parameterization for $\gamma$ but this result holds in general for any distribution -- [rough/hand-wavy proof here](open_questions.qmd).
 
 One nice thing is that if we're estimating a correlation-type quantity like scov and r above, these bias terms cancel out in the numerator and denominator, and we're left only with the scale terms.
 
@@ -97,7 +97,7 @@ $$
 \end{aligned}
 $$
 
-From here, the subordinated covariance estimator I define as $\hat s$ below is an asymptotically unbiased estimator of the covariance of any components of the subordinated Gaussian vector [(see proof)](sce_derivation.qmd):
+The subordinated covariance estimator is defined as $\hat s$ below:
 
 $$
 \begin{aligned}
