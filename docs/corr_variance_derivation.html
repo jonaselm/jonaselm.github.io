@@ -232,7 +232,7 @@ window.Quarto = {
 <p><span class="math display">\[
 \begin{aligned}
 \rho_{3,1} \equiv \frac{\sigma_1^2 - \rho \sigma_1\sigma_2}{\sigma_1 \sqrt{\sigma_1^2 + \sigma_2^2 - 2\rho \sigma_1 \sigma_2}} \\
-\rho_{3,2} \equiv \frac{\rho \sigma_1\sigma_2 - \sigma_2^2 }{\sigma_1 \sqrt{\sigma_1^2 + \sigma_2^2 - 2\rho \sigma_1 \sigma_2}}
+\rho_{3,2} \equiv \frac{\rho \sigma_1\sigma_2 - \sigma_2^2 }{\sigma_2 \sqrt{\sigma_1^2 + \sigma_2^2 - 2\rho \sigma_1 \sigma_2}}
 \end{aligned}
 \]</span></p>
 <p>This gives us <span class="math inline">\(\text{Cov}(|X_1-X_2|^p, |X_i|^p), i=1,2\)</span> for stable random variables <span class="math inline">\(X_i\)</span> by using <span class="math inline">\(\rho_{3,i}\)</span> as the final parameter in the hypergeometric function above.</p>
@@ -241,6 +241,19 @@ window.Quarto = {
 </section>
 <section id="estimator-variance-for-r" class="level2">
 <h2 class="anchored" data-anchor-id="estimator-variance-for-r">Estimator Variance for r</h2>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Important
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>This estimator below has been abandoned, but the preliminaries above are still important so I’m keeping this page active.</p>
+</div>
+</div>
 <p>Since <span class="math inline">\(\hat r = \frac{(\sum_{i=1}^N |X_{1i}|^p)^{2/p}+(\sum_{i=1}^N |X_{2i}|^p)^{2/p}-(\sum_{i=1}^N |X_{1i}- X_{2i}|^p)^{2/p}}{2(\sum_{i=1}^N |X_{1i}|^p \sum_{i=1}^N |X_{2i}|^p)^{1/p}}\)</span>, we can set <span class="math inline">\(Y_{ji} = |X_{ji}|^p, Z_j = \sum_{i=1}^N Y_{ji}\)</span> and replace this with:</p>
 <p><span class="math display">\[
 \begin{aligned}
