@@ -184,6 +184,7 @@ window.Quarto = {
 <p>I’ve split the problem into two pieces: getting an “optimal” estimate of the covariance/correlation matrix underlying a stable-sub-Gaussian random vector, and adjusting for high-dimensionality. It’s a little hand-wavy, but I think this is reasonable since the RIE is a monotonically increasing function of the eigenvalues of the input. So, by the invariance of quantiles under monotone transformations, the median RIE estimate at each eigenvalue should be the same as the RIE of the median eigenvalue estimate.</p>
 <section id="estimating-sigma" class="level2">
 <h2 class="anchored" data-anchor-id="estimating-sigma">Estimating <span class="math inline">\(\Sigma\)</span></h2>
+<p>We want to estimate the covariance matrix <span class="math inline">\(\Sigma\)</span> of the underlying Gaussian vector that defines the dependence structure of our stable random variable <span class="math inline">\(X\)</span>.</p>
 <p><a href="https://hal.science/hal-00951885">Kodia and Garel</a> propose a signed symmetric covariation coefficient:</p>
 <p><span class="math display">\[
 \text{scov} (X_1, X_2) = \kappa_{(X_1, X_2)}\bigg | \frac{[X_1, X_2]_\alpha [X_2, X_1]_\alpha}{||X_1||_\alpha ||X_2||_\alpha} \bigg|^{1/2}
@@ -284,7 +285,7 @@ Important
 <p>One immediate benefit of this estimator is that, when <span class="math inline">\(p=2\)</span>, this estimator is exactly the sample covariance (which is an input into the Median Oracle estimator). This provides a very reasonable path to improving the performance of Median Oracle - when <span class="math inline">\(\alpha&lt;2\)</span>, the sample covariance is a biased estimator of the subordinated covariance, and <span class="math inline">\(p=2\)</span> may not be optimial anymore.</p>
 <p>The problem, though, is that this formulation likely won’t have finite moments due to the elements being raised to the second power.</p>
 <p>I’m continuing to explore potential estimators of this type.</p>
-<p>[Last Updated on July 24, 2024]</p>
+<p>[Last Updated on July 25, 2024]</p>
 
 
 </section>

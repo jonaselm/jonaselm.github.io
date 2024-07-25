@@ -6,6 +6,8 @@ I've split the problem into two pieces: getting an "optimal" estimate of the cov
 
 ## Estimating $\Sigma$
 
+We want to estimate the covariance matrix $\Sigma$ of the underlying Gaussian vector that defines the dependence structure of our stable random variable $X$.
+
 [Kodia and Garel](https://hal.science/hal-00951885) propose a signed symmetric covariation coefficient:
 
 $$
@@ -120,4 +122,4 @@ The problem, though, is that this formulation likely won't have finite moments d
 I'm continuing to explore potential estimators of this type.
 
 
-[Last Updated on July 24, 2024]
+[Last Updated on July 25, 2024]
