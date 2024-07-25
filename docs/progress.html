@@ -131,7 +131,7 @@ window.Quarto = {
   </li>  
   <li class="nav-item">
     <a class="nav-link" href="./open_questions.html"> 
-<span class="menu-text">Some Questions (And Answers)</span></a>
+<span class="menu-text">Open Questions</span></a>
   </li>  
 </ul>
           </div> <!-- /navcollapse -->
@@ -182,6 +182,19 @@ window.Quarto = {
 
 
 <p>I’ve split the problem into two pieces: getting an “optimal” estimate of the covariance/correlation matrix underlying a stable-sub-Gaussian random vector, and adjusting for high-dimensionality. It’s a little hand-wavy, but I think this is reasonable since the RIE is a monotonically increasing function of the eigenvalues of the input. So, by the invariance of quantiles under monotone transformations, the median RIE estimate at each eigenvalue should be the same as the RIE of the median eigenvalue estimate.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Calculating FLOMs
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Note: <a href="./corr_variance_derivation.html">On this page</a>, I’ve derived some preliminaries that are useful for calculating the theoretical joint moments of FLOM estimators.</p>
+</div>
+</div>
 <section id="estimating-sigma" class="level2">
 <h2 class="anchored" data-anchor-id="estimating-sigma">Estimating <span class="math inline">\(\Sigma\)</span></h2>
 <p>We want to estimate the covariance matrix <span class="math inline">\(\Sigma\)</span> of the underlying Gaussian vector that defines the dependence structure of our stable random variable <span class="math inline">\(X\)</span>.</p>
@@ -261,7 +274,7 @@ Important
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Note: This estimator is also being abandoned due to infinite moments. I’m continuing to investigate more estimators of this type.</p>
+<p>Note: This estimator is also being put on ice due to infinite moments. I’m continuing to investigate more estimators of this type to see if I can get something that reverts to sample covariance as a special case when the data are Gaussian, but has better moment properties. Alternatives to estimator variance might also be helpful.</p>
 </div>
 </div>
 <p>If we just take the rescaled numerator of r, we get the following:</p>

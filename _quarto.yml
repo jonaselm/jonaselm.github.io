@@ -12,7 +12,8 @@ website:
         text: Home
       - background.qmd
       - progress.qmd
-      - open_questions.qmd
+      - href: open_questions.qmd
+        text: Open Questions
 
 format:
   html:

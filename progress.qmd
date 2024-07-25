@@ -4,6 +4,12 @@ title: "Current Progress"
 
 I've split the problem into two pieces: getting an "optimal" estimate of the covariance/correlation matrix underlying a stable-sub-Gaussian random vector, and adjusting for high-dimensionality. It's a little hand-wavy, but I think this is reasonable since the RIE is a monotonically increasing function of the eigenvalues of the input. So, by the invariance of quantiles under monotone transformations, the median RIE estimate at each eigenvalue should be the same as the RIE of the median eigenvalue estimate. 
 
+::: {.callout-tip}
+## Calculating FLOMs
+
+Note: [On this page](corr_variance_derivation.qmd), I've derived some preliminaries that are useful for calculating the theoretical joint moments of FLOM estimators.
+:::
+
 ## Estimating $\Sigma$
 
 We want to estimate the covariance matrix $\Sigma$ of the underlying Gaussian vector that defines the dependence structure of our stable random variable $X$.
@@ -90,7 +96,7 @@ And worse, plugging it into the current Median Oracle algorithm in place of samp
 ## The Subordinated Covariance Estimators
 
 ::: {.callout-important}
-Note: This estimator is also being abandoned due to infinite moments. I'm continuing to investigate more estimators of this type.
+Note: This estimator is also being put on ice due to infinite moments. I'm continuing to investigate more estimators of this type to see if I can get something that reverts to sample covariance as a special case when the data are Gaussian, but has better moment properties. Alternatives to estimator variance might also be helpful.
 :::
 
 If we just take the rescaled numerator of r, we get the following:
