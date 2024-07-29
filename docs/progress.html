@@ -155,7 +155,10 @@ window.Quarto = {
   <li><a href="#variance-of-the-flom-estimator" id="toc-variance-of-the-flom-estimator" class="nav-link" data-scroll-target="#variance-of-the-flom-estimator">Variance of the FLOM Estimator</a></li>
   <li><a href="#variance-of-the-correlation-estimators" id="toc-variance-of-the-correlation-estimators" class="nav-link" data-scroll-target="#variance-of-the-correlation-estimators">Variance of the Correlation Estimators</a></li>
   </ul></li>
-  <li><a href="#the-subordinated-covariance-estimators" id="toc-the-subordinated-covariance-estimators" class="nav-link" data-scroll-target="#the-subordinated-covariance-estimators">The Subordinated Covariance Estimators</a></li>
+  <li><a href="#the-subordinated-covariance-estimators" id="toc-the-subordinated-covariance-estimators" class="nav-link" data-scroll-target="#the-subordinated-covariance-estimators">The Subordinated Covariance Estimators</a>
+  <ul class="collapse">
+  <li><a href="#sce-adjustment" id="toc-sce-adjustment" class="nav-link" data-scroll-target="#sce-adjustment">SCE Adjustment</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -296,11 +299,15 @@ Important
 \end{aligned}
 \]</span></p>
 <p>One immediate benefit of this estimator is that, when <span class="math inline">\(p=2\)</span>, this estimator is exactly the sample covariance (which is an input into the Median Oracle estimator). This provides a very reasonable path to improving the performance of Median Oracle - when <span class="math inline">\(\alpha&lt;2\)</span>, the sample covariance is a biased estimator of the subordinated covariance, and <span class="math inline">\(p=2\)</span> may not be optimial anymore.</p>
-<p>The problem, though, is that this formulation likely won’t have finite moments due to the elements being raised to the second power.</p>
+<p>The problem, though, is that this formulation cannot have finite moments (this follows from Jensen’s inequality; we need <span class="math inline">\(p&gt;2\)</span> to be finite for finite moments, which is a contradiction.)</p>
 <p>I’m continuing to explore potential estimators of this type.</p>
-<p>[Last Updated on July 25, 2024]</p>
+<section id="sce-adjustment" class="level3">
+<h3 class="anchored" data-anchor-id="sce-adjustment">SCE Adjustment</h3>
+<p>If we pull the “2” inside the expectation, we get a slightly modified</p>
+<p>[Last Updated on July 27, 2024]</p>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->

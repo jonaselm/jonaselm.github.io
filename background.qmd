@@ -16,6 +16,12 @@ In the literature, correlation and covariance matrices are used interchangably, 
 
 ## Stable Distributions and Heavy-Tailed Random Vectors
 
+::: {.callout-tip}
+## Why Stable?
+
+For the why behind using stable distributions to connect to theoretical results, see the page [Why Stable?](why_stable.qmd)
+:::
+
 If we relax the assumption that variance is finite, then a reasonable model for returns is the stable distribution, which has no closed form pdf in general but has [a complicated characteristic function](https://en.wikipedia.org/wiki/Multivariate_stable_distribution) where the dependence is fully defined by the spectral measure (typically denoted $\Gamma$), a finite measure on the unit circle $\mathbb S^d$.
 
 

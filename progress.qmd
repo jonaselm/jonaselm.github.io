@@ -123,9 +123,12 @@ $$
 
 One immediate benefit of this estimator is that, when $p=2$, this estimator is exactly the sample covariance (which is an input into the Median Oracle estimator). This provides a very reasonable path to improving the performance of Median Oracle - when $\alpha<2$, the sample covariance is a biased estimator of the subordinated covariance, and $p=2$ may not be optimial anymore.  
 
-The problem, though, is that this formulation likely won't have finite moments due to the elements being raised to the second power.
+The problem, though, is that this formulation cannot have finite moments (this follows from Jensen's inequality; we need $p>2$ to be finite for finite moments, which is a contradiction.)
 
 I'm continuing to explore potential estimators of this type.
 
+### SCE Adjustment
 
-[Last Updated on July 25, 2024]
+If we pull the "2" inside the expectation, we get a slightly modified 
+
+[Last Updated on July 27, 2024]
