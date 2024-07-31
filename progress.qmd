@@ -151,11 +151,11 @@ Here, I use ${_2F_{1p}}^{-1}(\cdot)$ to denote the inverse of the hypergeometric
 It's worth taking a second to justify taking the mean of the sign 
 function, since $\mathbb E X_1 X_2 \nless \infty$. Note that $\text{sign}(XY) \in \{-1, 1\}$, so the random variable is bounded and all moments are finite. Equivalently, $\mathbb E[\text{sign}(XY)] = P(XY > 0)- P(XY < 0) \in (-1,1)$, which always exists.
 
-Because of our expectation definition above, this estimator will converge to $\rho$ by the law of large numbers. Better yet, it will have finite variance when $p < \alpha/2$, which is required to get the subordinator to have finite expectation. This is a somewhat stronger claim for finite variance than the correlation estimator candidate offered above (which was made simply on the basis of it being bounded). So it might have better small-sample performance.
+Because of our expectation definition above, this estimator will converge pointwise in probability to $\rho$ by the law of large numbers. Better yet, it will have finite variance when $p < \alpha/2$, which is required to get the subordinator to have finite expectation. This is a somewhat stronger claim for finite variance than the correlation estimator candidate offered above (which was made simply on the basis of it being bounded). So it might have better small-sample performance.
 
 The benefits of this estimator are that it has finite variance and it should be extrmeley computationally cheap.
 
-There are a couple of problems with this estimator: first, I don't really expect it to perform incredibly well because of the need to estimate other parameters as inputs. Second, it doesn't fix the issue of correlation-only estimates having worse performance in Median Oracle. The latter is fixed by recombining it with estimates of $\alpha, \sigma_1, \sigma_2$, which can be made quickly and accurately without regard for the dimensionality of the problem (e.g. using MLE).
+There are a few of problems with this estimator: First we can't make any guarantees about convergence in expectation. Second, I don't really expect it to perform incredibly well because of the need to estimate other parameters as inputs. Third, it doesn't fix the issue of correlation-only estimates having worse performance in Median Oracle. The latter is fixed by recombining it with estimates of $\alpha, \sigma_1, \sigma_2$, which can be made quickly and accurately without regard for the dimensionality of the problem (e.g. using MLE).
 
 It's definitely worth testing this estimator next.
 
