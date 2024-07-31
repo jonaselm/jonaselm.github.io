@@ -4,6 +4,8 @@ title: "Subordinated Covariance Estimator Derivation"
 
 We can use the same preliminaries and random variable setup from [this page](corr_variance_derivation.qmd) to get approximations for the expected value and variance of what I'm calling the Subordinated Covariance Estimator, $\hat s$.
 
+First, it's not immediately obvious that the moments of this estimator are finite. Luckily, we can see that if $p < \alpha <2$ for the non-Gaussian case, or $p \leq 2$ for the Gaussian $\alpha =2$ case, since $f(x) = x^\frac{2}{p}$ is concave when $\frac 2 p > 1$
+
 Using a second-order Taylor expansion around the means for the expectation, and setting $Y_{ji} = |X_{ji}|^p, Z_j = \sum_{i=1}^N Y_{ji}$, we get "simplified" univariate expansions compared to the correlation-type estimators that approximate the covariance of the subordinated Gaussian vector:
 
 $$

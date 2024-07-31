@@ -125,11 +125,13 @@ window.Quarto = {
     <a class="nav-link" href="./background.html"> 
 <span class="menu-text">Background</span></a>
   </li>  
-  <li class="dropdown-header">
- <span class="menu-text">progress.qmd - corr_variance_derivation.qmd</span></li>
+  <li class="nav-item">
+    <a class="nav-link" href="./progress.html"> 
+<span class="menu-text">Current Progress</span></a>
+  </li>  
   <li class="nav-item">
     <a class="nav-link" href="./open_questions.html"> 
-<span class="menu-text">Some Questions (And Answers)</span></a>
+<span class="menu-text">Open Questions</span></a>
   </li>  
 </ul>
           </div> <!-- /navcollapse -->
@@ -168,6 +170,7 @@ window.Quarto = {
 
 
 <p>We can use the same preliminaries and random variable setup from <a href="./corr_variance_derivation.html">this page</a> to get approximations for the expected value and variance of what I’m calling the Subordinated Covariance Estimator, <span class="math inline">\(\hat s\)</span>.</p>
+<p>First, it’s not immediately obvious that the moments of this estimator are finite. Luckily, we can see that if <span class="math inline">\(p &lt; \alpha &lt;2\)</span> for the non-Gaussian case, or <span class="math inline">\(p \leq 2\)</span> for the Gaussian <span class="math inline">\(\alpha =2\)</span> case, since <span class="math inline">\(f(x) = x^\frac{2}{p}\)</span> is concave when <span class="math inline">\(\frac 2 p &gt; 1\)</span></p>
 <p>Using a second-order Taylor expansion around the means for the expectation, and setting <span class="math inline">\(Y_{ji} = |X_{ji}|^p, Z_j = \sum_{i=1}^N Y_{ji}\)</span>, we get “simplified” univariate expansions compared to the correlation-type estimators that approximate the covariance of the subordinated Gaussian vector:</p>
 <p><span class="math display">\[
 \begin{aligned}
