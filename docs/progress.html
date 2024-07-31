@@ -312,7 +312,7 @@ Important
 <p>This requires that <span class="math inline">\(p &lt; \alpha/2\)</span>. From there, we can get the following estimator for the underlying correlation between <span class="math inline">\(G_1\)</span> and <span class="math inline">\(G_2\)</span>:</p>
 <p><span class="math display">\[
 \begin{aligned}
-\hat \rho = \bigg( \frac 1 N \sum_{i=1}^N \text{sign}(X_1 X_2) \bigg) \bigg| {_2F_{1p}}^{-1}\bigg( \frac{\alpha \pi \Gamma(-p)\sum_{i=1}^N|X_1 X_2|^p}{N2^{p+2}(\gamma_1 \gamma_2)^p\Gamma(\frac{p+1}{2})^2}\bigg)\bigg|^{1/2}
+\hat \rho = \text{sign}\bigg( \frac 1 N \sum_{i=1}^N \text{sign}(X_1 X_2) \bigg) \bigg| {_2F_{1p}}^{-1}\bigg( \frac{\alpha \pi \Gamma(-p)\sum_{i=1}^N|X_1 X_2|^p}{N2^{p+2}(\gamma_1 \gamma_2)^p\Gamma(\frac{p+1}{2})^2}\bigg)\bigg|^{1/2}
 \end{aligned}
 \]</span></p>
 <p>Here, I use <span class="math inline">\({_2F_{1p}}^{-1}(\cdot)\)</span> to denote the inverse of the hypergeometric function <span class="math inline">\({}_2F_1(-\frac p 2, -\frac p 2, \frac 1 2, \rho^2)\)</span>, such that <span class="math inline">\({_2F_{1p}}^{-1}({}_2F_1(-\frac p 2, -\frac p 2, \frac 1 2, \rho^2))=\rho^2\)</span>. While a bit nasty and not ideal for analyzing the behavior of this estimator, this can be implemented numerically without much trouble.</p>
