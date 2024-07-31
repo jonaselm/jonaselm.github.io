@@ -142,7 +142,7 @@ This requires that $p < \alpha/2$. From there, we can get the following estimato
 
 $$
 \begin{aligned}
-\hat \rho = \text{sign}\bigg( \frac 1 N \sum_{i=1}^N \text{sign}(X_1 X_2) \bigg) \bigg| {_2F_{1p}}^{-1}\bigg( \frac{\alpha \pi \Gamma(-p)\sum_{i=1}^N|X_1 X_2|^p}{N2^{p+2}(\gamma_1 \gamma_2)^p\Gamma(\frac{p+1}{2})^2}\bigg)\bigg|^{1/2}
+\hat \rho = \text{sign}\bigg( \frac 1 N \sum_{i=1}^N \text{sign}(X_{1i} X_{2i}) \bigg) \bigg| {_2F_{1p}}^{-1}\bigg( \frac{\alpha \pi \Gamma(-p)\sum_{i=1}^N|X_{1i} X_{2i}|^p}{N2^{p+2}(\gamma_1 \gamma_2)^p\Gamma(\frac{p+1}{2})^2}\bigg)\bigg|^{1/2}
 \end{aligned}
 $$
 
