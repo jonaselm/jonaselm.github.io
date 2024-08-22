@@ -157,6 +157,32 @@ The benefits of this estimator are that it has finite variance and it should be 
 
 There are a few of problems with this estimator: First we can't make any guarantees about convergence in expectation. Second, I don't really expect it to perform incredibly well because of the need to estimate other parameters as inputs. Third, it doesn't fix the issue of correlation-only estimates having worse performance in Median Oracle. The latter is fixed by recombining it with estimates of $\alpha, \sigma_1, \sigma_2$, which can be made quickly and accurately without regard for the dimensionality of the problem (e.g. using MLE).
 
-It's definitely worth testing this estimator next.
+I tested this estimator via simulation on a range of different true correlation values, assuming other parameters $\alpha, \gamma_1, \gamma_2$ are known. I ran this on a Databricks cluster running an i3.4xlarge node with 16 cores. This simulation took approximately 3 days to run.
 
-[Last Updated on July 31, 2024]
+![](images/sce_convergence.png)
+
+The plot above shows the convergence of the estimated correlation to the true correlation (red horizontal line). Each linetype represents a different choice of p. A couple things are clear from the results of the simulation: the estimator does show good convergence to the true correlation value, but not for all values of p, not consistently across all true correlation values, and not likely better than MLE (MLE simulations were done separately, but haven't been incoporated into these plots).
+
+![](images/sce_var.png)
+
+This estimator is interesting, and may be useful for some cases where other parameters are known, or if speed is more important than accuracy. Most importantly, it actually performs quite well in regimes of interest for real-world equity returns (between 0.2 and 0.8) However the fact that it must be constructed elementwise is a strike against it compared to other options, as is the fact that it still requires estimates of $\alpha$ and each marginal distribution's scale. Also, the wrong choice of p takes this from a possibly competitive estimator to a terrible one, which may be a problem in practice when true parameter values are unknown.
+
+Still do to:
+- Incorporate MLE estimates for comparison
+- Test if there is a fixed best p when defined in terms of $\alpha$.
+
+### Restricted Expectation-Maximization Approach
+
+My original research proposal suggested estimating and then conditioning on the stable subordinator in the $\alpha$-SG($\Sigma$) random variable. A natural approach to this is expectation-maximization, but I was resistant to this at first because if the MLE is accessible then it seems like we should obviously prefer it to EM, which only *hopes* to converge to the MLE. And since Median Oracle appears to do better than the MLE in the high-dimensional setting, there's no point to this approach. But on deeper consideration, this may yield better estimates than EM in the high-dimensional setting.
+
+If we estimate and then condition on the realized latent variable W (the maximally skewed stable random variable), we can get $X|W=w \sim N(0,w\Sigma)$. Moreover since the estimation of each $w_i$ happens in the cross-section, I'd expect the estimation error of these variables to decrease as the dimensionality increases, whereas the error of $\Sigma_{EM}$ will of course increase - while estimating $w_i^{(t)}$ relies on the estimate $\Sigma^{(t-1)}$, it may be less impacted by a "bad" estimate, especially if we ultimately only care about correlations (consider the single-observation case). Taking the $X|W$ and plugging this into the closed form MLE for $\Sigma$ given Gaussian data should give us a better estimate. Better still, adjusting this MLE for high dimensionality using the RIE should yield an even better estimate. 
+
+Likewise, this should be provable using asymptotic efficiency of MLE.
+
+EM for stable random vectors isn't straightforward, and an approach was only first offered in 2018 by [Teimouri et. al. ](https://www.atlantis-press.com/journals/jsta/25903298). This approach requires a conditional maximization (CM) step, then a conditional maximization of the likelihood (CML) step, which itself involves a separate stochastic EM to approximate the parameters of a related Weibull distribution. This is required because the authors are trying to jointly estimate all parameters via EM. Since we're only interested in $\Sigma$, we can actually simplify $\alpha$-SG($\Sigma$) EM significantly, both computationally and conceptually, by restricting our parameter search to not include $\alpha$, totally eliminating the CML step, and making the process equivalent to a simple Gaussian EM with a conditional maximization step for W. 
+
+[My approach to stable EM is detailed here.](EM_approach.qmd)
+
+
+
+[Last Updated on August 22, 2024]

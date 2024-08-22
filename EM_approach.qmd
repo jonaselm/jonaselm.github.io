@@ -1,0 +1,21 @@
+---
+title: "Restricted EM Derivation"
+---
+
+Given our $\alpha$-SG($\Sigma$) vector $X = \sqrt W G$, with underlying latent stable subordinator W, and Gaussian vector G, note that $X|W=w \sim N(0,w\Sigma)$ we can write our complete data likelihood function as:
+
+$$
+\begin{aligned}
+\mathcal L_c(\Theta) &\equiv f(\Theta | \textbf x, w) \\
+& = f_{X|w}(\Theta, \textbf x|w)f_W(\Theta)
+\end{aligned}
+$$
+
+Where $\Theta = (\theta, \alpha)^\text T$, $\theta = (\mu, \Sigma)$.
+So the log likelihood for the observed data is:
+
+$$
+\begin{aligned}
+\ell_c(\Theta|\textbf x, w) &= \sum_{i=1}^N \log f_{X|w}(\Theta, x_i|w) + \sum_{i=1}^N \log f_W(\Theta, w_i, )
+\end{aligned}
+$$

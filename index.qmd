@@ -10,6 +10,7 @@ The links **above** provide general background on my problem setting, current pr
 1. Find optimal estimator for underlying dependence
     a. Subordinated Covariance Estimator
     b. Subordinated Correlation Estimator
+    c. Restricted Expectation-Maximization 
 2. Investigate potential benefits of a median-of-means approach for heavy tails and small observations
 3. Investigate high-dimensionality adjustments
 4. Applications
