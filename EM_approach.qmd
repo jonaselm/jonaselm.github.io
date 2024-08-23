@@ -63,7 +63,7 @@ $$
 
 Despite being unpleasant to write in Latex, these expressions and conditions are extremely quick to compute/simulate/etc. 
 
-Finally, returning to the complete data log likelihood, there's the issue of the second term, which doesn't have a closed form or clear path to maximization. To simplify the process, we use the fact that the $\alpha$ parameter is identical across all of the marginals and a fast numerical MLE already implemented in STABLE to quickly estimate the MLE for this parameter and treat it as fixed. We can either do this for an arbitrary marginal or sample of marginals, or if the dimensonality is small enough, by estimating all marginal $\alpha$ parameters and then averaging them.
+Finally, returning to the complete data log likelihood, there's the issue of the second term, which doesn't have a closed form or clear path to maximization. To simplify the process, we use the fact that the $\alpha$ parameter is identical across all of the marginals and a fast univariate numerical MLE already implemented in several packages to quickly estimate the MLE for this parameter and treat it as fixed. We can either do this for an arbitrary marginal or sample of marginals, or if the dimensonality is small enough, by estimating all marginal $\alpha$ parameters and then averaging them.
 
 From there, we can perform conditional EM as follows:
 
@@ -71,8 +71,10 @@ From there, we can perform conditional EM as follows:
 
 **M-step:** Update $\theta = (\boldsymbol \mu, \Sigma)$ as:
 
-$\boldsymbol \mu^{(t+1)} = \frac{\sum_{i=1}^n \textbf x_i e_i^{(t,t)}}{\sum_{i=1}^n e_i^{(t,t)}}$, $\Sigma^{(t+1)} = \frac {1}{2n} \sum_{i=1}^n (\textbf x_i - \boldsymbol\mu^{(t)})^\text T (\textbf x_i - \boldsymbol\mu^{(t)}) e_i^{(t,t)}$
+$\boldsymbol \mu^{(t+1)} = \frac{\sum_{i=1}^n \textbf x_i e_i^{(t,t)}}{\sum_{i=1}^n e_i^{(t,t)}}$, $\Sigma^{(t+1)} = \frac {1}{n} \sum_{i=1}^n (\textbf x_i - \boldsymbol\mu^{(t)})^\text T (\textbf x_i - \boldsymbol\mu^{(t)}) e_i^{(t,t)}$
 
 Repeat until estimates converge.
 
 Besides fixing $\alpha$ with the MLE, another departure from Teimouri et al. is that we don't actually care about the estimated values of $\theta$ themselves. Instead, we only want to retain the vector $\hat{\textbf e}$, since the data are then approximately normal and we can use either the sample covariance matrix (the true MLE of $\Sigma$), or an adjustment for dimensionality that outperforms it.
+
+As a reminder, note that we're estimating the covariance matrix of the normal vector, not the dispersion matrix of the stable vector $X$. The two may differ by a scaling constant of 1/2 depending on the way they're parameterized.
