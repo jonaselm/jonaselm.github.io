@@ -179,7 +179,7 @@ Still do to:
 - Incorporate MLE estimates for comparison
 - Test if there is a fixed best p when defined in terms of $\alpha$.
 
-### Restricted Expectation-Maximization Approach
+## Restricted Expectation-Maximization Approach
 
 My original research proposal suggested estimating and then conditioning on the stable subordinator in the $\alpha$-SG($\Sigma$) random variable. A natural approach to this is expectation-maximization, but I was resistant to this at first because if the MLE is accessible then it seems like we should obviously prefer it to EM, which only *hopes* to converge to the MLE. And since Median Oracle appears to do better than the MLE in the high-dimensional setting, there's no point to this approach. But on deeper consideration, this may yield better estimates than EM in the high-dimensional setting.
 

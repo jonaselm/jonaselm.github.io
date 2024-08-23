@@ -156,10 +156,8 @@ window.Quarto = {
   <li><a href="#variance-of-the-correlation-estimators" id="toc-variance-of-the-correlation-estimators" class="nav-link" data-scroll-target="#variance-of-the-correlation-estimators">Variance of the Correlation Estimators</a></li>
   </ul></li>
   <li><a href="#the-subordinated-covariance-estimators" id="toc-the-subordinated-covariance-estimators" class="nav-link" data-scroll-target="#the-subordinated-covariance-estimators">The Subordinated Covariance Estimators</a></li>
-  <li><a href="#subordinated-correlation-estimator" id="toc-subordinated-correlation-estimator" class="nav-link" data-scroll-target="#subordinated-correlation-estimator">Subordinated Correlation Estimator</a>
-  <ul class="collapse">
+  <li><a href="#subordinated-correlation-estimator" id="toc-subordinated-correlation-estimator" class="nav-link" data-scroll-target="#subordinated-correlation-estimator">Subordinated Correlation Estimator</a></li>
   <li><a href="#restricted-expectation-maximization-approach" id="toc-restricted-expectation-maximization-approach" class="nav-link" data-scroll-target="#restricted-expectation-maximization-approach">Restricted Expectation-Maximization Approach</a></li>
-  </ul></li>
   </ul>
 </nav>
     </div>
@@ -332,8 +330,9 @@ Important
 <p><img src="images/sce_p_variance.png" class="img-fluid"></p>
 <p>One important desirable property is that there does seem to be an optimal p in the sense of variance mimization across the range of <span class="math inline">\(\alpha\)</span> values. This suggests that the problem of choosing p may not be as big as it seems. For p=0.4, for instance, variance is guaranteed to be finite for all relevant cases (since we assume <span class="math inline">\(\alpha&gt;1\)</span> already), and estimator performance should be reasonably good.</p>
 <p>Still do to: - Incorporate MLE estimates for comparison - Test if there is a fixed best p when defined in terms of <span class="math inline">\(\alpha\)</span>.</p>
-<section id="restricted-expectation-maximization-approach" class="level3">
-<h3 class="anchored" data-anchor-id="restricted-expectation-maximization-approach">Restricted Expectation-Maximization Approach</h3>
+</section>
+<section id="restricted-expectation-maximization-approach" class="level2">
+<h2 class="anchored" data-anchor-id="restricted-expectation-maximization-approach">Restricted Expectation-Maximization Approach</h2>
 <p>My original research proposal suggested estimating and then conditioning on the stable subordinator in the <span class="math inline">\(\alpha\)</span>-SG(<span class="math inline">\(\Sigma\)</span>) random variable. A natural approach to this is expectation-maximization, but I was resistant to this at first because if the MLE is accessible then it seems like we should obviously prefer it to EM, which only <em>hopes</em> to converge to the MLE. And since Median Oracle appears to do better than the MLE in the high-dimensional setting, there’s no point to this approach. But on deeper consideration, this may yield better estimates than EM in the high-dimensional setting.</p>
 <p>If we estimate and then condition on the realized latent variable W (the maximally skewed stable random variable), we can get <span class="math inline">\(X|W=w \sim N(0,w\Sigma)\)</span>. Moreover since the estimation of each <span class="math inline">\(w_i\)</span> happens in the cross-section, I’d expect the estimation error of these variables to decrease as the dimensionality increases, whereas the error of <span class="math inline">\(\Sigma_{EM}\)</span> will of course increase - while estimating <span class="math inline">\(w_i^{(t)}\)</span> relies on the estimate <span class="math inline">\(\Sigma^{(t-1)}\)</span>, it may be less impacted by a “bad” estimate, especially if we ultimately only care about correlations (consider the single-observation case). Taking the <span class="math inline">\(X|W\)</span> and plugging this into the closed form MLE for <span class="math inline">\(\Sigma\)</span> given Gaussian data should give us a better estimate. Better still, adjusting this MLE for high dimensionality using the RIE should yield an even better estimate.</p>
 <p>Likewise, this should be provable using asymptotic efficiency of MLE.</p>
@@ -342,7 +341,6 @@ Important
 <p>[Last Updated on August 23, 2024]</p>
 
 
-</section>
 </section>
 
 </main> <!-- /main -->
