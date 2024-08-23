@@ -127,7 +127,7 @@ The problem, though, is that this formulation cannot have finite moments (this f
 
 I'm continuing to explore potential estimators of this type.
 
-### Subordinated Correlation Estimator 
+## Subordinated Correlation Estimator 
 
 My derivation of the [FLOM covariance](https://jonaselm.github.io/corr_variance_derivation.html) leads to (what I believe is) a novel estimator for the correlation coefficient of the subordinated Gaussian vector. 
 
@@ -148,6 +148,10 @@ $$
 
 Here, I use ${_2F_{1p}}^{-1}(\cdot)$ to denote the inverse of the hypergeometric function ${}_2F_1(-\frac p 2, -\frac p 2, \frac 1 2, \rho^2)$, such that ${_2F_{1p}}^{-1}({}_2F_1(-\frac p 2, -\frac p 2, \frac 1 2, \rho^2))=\rho^2$. While a bit nasty and not ideal for analyzing the behavior of this estimator, this can be implemented numerically without much trouble.
 
+A quick examination of the hypergeometric function on the relevant domain shows that it's really not cause for concern despite lacking a closed form:
+
+![](images/inverse_hyp.png)
+
 It's worth taking a second to justify taking the mean of the sign 
 function, since $\mathbb E X_1 X_2 \nless \infty$. Note that $\text{sign}(XY) \in \{-1, 1\}$, so the random variable is bounded and all moments are finite. Equivalently, $\mathbb E[\text{sign}(XY)] = P(XY > 0)- P(XY < 0) \in (-1,1)$, which always exists.
 
@@ -167,6 +171,10 @@ The plot above shows the convergence of the estimated correlation to the true co
 
 This estimator is interesting, and may be useful for some cases where other parameters are known, or if speed is more important than accuracy. Most importantly, it actually performs quite well in regimes of interest for real-world equity returns (between 0.2 and 0.8) However the fact that it must be constructed elementwise is a strike against it compared to other options, as is the fact that it still requires estimates of $\alpha$ and each marginal distribution's scale. Also, the wrong choice of p takes this from a possibly competitive estimator to a terrible one, which may be a problem in practice when true parameter values are unknown.
 
+![](images/sce_p_variance.png)
+
+One important desirable property is that there does seem to be an optimal p in the sense of variance mimization across the range of $\alpha$ values. This suggests that the problem of choosing p may not be as big as it seems. For p=0.4, for instance, variance is guaranteed to be finite for all relevant cases (since we assume $\alpha>1$ already), and estimator performance should be reasonably good.
+
 Still do to:
 - Incorporate MLE estimates for comparison
 - Test if there is a fixed best p when defined in terms of $\alpha$.
@@ -185,4 +193,4 @@ EM for stable random vectors isn't straightforward, and an approach was only fir
 
 
 
-[Last Updated on August 22, 2024]
+[Last Updated on August 23, 2024]

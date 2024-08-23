@@ -155,9 +155,9 @@ window.Quarto = {
   <li><a href="#variance-of-the-flom-estimator" id="toc-variance-of-the-flom-estimator" class="nav-link" data-scroll-target="#variance-of-the-flom-estimator">Variance of the FLOM Estimator</a></li>
   <li><a href="#variance-of-the-correlation-estimators" id="toc-variance-of-the-correlation-estimators" class="nav-link" data-scroll-target="#variance-of-the-correlation-estimators">Variance of the Correlation Estimators</a></li>
   </ul></li>
-  <li><a href="#the-subordinated-covariance-estimators" id="toc-the-subordinated-covariance-estimators" class="nav-link" data-scroll-target="#the-subordinated-covariance-estimators">The Subordinated Covariance Estimators</a>
+  <li><a href="#the-subordinated-covariance-estimators" id="toc-the-subordinated-covariance-estimators" class="nav-link" data-scroll-target="#the-subordinated-covariance-estimators">The Subordinated Covariance Estimators</a></li>
+  <li><a href="#subordinated-correlation-estimator" id="toc-subordinated-correlation-estimator" class="nav-link" data-scroll-target="#subordinated-correlation-estimator">Subordinated Correlation Estimator</a>
   <ul class="collapse">
-  <li><a href="#subordinated-correlation-estimator" id="toc-subordinated-correlation-estimator" class="nav-link" data-scroll-target="#subordinated-correlation-estimator">Subordinated Correlation Estimator</a></li>
   <li><a href="#restricted-expectation-maximization-approach" id="toc-restricted-expectation-maximization-approach" class="nav-link" data-scroll-target="#restricted-expectation-maximization-approach">Restricted Expectation-Maximization Approach</a></li>
   </ul></li>
   </ul>
@@ -302,8 +302,9 @@ Important
 <p>One immediate benefit of this estimator is that, when <span class="math inline">\(p=2\)</span>, this estimator is exactly the sample covariance (which is an input into the Median Oracle estimator). This provides a very reasonable path to improving the performance of Median Oracle - when <span class="math inline">\(\alpha&lt;2\)</span>, the sample covariance is a biased estimator of the subordinated covariance, and <span class="math inline">\(p=2\)</span> may not be optimial anymore.</p>
 <p>The problem, though, is that this formulation cannot have finite moments (this follows from Jensen’s inequality; we need <span class="math inline">\(p&gt;2\)</span> to be finite for finite moments, which is a contradiction.)</p>
 <p>I’m continuing to explore potential estimators of this type.</p>
-<section id="subordinated-correlation-estimator" class="level3">
-<h3 class="anchored" data-anchor-id="subordinated-correlation-estimator">Subordinated Correlation Estimator</h3>
+</section>
+<section id="subordinated-correlation-estimator" class="level2">
+<h2 class="anchored" data-anchor-id="subordinated-correlation-estimator">Subordinated Correlation Estimator</h2>
 <p>My derivation of the <a href="https://jonaselm.github.io/corr_variance_derivation.html">FLOM covariance</a> leads to (what I believe is) a novel estimator for the correlation coefficient of the subordinated Gaussian vector.</p>
 <p>Using the fact that: <span class="math display">\[
 \begin{aligned}
@@ -317,6 +318,8 @@ Important
 \end{aligned}
 \]</span></p>
 <p>Here, I use <span class="math inline">\({_2F_{1p}}^{-1}(\cdot)\)</span> to denote the inverse of the hypergeometric function <span class="math inline">\({}_2F_1(-\frac p 2, -\frac p 2, \frac 1 2, \rho^2)\)</span>, such that <span class="math inline">\({_2F_{1p}}^{-1}({}_2F_1(-\frac p 2, -\frac p 2, \frac 1 2, \rho^2))=\rho^2\)</span>. While a bit nasty and not ideal for analyzing the behavior of this estimator, this can be implemented numerically without much trouble.</p>
+<p>A quick examination of the hypergeometric function on the relevant domain shows that it’s really not cause for concern despite lacking a closed form:</p>
+<p><img src="images/inverse_hyp.png" class="img-fluid"></p>
 <p>It’s worth taking a second to justify taking the mean of the sign function, since <span class="math inline">\(\mathbb E X_1 X_2 \nless \infty\)</span>. Note that <span class="math inline">\(\text{sign}(XY) \in \{-1, 1\}\)</span>, so the random variable is bounded and all moments are finite. Equivalently, <span class="math inline">\(\mathbb E[\text{sign}(XY)] = P(XY &gt; 0)- P(XY &lt; 0) \in (-1,1)\)</span>, which always exists.</p>
 <p>Because of our expectation definition above, this estimator will converge pointwise in probability to <span class="math inline">\(\rho\)</span> by the law of large numbers. Better yet, it will have finite variance when <span class="math inline">\(p &lt; \alpha/2\)</span>, which is required to get the subordinator to have finite expectation. This is a somewhat stronger claim for finite variance than the correlation estimator candidate offered above (which was made simply on the basis of it being bounded). So it might have better small-sample performance.</p>
 <p>The benefits of this estimator are that it has finite variance and it should be extrmeley computationally cheap.</p>
@@ -326,8 +329,9 @@ Important
 <p>The plot above shows the convergence of the estimated correlation to the true correlation (red horizontal line). Each linetype represents a different choice of p.&nbsp;A couple things are clear from the results of the simulation: the estimator does show good convergence to the true correlation value, but not for all values of p, not consistently across all true correlation values, and not likely better than MLE (MLE simulations were done separately, but haven’t been incoporated into these plots).</p>
 <p><img src="images/sce_var.png" class="img-fluid"></p>
 <p>This estimator is interesting, and may be useful for some cases where other parameters are known, or if speed is more important than accuracy. Most importantly, it actually performs quite well in regimes of interest for real-world equity returns (between 0.2 and 0.8) However the fact that it must be constructed elementwise is a strike against it compared to other options, as is the fact that it still requires estimates of <span class="math inline">\(\alpha\)</span> and each marginal distribution’s scale. Also, the wrong choice of p takes this from a possibly competitive estimator to a terrible one, which may be a problem in practice when true parameter values are unknown.</p>
+<p><img src="images/sce_p_variance.png" class="img-fluid"></p>
+<p>One important desirable property is that there does seem to be an optimal p in the sense of variance mimization across the range of <span class="math inline">\(\alpha\)</span> values. This suggests that the problem of choosing p may not be as big as it seems. For p=0.4, for instance, variance is guaranteed to be finite for all relevant cases (since we assume <span class="math inline">\(\alpha&gt;1\)</span> already), and estimator performance should be reasonably good.</p>
 <p>Still do to: - Incorporate MLE estimates for comparison - Test if there is a fixed best p when defined in terms of <span class="math inline">\(\alpha\)</span>.</p>
-</section>
 <section id="restricted-expectation-maximization-approach" class="level3">
 <h3 class="anchored" data-anchor-id="restricted-expectation-maximization-approach">Restricted Expectation-Maximization Approach</h3>
 <p>My original research proposal suggested estimating and then conditioning on the stable subordinator in the <span class="math inline">\(\alpha\)</span>-SG(<span class="math inline">\(\Sigma\)</span>) random variable. A natural approach to this is expectation-maximization, but I was resistant to this at first because if the MLE is accessible then it seems like we should obviously prefer it to EM, which only <em>hopes</em> to converge to the MLE. And since Median Oracle appears to do better than the MLE in the high-dimensional setting, there’s no point to this approach. But on deeper consideration, this may yield better estimates than EM in the high-dimensional setting.</p>
@@ -335,7 +339,7 @@ Important
 <p>Likewise, this should be provable using asymptotic efficiency of MLE.</p>
 <p>EM for stable random vectors isn’t straightforward, and an approach was only first offered in 2018 by <a href="https://www.atlantis-press.com/journals/jsta/25903298">Teimouri et. al.&nbsp;</a>. This approach requires a conditional maximization (CM) step, then a conditional maximization of the likelihood (CML) step, which itself involves a separate stochastic EM to approximate the parameters of a related Weibull distribution. This is required because the authors are trying to jointly estimate all parameters via EM. Since we’re only interested in <span class="math inline">\(\Sigma\)</span>, we can actually simplify <span class="math inline">\(\alpha\)</span>-SG(<span class="math inline">\(\Sigma\)</span>) EM significantly, both computationally and conceptually, by restricting our parameter search to not include <span class="math inline">\(\alpha\)</span>, totally eliminating the CML step, and making the process equivalent to a simple Gaussian EM with a conditional maximization step for W.</p>
 <p><a href="./EM_approach.html">My approach to stable EM is detailed here.</a></p>
-<p>[Last Updated on August 22, 2024]</p>
+<p>[Last Updated on August 23, 2024]</p>
 
 
 </section>
