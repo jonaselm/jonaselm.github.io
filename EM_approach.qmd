@@ -43,7 +43,7 @@ e_i^{(t,s)} \equiv \mathbb E[W^{-1} | \textbf x_i, \boldsymbol \mu^{(t)}, \Sigma
 \end{aligned}
 $$
 
-Where $w_i \sim S_{\alpha^{(t)}/2}(\cos \frac{\pi \alpha}{4}^{2/\alpha}, 1, 0)$ for large N. Alternatively, subject to some straightforward regularity conditions, Teimouri et al. suggest swapping the Monte Carlo integration with a series representation for an almost exact evaluation of $f_W(.|\alpha^{(t)})$.
+Where $w_i \sim S_{\alpha^{(t)}/2}(\cos \frac{\pi \alpha}{4}^{2/\alpha}, 1, 0)$ for large M. Alternatively, subject to some straightforward regularity conditions, Teimouri et al. suggest swapping the Monte Carlo integration with a series representation for an almost exact evaluation of $f_W(.|\alpha^{(t)})$.
 
 So we can use the following (admittedly horrible) representation:
 
