@@ -197,8 +197,8 @@ e_i^{(t,s)} \equiv \mathbb E[W^{-1} | \textbf x_i, \boldsymbol \mu^{(t)}, \Sigma
 &amp; = \frac {1}{f_\textbf X(x)}\int_0^\infty w^{-1} f_{\textbf X, W}(\textbf x,w)dw \\
 &amp; =   \frac{\int_0^\infty w^{-1}f_W(w)f_{\textbf X|W}(\textbf x|w)dw}{\int_0^\infty f_W(w)f_{\textbf X|W}(\mathbf x|w)dw} \\
 &amp;=  \frac{\int_0^\infty w^{-1}f_W(w)f_{\textbf X|W}(\textbf x|w)dw}{\int_0^\infty f_W(w)f_{\textbf X|W}(\mathbf x|w)dw} \\
-&amp;= \frac{\int_0^\infty w^{-d/2-1}f_W(w|\alpha^{(t)})\exp\{\frac{(\textbf x - \boldsymbol\mu^{(t)})^\text T {(\Sigma^{(t)})} ^{-1}(\textbf x - \boldsymbol\mu^{(t)})}{2w}\}dw}{\int_0^\infty w^{-d/2} f_W(w|\alpha^{(t)})\exp\{\frac{(\textbf x - \boldsymbol\mu^{(t)})^\text T {(\Sigma^{(t)})} ^{-1}(\textbf x - \boldsymbol\mu^{(t)})}{2w}\}dw} \\
-&amp; \approx \frac{\sum_{i=1}^M w_i^{-d/2-1}\exp\{\frac{(\textbf x - \boldsymbol\mu^{(t)})^\text T {(\Sigma^{(t)})} ^{-1}(\textbf x - \boldsymbol\mu^{(t)})}{2w_i}\}}{\sum_{i=1}^M w_i^{-d/2}\exp\{\frac{(\textbf x - \boldsymbol\mu^{(t)})^\text T {(\Sigma^{(t)})} ^{-1}(\textbf x - \boldsymbol\mu^{(t)})}{2w_i}\}}
+&amp;= \frac{\int_0^\infty w^{-d/2-1}f_W(w|\alpha^{(t)})\exp\{-\frac{(\textbf x - \boldsymbol\mu^{(t)})^\text T {(\Sigma^{(t)})} ^{-1}(\textbf x - \boldsymbol\mu^{(t)})}{2w}\}dw}{\int_0^\infty w^{-d/2} f_W(w|\alpha^{(t)})\exp\{-\frac{(\textbf x - \boldsymbol\mu^{(t)})^\text T {(\Sigma^{(t)})} ^{-1}(\textbf x - \boldsymbol\mu^{(t)})}{2w}\}dw} \\
+&amp; \approx \frac{\sum_{i=1}^M w_i^{-d/2-1}\exp\{-\frac{(\textbf x - \boldsymbol\mu^{(t)})^\text T {(\Sigma^{(t)})} ^{-1}(\textbf x - \boldsymbol\mu^{(t)})}{2w_i}\}}{\sum_{i=1}^M w_i^{-d/2}\exp\{-\frac{(\textbf x - \boldsymbol\mu^{(t)})^\text T {(\Sigma^{(t)})} ^{-1}(\textbf x - \boldsymbol\mu^{(t)})}{2w_i}\}}
 \end{aligned}
 \]</span></p>
 <p>Where <span class="math inline">\(w_i \sim S_{\alpha^{(t)}/2}(\cos \frac{\pi \alpha}{4}^{2/\alpha}, 1, 0)\)</span> for large M. Alternatively, subject to some straightforward regularity conditions, Teimouri et al.&nbsp;suggest swapping the Monte Carlo integration with a series representation for an almost exact evaluation of <span class="math inline">\(f_W(.|\alpha^{(t)})\)</span>.</p>
@@ -206,7 +206,7 @@ e_i^{(t,s)} \equiv \mathbb E[W^{-1} | \textbf x_i, \boldsymbol \mu^{(t)}, \Sigma
 <p><span class="math display">\[
 \begin{aligned}
 e_i^{(t,s)}
-&amp;= \frac{\int_0^\infty w^{-d/2-1}f_W(w|\alpha^{(t)})\exp\{\frac{(\textbf x - \boldsymbol\mu^{(t)})^\text T {(\Sigma^{(t)})} ^{-1}(\textbf x - \boldsymbol\mu^{(t)})}{2w}\}dw}{\int_0^\infty w^{-d/2} f_W(w|\alpha^{(t)})\exp\{\frac{(\textbf x - \boldsymbol\mu^{(t)})^\text T {(\Sigma^{(t)})} ^{-1}(\textbf x - \boldsymbol\mu^{(t)})}{2w}\}dw} \\
+&amp;= \frac{\int_0^\infty w^{-d/2-1}f_W(w|\alpha^{(t)})\exp\{-\frac{(\textbf x - \boldsymbol\mu^{(t)})^\text T {(\Sigma^{(t)})} ^{-1}(\textbf x - \boldsymbol\mu^{(t)})}{2w}\}dw}{\int_0^\infty w^{-d/2} f_W(w|\alpha^{(t)})\exp\{-\frac{(\textbf x - \boldsymbol\mu^{(t)})^\text T {(\Sigma^{(t)})} ^{-1}(\textbf x - \boldsymbol\mu^{(t)})}{2w}\}dw} \\
 &amp; \approx \frac{\sum_{j=1}^k \frac{(-1)^j}{\Gamma(j+1)}\Gamma(\frac{j\alpha^{(t)}+2}{2})\Gamma(\frac{j\alpha^{(t)}+d+2}{2})\sin(\frac{j \pi \alpha^{(t)}}{2})(D_i^{(t)})^{-\frac{j\alpha^{(t)}+d+2}{2}}}{\sum_{j=1}^k \frac{(-1)^j}{\Gamma(j+1)}\Gamma(\frac{j\alpha^{(t)}+2}{2})\Gamma(\frac{j\alpha^{(t)}+d}{2})\sin(\frac{j \pi \alpha^{(t)}}{2})(D_i^{(t)})^{-\frac{j\alpha^{(t)}+d}{2}}}
 \end{aligned}
 \]</span></p>
@@ -219,7 +219,7 @@ D_i^{(t)} \in \bigg( \bigg[\frac{\Gamma(\frac{k\alpha^{(t)}+\alpha^{(t)}+2}{2})\
 <p>From there, we can perform conditional EM as follows:</p>
 <p><strong>E-step:</strong> Estimate the posterior mean <span class="math inline">\(e_i^{(t,t)} = \mathbb E[W^{-1} | \textbf x_i, \boldsymbol \mu^{(t)}, \Sigma^{(t)}, \alpha_{MLE}]\)</span> as described above.</p>
 <p><strong>M-step:</strong> Update <span class="math inline">\(\theta = (\boldsymbol \mu, \Sigma)\)</span> as:</p>
-<p><span class="math inline">\(\boldsymbol \mu^{(t+1)} = \frac{\sum_{i=1}^n \textbf x_i e_i^{(t,t)}}{\sum_{i=1}^n e_i^{(t,t)}}\)</span>, <span class="math inline">\(\Sigma^{(t+1)} = \frac {1}{n} \sum_{i=1}^n (\textbf x_i - \boldsymbol\mu^{(t)})^\text T (\textbf x_i - \boldsymbol\mu^{(t)}) e_i^{(t,t)}\)</span></p>
+<p><span class="math inline">\(\boldsymbol \mu^{(t+1)} = \frac{\sum_{i=1}^n \textbf x_i e_i^{(t,t)}}{\sum_{i=1}^n e_i^{(t,t)}}\)</span>, <span class="math inline">\(\Sigma^{(t+1)} =  \sum_{i=1}^n (\textbf x_i - \boldsymbol\mu^{(t)}) (\textbf x_i - \boldsymbol\mu^{(t)})^\text T e_i^{(t,t)}/\sum_{i=1}^n e_i^{(t,t)}\)</span></p>
 <p>Repeat until estimates converge.</p>
 <p>Besides fixing <span class="math inline">\(\alpha\)</span> with the MLE, another departure from Teimouri et al.&nbsp;is that we don’t actually care about the estimated values of <span class="math inline">\(\theta\)</span> themselves. Instead, we only want to retain the vector <span class="math inline">\(\hat{\textbf e}\)</span>, since the data are then approximately normal and we can use either the sample covariance matrix (the true MLE of <span class="math inline">\(\Sigma\)</span>), or an adjustment for dimensionality that outperforms it.</p>
 <p>As a reminder, note that we’re estimating the covariance matrix of the normal vector, not the dispersion matrix of the stable vector <span class="math inline">\(X\)</span>. The two may differ by a scaling constant of 1/2 depending on the way they’re parameterized.</p>

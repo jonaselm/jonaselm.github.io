@@ -38,8 +38,8 @@ e_i^{(t,s)} \equiv \mathbb E[W^{-1} | \textbf x_i, \boldsymbol \mu^{(t)}, \Sigma
 & = \frac {1}{f_\textbf X(x)}\int_0^\infty w^{-1} f_{\textbf X, W}(\textbf x,w)dw \\
 & =   \frac{\int_0^\infty w^{-1}f_W(w)f_{\textbf X|W}(\textbf x|w)dw}{\int_0^\infty f_W(w)f_{\textbf X|W}(\mathbf x|w)dw} \\
 &=  \frac{\int_0^\infty w^{-1}f_W(w)f_{\textbf X|W}(\textbf x|w)dw}{\int_0^\infty f_W(w)f_{\textbf X|W}(\mathbf x|w)dw} \\
-&= \frac{\int_0^\infty w^{-d/2-1}f_W(w|\alpha^{(t)})\exp\{\frac{(\textbf x - \boldsymbol\mu^{(t)})^\text T {(\Sigma^{(t)})} ^{-1}(\textbf x - \boldsymbol\mu^{(t)})}{2w}\}dw}{\int_0^\infty w^{-d/2} f_W(w|\alpha^{(t)})\exp\{\frac{(\textbf x - \boldsymbol\mu^{(t)})^\text T {(\Sigma^{(t)})} ^{-1}(\textbf x - \boldsymbol\mu^{(t)})}{2w}\}dw} \\
-& \approx \frac{\sum_{i=1}^M w_i^{-d/2-1}\exp\{\frac{(\textbf x - \boldsymbol\mu^{(t)})^\text T {(\Sigma^{(t)})} ^{-1}(\textbf x - \boldsymbol\mu^{(t)})}{2w_i}\}}{\sum_{i=1}^M w_i^{-d/2}\exp\{\frac{(\textbf x - \boldsymbol\mu^{(t)})^\text T {(\Sigma^{(t)})} ^{-1}(\textbf x - \boldsymbol\mu^{(t)})}{2w_i}\}}
+&= \frac{\int_0^\infty w^{-d/2-1}f_W(w|\alpha^{(t)})\exp\{-\frac{(\textbf x - \boldsymbol\mu^{(t)})^\text T {(\Sigma^{(t)})} ^{-1}(\textbf x - \boldsymbol\mu^{(t)})}{2w}\}dw}{\int_0^\infty w^{-d/2} f_W(w|\alpha^{(t)})\exp\{-\frac{(\textbf x - \boldsymbol\mu^{(t)})^\text T {(\Sigma^{(t)})} ^{-1}(\textbf x - \boldsymbol\mu^{(t)})}{2w}\}dw} \\
+& \approx \frac{\sum_{i=1}^M w_i^{-d/2-1}\exp\{-\frac{(\textbf x - \boldsymbol\mu^{(t)})^\text T {(\Sigma^{(t)})} ^{-1}(\textbf x - \boldsymbol\mu^{(t)})}{2w_i}\}}{\sum_{i=1}^M w_i^{-d/2}\exp\{-\frac{(\textbf x - \boldsymbol\mu^{(t)})^\text T {(\Sigma^{(t)})} ^{-1}(\textbf x - \boldsymbol\mu^{(t)})}{2w_i}\}}
 \end{aligned}
 $$
 
@@ -50,7 +50,7 @@ So we can use the following (admittedly horrible) representation:
 $$
 \begin{aligned}
 e_i^{(t,s)} 
-&= \frac{\int_0^\infty w^{-d/2-1}f_W(w|\alpha^{(t)})\exp\{\frac{(\textbf x - \boldsymbol\mu^{(t)})^\text T {(\Sigma^{(t)})} ^{-1}(\textbf x - \boldsymbol\mu^{(t)})}{2w}\}dw}{\int_0^\infty w^{-d/2} f_W(w|\alpha^{(t)})\exp\{\frac{(\textbf x - \boldsymbol\mu^{(t)})^\text T {(\Sigma^{(t)})} ^{-1}(\textbf x - \boldsymbol\mu^{(t)})}{2w}\}dw} \\
+&= \frac{\int_0^\infty w^{-d/2-1}f_W(w|\alpha^{(t)})\exp\{-\frac{(\textbf x - \boldsymbol\mu^{(t)})^\text T {(\Sigma^{(t)})} ^{-1}(\textbf x - \boldsymbol\mu^{(t)})}{2w}\}dw}{\int_0^\infty w^{-d/2} f_W(w|\alpha^{(t)})\exp\{-\frac{(\textbf x - \boldsymbol\mu^{(t)})^\text T {(\Sigma^{(t)})} ^{-1}(\textbf x - \boldsymbol\mu^{(t)})}{2w}\}dw} \\
 & \approx \frac{\sum_{j=1}^k \frac{(-1)^j}{\Gamma(j+1)}\Gamma(\frac{j\alpha^{(t)}+2}{2})\Gamma(\frac{j\alpha^{(t)}+d+2}{2})\sin(\frac{j \pi \alpha^{(t)}}{2})(D_i^{(t)})^{-\frac{j\alpha^{(t)}+d+2}{2}}}{\sum_{j=1}^k \frac{(-1)^j}{\Gamma(j+1)}\Gamma(\frac{j\alpha^{(t)}+2}{2})\Gamma(\frac{j\alpha^{(t)}+d}{2})\sin(\frac{j \pi \alpha^{(t)}}{2})(D_i^{(t)})^{-\frac{j\alpha^{(t)}+d}{2}}}
 \end{aligned}
 $$
@@ -71,7 +71,7 @@ From there, we can perform conditional EM as follows:
 
 **M-step:** Update $\theta = (\boldsymbol \mu, \Sigma)$ as:
 
-$\boldsymbol \mu^{(t+1)} = \frac{\sum_{i=1}^n \textbf x_i e_i^{(t,t)}}{\sum_{i=1}^n e_i^{(t,t)}}$, $\Sigma^{(t+1)} = \frac {1}{n} \sum_{i=1}^n (\textbf x_i - \boldsymbol\mu^{(t)})^\text T (\textbf x_i - \boldsymbol\mu^{(t)}) e_i^{(t,t)}$
+$\boldsymbol \mu^{(t+1)} = \frac{\sum_{i=1}^n \textbf x_i e_i^{(t,t)}}{\sum_{i=1}^n e_i^{(t,t)}}$, $\Sigma^{(t+1)} =  \sum_{i=1}^n (\textbf x_i - \boldsymbol\mu^{(t)}) (\textbf x_i - \boldsymbol\mu^{(t)})^\text T e_i^{(t,t)}/\sum_{i=1}^n e_i^{(t,t)}$
 
 Repeat until estimates converge.
 
