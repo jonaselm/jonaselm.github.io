@@ -2,7 +2,7 @@
 title: "Restricted EM Derivation"
 ---
 
-Given our $\alpha$-SG($\Sigma$) vector $X = \sqrt W G$, with underlying latent stable subordinator W, and Gaussian vector G, note that $X|W=w \sim N(\boldsymbol \mu,w\Sigma)$ we can write our complete data likelihood function as:
+Given our $\alpha$-SG($\Sigma$) vector $X = \sqrt W G + \boldsymbol \mu$, with underlying latent stable subordinator W, and Gaussian vector G, note that $X|W=w \sim N(\boldsymbol \mu,w\Sigma)$ we can write our complete data likelihood function as:
 
 $$
 \begin{aligned}
