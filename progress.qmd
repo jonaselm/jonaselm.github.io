@@ -195,7 +195,7 @@ EM for stable random vectors isn't straightforward, and an approach was only fir
 
 The idea was to estimate the correlation matrix with NSCM (by inverting its expected eigenvalues), and then rescaling via EM. Need to add more details on the procedure, since it's pretty cool.
 
-## Emprirical Copula Transform
+## Empirical Copula Transform
 
 Since univariate stable MLE works well (fast and very accurate), one idea I had is to recreate the full dispersion matrix via lower-dimensional sub-matrices. These can be used to estimate W (as in EM above). Taking this idea to the limit (e.g. the marginals) yields this new idea...
 
