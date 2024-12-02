@@ -159,7 +159,7 @@ window.Quarto = {
   <li><a href="#subordinated-correlation-estimator" id="toc-subordinated-correlation-estimator" class="nav-link" data-scroll-target="#subordinated-correlation-estimator">Subordinated Correlation Estimator</a></li>
   <li><a href="#restricted-expectation-maximization-approach" id="toc-restricted-expectation-maximization-approach" class="nav-link" data-scroll-target="#restricted-expectation-maximization-approach">Restricted Expectation-Maximization Approach</a></li>
   <li><a href="#normalized-sample-covariance-matrix-approach-nscm" id="toc-normalized-sample-covariance-matrix-approach-nscm" class="nav-link" data-scroll-target="#normalized-sample-covariance-matrix-approach-nscm">Normalized Sample Covariance Matrix Approach (NSCM)</a></li>
-  <li><a href="#empricical-copula-transform" id="toc-empricical-copula-transform" class="nav-link" data-scroll-target="#empricical-copula-transform">Empricical Copula Transform</a></li>
+  <li><a href="#empirical-copula-transform" id="toc-empirical-copula-transform" class="nav-link" data-scroll-target="#empirical-copula-transform">Empirical Copula Transform</a></li>
   </ul>
 </nav>
     </div>
@@ -345,12 +345,12 @@ Important
 <h2 class="anchored" data-anchor-id="normalized-sample-covariance-matrix-approach-nscm">Normalized Sample Covariance Matrix Approach (NSCM)</h2>
 <p>The idea was to estimate the correlation matrix with NSCM (by inverting its expected eigenvalues), and then rescaling via EM. Need to add more details on the procedure, since it’s pretty cool.</p>
 </section>
-<section id="empricical-copula-transform" class="level2">
-<h2 class="anchored" data-anchor-id="empricical-copula-transform">Empricical Copula Transform</h2>
+<section id="empirical-copula-transform" class="level2">
+<h2 class="anchored" data-anchor-id="empirical-copula-transform">Empirical Copula Transform</h2>
 <p>Since univariate stable MLE works well (fast and very accurate), one idea I had is to recreate the full dispersion matrix via lower-dimensional sub-matrices. These can be used to estimate W (as in EM above). Taking this idea to the limit (e.g.&nbsp;the marginals) yields this new idea…</p>
 <p>In testing, this new approach works incredibly well, besting direct MLE calculations both in terms of error and time (by a lot).</p>
 <p>Results and detailed procedures here here: <a href="./copula_transform.html">Linked Copula Transform Estimator</a>.</p>
-<p>[Last Updated on November 30, 2024]</p>
+<p>[Last Updated on December 2, 2024]</p>
 
 
 </section>
