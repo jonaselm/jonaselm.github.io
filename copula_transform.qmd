@@ -86,7 +86,7 @@ Also, note that our new dependence structure maintains its symmetry about the pr
 
 ## Some More Formal Results
 
-**Lemma**: The stable copula applied to any stable marginals with $\alpha_1 \neq \alpha_2$ cannot be ellptically symmetric. 
+**Lemma**: The stable copula applied to any (fixed) stable marginals with $\alpha_1 \neq \alpha_2$ cannot be ellptically symmetric. 
 
 **Proof**: This is immediate from the Jacobian of the transformation. Since J is diagonal, it acts on the principal axes, but these are fixed by the marginal distribution parameters. Elliptical symmetry can only be maintained then if $J(X) = I_d$ for any $X$. Clearly, this only happens if the two marginals share the same distribution up to scale and translation.
 
