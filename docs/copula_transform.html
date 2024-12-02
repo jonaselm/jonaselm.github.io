@@ -231,7 +231,7 @@ window.Quarto = {
 <ol type="1">
 <li>Estimate each marginal distribution via numerical univarite MLE. This is quick and accurate and can be made even faster through paralellization.</li>
 <li>Transform each observation <span class="math inline">\(X_i\)</span> into a uniform vector <span class="math inline">\(U_i\)</span> drawn from the copula distribution of <span class="math inline">\(X\)</span> by pushing it through its CDF (which is again available numerically)</li>
-<li>Transform each observation <span class="math inline">\(U_i\)</span> into <span class="math inline">\(\tilde G_i\)</span> by pushing each marginal through the appropriately scaled inverse Gaussian CDF/erf: <span class="math inline">\(\tilde G_{ij} = 2\gamma_j\text{erf}(2*U_{ij}-1)\)</span>.</li>
+<li>Transform each observation <span class="math inline">\(U_i\)</span> into <span class="math inline">\(\tilde G_i\)</span> by pushing each marginal through the appropriately scaled inverse Gaussian CDF/erf: <span class="math inline">\(\tilde G_{ij} = 2\gamma_j\text{erf}^{-1}(2*U_{ij}-1)\)</span>.</li>
 <li>The resulting data matrix <span class="math inline">\(\tilde G\)</span> now has Gaussian marginals corresponding to those of <span class="math inline">\(X\)</span>, with a the empirical copula of <span class="math inline">\(X\)</span>. This distribution is approximately multivariate normal and <span class="math inline">\(\Sigma\)</span> can now be estimated via MLE in closed form as the sample covariance matrix.</li>
 </ol>
 <p><strong>To summarize in one step:</strong></p>
