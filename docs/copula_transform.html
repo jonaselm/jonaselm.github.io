@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.553">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Research - Linked Copula Transform Estimator</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">Research</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./background.html"> 
+<span class="menu-text">Background</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./progress.html"> 
+<span class="menu-text">Current Progress</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./open_questions.html"> 
+<span class="menu-text">Open Questions</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+          <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#orignal-idea" id="toc-orignal-idea" class="nav-link active" data-scroll-target="#orignal-idea">Orignal Idea</a></li>
+  <li><a href="#procedure" id="toc-procedure" class="nav-link" data-scroll-target="#procedure">Procedure</a></li>
+  <li><a href="#some-practical-results" id="toc-some-practical-results" class="nav-link" data-scroll-target="#some-practical-results">Some Practical Results</a></li>
+  <li><a href="#why-this-works" id="toc-why-this-works" class="nav-link" data-scroll-target="#why-this-works">Why This Works</a></li>
+  <li><a href="#some-more-formal-results" id="toc-some-more-formal-results" class="nav-link" data-scroll-target="#some-more-formal-results">Some More Formal Results</a></li>
+  <li><a href="#more-things" id="toc-more-things" class="nav-link" data-scroll-target="#more-things">More Things</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Linked Copula Transform Estimator</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="orignal-idea" class="level2">
+<h2 class="anchored" data-anchor-id="orignal-idea">Orignal Idea</h2>
+<p>A <a href="https://en.wikipedia.org/wiki/Copula_(statistics)">copula</a> is a multivariate CDF that encodes the dependence of a random vector. They provide a way to uncouple the distribution of the marginals from the dependence structure. Because the copulae of X and G in our problem formulation are both parameterized by <span class="math inline">\(\textbf R\)</span>, the correlation matrix that corresponds to <span class="math inline">\(\Sigma\)</span>, the covariance matrix of G/dispersion matrix of X, the MLE of this parameter from the copula distribution itself may be more easily computed than that of the stable vector. (Note: This is probably not true)</p>
+<p>I realized that we don’t actually need to calculate the MLE for the copula – since we have the estimated marginals of the stable vector X, we can “push forward” from our empirical copula to Gaussian marginals, since their parameters are now fully specified (the standard deviation of any marginal <span class="math inline">\(i\)</span> is <span class="math inline">\(\sigma_i = \sqrt 2 \gamma_i\)</span>, where <span class="math inline">\(\gamma_i\)</span> is the corresponding stable scale). From there, we can calculate the sample covariance matrix of this final distribution to get our MLE of <span class="math inline">\(\Sigma\)</span>.</p>
+<p>Clearly, this doesn’t work in both directions. If <span class="math inline">\(\Sigma = I_d\)</span>, then the multivariate Gaussian has independent marginals, and an independence copula which has uniform (flat) density. Since an elliptical stable distribution can’t have independent components, the resulting stable vector will be “star shaped”, not spherical.</p>
+<p>Putting a stable copula on Gaussian marginals, the resulting distribution no longer has an elliptical dependence structure due to the higher tail dependence imposed by the stable copula. Even so, this new distribution shares the covariance matrix of <span class="math inline">\(G\)</span>, and is an approximate-MLE method in the sense that the new (stable copula + Gaussian marginals) distribution is approximately multivariate Gaussian, deviating more as <span class="math inline">\(\alpha \rightarrow 0\)</span> deforms the level curves further from an ellipse. (Proofs of these facts below)</p>
+</section>
+<section id="procedure" class="level2">
+<h2 class="anchored" data-anchor-id="procedure">Procedure</h2>
+<p>The procedure for what I’m calling the <strong>Linked Copula Transform Estimator</strong> is as follows. The marginal distributions of our <span class="math inline">\(X\)</span> and <span class="math inline">\(G\)</span> vectors are linked in the sense that knowing the parameters of <span class="math inline">\(X\)</span> fully specifies the Gaussian marginals: the scale paramter is related by <span class="math inline">\(\sigma = \sqrt 2 \gamma\)</span>, and the location parameter is shared.</p>
+<p>The copula of <span class="math inline">\(X\)</span> is a d-dimensional CDF on <span class="math inline">\([0,1]^d\)</span> with uniform marginals that captures all of the dependence (but not the scale) between <span class="math inline">\(X\)</span> and <span class="math inline">\(G\)</span>:</p>
+<p><span class="math inline">\(C_X(u_1, \dots, u_d) = F_X(F^{-1}_{X_1}(x_1), \dots, F^{-1}_{X_d}(x_d))\)</span>.</p>
+<p>In the case of elliptically symmetric stable distributions (including the Gaussian), the copula encodes (and is parameterized by) the shape of the correlation matrix defined by <span class="math inline">\((\sqrt{\text{diag}(\Sigma)})^{-1}\Sigma(\sqrt{\text{diag}(\Sigma)})^{-1}\)</span>. Since <span class="math inline">\(X\)</span> has a stable copula, it encodes the same elliptical shape as the Gaussian copula of G. The procedure to estiamte this covariance matrix is as follows:</p>
+<ol type="1">
+<li>Estimate each marginal distribution via numerical univarite MLE. This is quick and accurate and can be made even faster through paralellization.</li>
+<li>Transform each observation <span class="math inline">\(X_i\)</span> into a uniform vector <span class="math inline">\(U_i\)</span> drawn from the copula distribution of <span class="math inline">\(X\)</span> by pushing it through its CDF (which is again available numerically)</li>
+<li>Transform each observation <span class="math inline">\(U_i\)</span> into <span class="math inline">\(\tilde G_i\)</span> by pushing each marginal through the appropriately scaled inverse Gaussian CDF/erf: <span class="math inline">\(\tilde G_{ij} = 2\gamma_j\text{erf}(2*U_{ij}-1)\)</span>.</li>
+<li>The resulting data matrix <span class="math inline">\(\tilde G\)</span> now has Gaussian marginals corresponding to those of <span class="math inline">\(X\)</span>, with a the empirical copula of <span class="math inline">\(X\)</span>. This distribution is approximately multivariate normal and <span class="math inline">\(\Sigma\)</span> can now be estimated via MLE in closed form as the sample covariance matrix.</li>
+</ol>
+<p><strong>To summarize in one step:</strong></p>
+<p><span class="math inline">\(\hat \Sigma = \frac{1}{n-1}\sum_{i=1}^n \tilde G_i^T\tilde G_i\)</span>.</p>
+<p>Where <span class="math inline">\(\tilde G_j = \sqrt 2 \gamma_j \Phi^{-1}(\hat F_{X_{j}}(X_{j}))\)</span>, <span class="math inline">\(j = 1, \dots, d\)</span> is the <span class="math inline">\(j\)</span>-th column of the approximately-Gaussian sample matrix <span class="math inline">\(\tilde G\)</span>, with:</p>
+<ul>
+<li><span class="math inline">\(\hat F_{X_{j}}\)</span> the <span class="math inline">\(\alpha\)</span>-stable distribution function of marginal <span class="math inline">\(j\)</span> with parameters determined via direct MLE,</li>
+<li><span class="math inline">\(\Phi^{-1}\)</span> the inverse standard normal CDF,</li>
+<li><span class="math inline">\(\gamma_j\)</span> the scale parameter of <span class="math inline">\(\hat F_{X_{j}}\)</span>,</li>
+<li>and <span class="math inline">\(\tilde G_j\)</span> denoting the <span class="math inline">\(j\)</span>-th column of the approximately-Gaussian sample matrix <span class="math inline">\(\tilde G\)</span>.</li>
+</ul>
+<p>(Note that <span class="math inline">\(\tilde G\)</span> is mean zero by construction.)</p>
+</section>
+<section id="some-practical-results" class="level2">
+<h2 class="anchored" data-anchor-id="some-practical-results">Some Practical Results</h2>
+<p>I tested the LCTE across the following paramters:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>n_samples <span class="op">=</span> [<span class="dv">100</span>, <span class="dv">200</span>, <span class="dv">500</span>, <span class="dv">1000</span>, <span class="dv">2500</span>, <span class="dv">5000</span>] </span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>dimensions <span class="op">=</span> [<span class="dv">2</span>, <span class="dv">5</span>, <span class="dv">10</span>, <span class="dv">50</span>, <span class="dv">75</span>, <span class="dv">150</span>, <span class="dv">250</span>, <span class="dv">300</span>] </span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>alphas <span class="op">=</span> [<span class="fl">0.5</span>, <span class="fl">1.0</span>, <span class="fl">1.5</span>, <span class="fl">1.9</span>] </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The LTCE was benchmarked against direct numerical MLE implemented in the <code>stable</code> R package via a python wrapper. I believe that this implementation of stable MLE is the current state of the art. I measured normalized error - <span class="math inline">\(||\hat \Sigma - \Sigma||/||\Sigma||\)</span> - for both the LTCE and the direct MLE, against both the true covariance matrix of <span class="math inline">\(G\)</span> as well as the sample covariance matrix calculated on the “latent” G, which is stored as part of the test class. This test was time-consuming because of the extremely slow estimation of the direct MLE approach in high dimensions. To save time, I only performed a single estimate at each unique set of parameters, but reporting a statistic of many such estimates seems worthwhile.</p>
+<p>Looking at estimator performance, the LTCE seems to reliably outperform the direct MLE by approximately 10% - 20%.</p>
+<p><img src="images/copula_error.png" class="img-fluid"></p>
+<p>Some likely reasons for this performance are below.</p>
+<p>Even more significant are the computational advantages of the LTCE. Because costly numerical integration only happens in the univariate marginals, it’s computationally inexpensive and scales linearly with the dimension. It’s clear that this approach dramatically outperforms direct MLE for dimensions larger than about 5:</p>
+<p><img src="images/copula_time.png" class="img-fluid"></p>
+</section>
+<section id="why-this-works" class="level2">
+<h2 class="anchored" data-anchor-id="why-this-works">Why This Works</h2>
+<p>The speed improvements are obvious, but I think the LTCE achieves lower estimator error because even though the tail dependence results in a non-elliptical dependence structure (e.g.&nbsp;it’s a deformed elliptical, similar to the t-copula case), <span class="math inline">\(\tilde G\)</span> and <span class="math inline">\(G\)</span> share a covariance matrix (proof below). Thus, the sample covariance matrix of <span class="math inline">\(\tilde G\)</span> is an unbiased estimator of <span class="math inline">\(\Sigma\)</span>.</p>
+<p>Better yet, in finite samples, this estimator is more efficient than the stable MLE due to the simple fact that the variance of the stable MLE is only guaranteed to be asymptotically finite, whereas the Linked Copula Transform Estimator has finite variance for any <span class="math inline">\(n\)</span>, since the transformation via the stable CDF induces finite support to the sample, and the transform back to Gaussian random variables doesn’t violate this. As a consequence, the LCTE has finite variance even if the marginal parameter estimates are misspecified.</p>
+<p>Moreover, since the stable copula is empirical rather than parameteric, relatively smaller samples are unlikely to see extreme events under which the deforemations of the elliptical dependence structure are worst. In other words, the transformed sample is likely to be much more elliptical in shape than it appears analytically (e.g.&nbsp;via the Jacobian below), resulting in better estimates.</p>
+<p>Thinking about what’s actually going on using the Jacobian of the transformation in 2 dimensions:</p>
+<p><span class="math display">\[
+J =
+\begin{bmatrix}
+\gamma_1\frac{f_{X_1}(X_1)}{\phi(\Phi^{-1}(F_{X_1}(X_1)))} &amp; 0 \\[2ex]
+0 &amp; \gamma_2\frac{f_{X_2}(X_2)}{\phi(\Phi^{-1}(F_{X_2}(X_2)))}
+\end{bmatrix}
+\]</span></p>
+<p>Clearly, we have a nonlinear transformation happening in the principal axes, so shape is only maintained if the Jacobian is a multiple of the identity matrix. (I think) this can only happen when we start with a Gaussian… but obviously, the Jacobian is small when <span class="math inline">\(\alpha\)</span> is near 2. One consequence of this is that we’re closer to an elliptical dependence structure (and thus <span class="math inline">\(\tilde G\)</span> is closer to a multivariate normal) when <span class="math inline">\(\alpha\)</span> is close to 2. As <span class="math inline">\(\alpha \rightarrow 2\)</span> I believe LCTE converges to the MLE for <span class="math inline">\(\Sigma\)</span>.</p>
+<p>Also, note that our new dependence structure maintains its symmetry about the principal axes, since it’s clear that <span class="math inline">\(J(X) = J(-X)\)</span>. Actually, the Jacobian is completely invariant to the sign of any component, preserving radial symmetry of the distribution despite the non-elliptical deformation.</p>
+</section>
+<section id="some-more-formal-results" class="level2">
+<h2 class="anchored" data-anchor-id="some-more-formal-results">Some More Formal Results</h2>
+<p><strong>Lemma</strong>: The stable copula applied to any stable marginals with <span class="math inline">\(\alpha_1 \neq \alpha_2\)</span> cannot be ellptically symmetric.</p>
+<p><strong>Proof</strong>: This is immediate from the Jacobian of the transformation. Since J is diagonal, it acts on the principal axes, but these are fixed by the marginal distribution parameters. Elliptical symmetry can only be maintained then if <span class="math inline">\(J(X) = I_d\)</span> for any <span class="math inline">\(X\)</span>. Clearly, this only happens if the two marginals share the same distribution up to scale and translation.</p>
+<p><strong>Lemma</strong>: <span class="math inline">\(G\)</span> and <span class="math inline">\(\tilde G\)</span> share the same covariance matrix <span class="math inline">\(\Sigma\)</span>, the dispersion matrix of the stable vector <span class="math inline">\(X\)</span>.</p>
+<p><strong>Proof</strong>: The covariance <span class="math inline">\(\mathbb E [\tilde G \tilde G^\text{T}]\)</span> can be looked at entry-wise. We use the fact that <span class="math inline">\(\sigma_i = \sqrt 2 \gamma_i\)</span>, for any marginal distribution <span class="math inline">\(i\)</span>. Let <span class="math inline">\(Z\)</span> be a standard normal random variable. On the diagonal, clearly <span class="math inline">\(\mathbb E [\tilde G_j^2] = 2\gamma_j^2 \mathbb E[(\Phi^{-1}(U_j))^2]= 2\gamma_j^2 \mathbb E[Z^2] = 2\gamma_j^2 = \sigma_j^2\)</span> by construction.</p>
+<p>On the off diagonal, for any <span class="math inline">\(i \neq j\)</span>, we have:</p>
+<p><span class="math display">\[
+\begin{aligned}
+\mathbb E [\tilde G_i \tilde G_j] =&amp; 2 \gamma_i \gamma_j \mathbb E [\Phi^{-1}(F_{X_i}(X_i))\Phi^{-1}(F_{X_j}(X_j))] \\
+&amp;=2 \gamma_i \gamma_j \mathbb E \bigg[\Phi^{-1}\bigg(\Phi\bigg(\frac{X_i}{\sqrt W \sigma_i}\bigg)\bigg)\Phi^{-1}\bigg(\Phi\bigg(\frac{X_j}{\sqrt W \sigma_j}\bigg)\bigg)\bigg] \\
+&amp;= 2 \gamma_i \gamma_j \mathbb E \bigg[\Phi^{-1}\bigg(\Phi\bigg(\frac{\sqrt W G_i}{\sqrt W \sigma_i}\bigg)\bigg)\Phi^{-1}\bigg(\Phi\bigg(\frac{\sqrt W G_j}{\sqrt W \sigma_j}\bigg)\bigg)\bigg] \\
+&amp;= 2 \gamma_i \gamma_j \mathbb E \bigg[\Phi^{-1}\bigg(\Phi\bigg(\frac{ G_i}{\sigma_i}\bigg)\bigg)\Phi^{-1}\bigg(\Phi\bigg(\frac{G_j}{ \sigma_j}\bigg)\bigg)\bigg] \\
+&amp;= \sigma_i \sigma_j \mathbb E \bigg[\frac{G_i G_j}{\sigma_i \sigma_j}\bigg] \\
+&amp;= \mathbb E[G_i G_j] \\
+&amp;= \sigma_{ij}
+\end{aligned}
+\]</span></p>
+<p>Putting these together, we reconstruct the original covariance matrix of <span class="math inline">\(G\)</span>, and <span class="math inline">\(\mathbb E[\tilde G \tilde G^\text T] = \mathbb E[GG^\text T] = \Sigma\)</span></p>
+</section>
+<section id="more-things" class="level2">
+<h2 class="anchored" data-anchor-id="more-things">More Things</h2>
+<ul>
+<li>The deformation (as measured by the Jacobian) seems related to the KL-divergence of the starting and ending marginals. We might be doing the transformation that minimizes the KL-divergence between <span class="math inline">\(X\)</span> and <span class="math inline">\(\tilde G\)</span> while preserving both Gaussian marginals and covariance?</li>
+<li>Can we build a correction to force the dependence to be elliptical (getting the actual MLE)</li>
+<li>Normalizing Flows could be an interesting way to make the final distribution more elliptical (and thus more efficient) by learning the transform to get from <span class="math inline">\(\tilde G \rightarrow G\)</span>.</li>
+</ul>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

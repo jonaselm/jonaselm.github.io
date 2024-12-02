@@ -158,6 +158,8 @@ window.Quarto = {
   <li><a href="#the-subordinated-covariance-estimators" id="toc-the-subordinated-covariance-estimators" class="nav-link" data-scroll-target="#the-subordinated-covariance-estimators">The Subordinated Covariance Estimators</a></li>
   <li><a href="#subordinated-correlation-estimator" id="toc-subordinated-correlation-estimator" class="nav-link" data-scroll-target="#subordinated-correlation-estimator">Subordinated Correlation Estimator</a></li>
   <li><a href="#restricted-expectation-maximization-approach" id="toc-restricted-expectation-maximization-approach" class="nav-link" data-scroll-target="#restricted-expectation-maximization-approach">Restricted Expectation-Maximization Approach</a></li>
+  <li><a href="#normalized-sample-covariance-matrix-approach-nscm" id="toc-normalized-sample-covariance-matrix-approach-nscm" class="nav-link" data-scroll-target="#normalized-sample-covariance-matrix-approach-nscm">Normalized Sample Covariance Matrix Approach (NSCM)</a></li>
+  <li><a href="#empricical-copula-transform" id="toc-empricical-copula-transform" class="nav-link" data-scroll-target="#empricical-copula-transform">Empricical Copula Transform</a></li>
   </ul>
 </nav>
     </div>
@@ -338,7 +340,17 @@ Important
 <p>Likewise, this should be provable using asymptotic efficiency of MLE.</p>
 <p>EM for stable random vectors isn’t straightforward, and an approach was only first offered in 2018 by <a href="https://www.atlantis-press.com/journals/jsta/25903298">Teimouri et. al.&nbsp;</a>. This approach requires a conditional maximization (CM) step, then a conditional maximization of the likelihood (CML) step, which itself involves a separate stochastic EM to approximate the parameters of a related Weibull distribution. This is required because the authors are trying to jointly estimate all parameters via EM. Since we’re only interested in <span class="math inline">\(\Sigma\)</span>, we can actually simplify <span class="math inline">\(\alpha\)</span>-SG(<span class="math inline">\(\Sigma\)</span>) EM significantly, both computationally and conceptually, by restricting our parameter search to not include <span class="math inline">\(\alpha\)</span>, totally eliminating the CML step, and making the process equivalent to a simple Gaussian EM with a conditional maximization step for W.</p>
 <p><a href="./EM_approach.html">My approach to stable EM is detailed here.</a></p>
-<p>[Last Updated on August 23, 2024]</p>
+</section>
+<section id="normalized-sample-covariance-matrix-approach-nscm" class="level2">
+<h2 class="anchored" data-anchor-id="normalized-sample-covariance-matrix-approach-nscm">Normalized Sample Covariance Matrix Approach (NSCM)</h2>
+<p>The idea was to estimate the correlation matrix with NSCM (by inverting its expected eigenvalues), and then rescaling via EM. Need to add more details on the procedure, since it’s pretty cool.</p>
+</section>
+<section id="empricical-copula-transform" class="level2">
+<h2 class="anchored" data-anchor-id="empricical-copula-transform">Empricical Copula Transform</h2>
+<p>Since univariate stable MLE works well (fast and very accurate), one idea I had is to recreate the full dispersion matrix via lower-dimensional sub-matrices. These can be used to estimate W (as in EM above). Taking this idea to the limit (e.g.&nbsp;the marginals) yields this new idea…</p>
+<p>In testing, this new approach works incredibly well, besting direct MLE calculations both in terms of error and time (by a lot).</p>
+<p>Results and detailed procedures here here: <a href="./copula_transform.html">Linked Copula Transform Estimator</a>.</p>
+<p>[Last Updated on November 30, 2024]</p>
 
 
 </section>

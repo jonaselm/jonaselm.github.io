@@ -191,6 +191,16 @@ EM for stable random vectors isn't straightforward, and an approach was only fir
 
 [My approach to stable EM is detailed here.](EM_approach.qmd)
 
+## Normalized Sample Covariance Matrix Approach (NSCM)
 
+The idea was to estimate the correlation matrix with NSCM (by inverting its expected eigenvalues), and then rescaling via EM. Need to add more details on the procedure, since it's pretty cool.
 
-[Last Updated on August 23, 2024]
+## Empricical Copula Transform
+
+Since univariate stable MLE works well (fast and very accurate), one idea I had is to recreate the full dispersion matrix via lower-dimensional sub-matrices. These can be used to estimate W (as in EM above). Taking this idea to the limit (e.g. the marginals) yields this new idea...
+
+In testing, this new approach works incredibly well, besting direct MLE calculations both in terms of error and time (by a lot). 
+
+Results and detailed procedures here here: [Linked Copula Transform Estimator](copula_transform.qmd).
+
+[Last Updated on December 2, 2024]
