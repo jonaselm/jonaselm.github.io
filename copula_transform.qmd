@@ -26,7 +26,7 @@ In the case of elliptically symmetric stable distributions (including the Gaussi
 
 1. Estimate each marginal distribution via numerical univarite MLE. This is quick and accurate and can be made even faster through paralellization.
 2. Transform each observation $X_i$ into a uniform vector $U_i$ drawn from the copula distribution of $X$ by pushing it through its CDF (which is again available numerically)
-3. Transform each observation $U_i$ into $\tilde G_i$ by pushing each marginal through the appropriately scaled inverse Gaussian CDF/erf: $\tilde G_{ij} = 2\gamma_j\text{erf}(2*U_{ij}-1)$.
+3. Transform each observation $U_i$ into $\tilde G_i$ by pushing each marginal through the appropriately scaled inverse Gaussian CDF/erf: $\tilde G_{ij} = 2\gamma_j\text{erf}^{-1}(2*U_{ij}-1)$.
 4. The resulting data matrix $\tilde G$ now has Gaussian marginals corresponding to those of $X$, with a the empirical copula of $X$. This distribution is approximately multivariate normal and $\Sigma$ can now be estimated via MLE in closed form as the sample covariance matrix.
 
 **To summarize in one step:**
