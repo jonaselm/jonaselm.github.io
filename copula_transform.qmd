@@ -16,9 +16,11 @@ Putting a stable copula on Gaussian marginals, the resulting distribution no lon
 
 The procedure for what I'm calling the **Linked Copula Transform Estimator** is as follows. The marginal distributions of our $X$ and $G$ vectors are linked  in the sense that knowing the parameters of $X$ fully specifies the Gaussian marginals: the scale paramter is related by $\sigma = \sqrt 2 \gamma$, and the location parameter is shared. 
 
-The copula of $X$ is a d-dimensional CDF on $[0,1]^d$ with uniform marginals that captures all of the dependence (but not the scale) between $X$ and $G$:
+The copula of $X$ is a d-dimensional CDF on $[0,1]^d$ with uniform marginals that captures all of the dependence (but not the scale) between $X$ and $G$. The random vector 
 
-$C_X(u_1, \dots, u_d) = F_X(F^{-1}_{X_1}(x_1), \dots, F^{-1}_{X_d}(x_d))$.
+$(U_1, \dots, U_d) = (F_{X_1}(x_1), \dots, F_{X_d}(x_d))$
+
+converts realizations $x$ to a sample from the copula of $F_{\textbf X}$.
 
 In the case of elliptically symmetric stable distributions (including the Gaussian), the copula encodes (and is parameterized by) the shape of the correlation matrix defined by $(\sqrt{\text{diag}(\Sigma)})^{-1}\Sigma(\sqrt{\text{diag}(\Sigma)})^{-1}$. Since $X$ has a stable copula, it encodes the same elliptical shape as the Gaussian copula of G. The procedure to estiamte this covariance matrix is as follows:
 
