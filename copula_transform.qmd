@@ -90,30 +90,23 @@ Also, note that our new dependence structure maintains its symmetry about the pr
 
 **Lemma**: The stable copula applied to any (fixed) stable marginals with $\alpha_1 \neq \alpha_2$ cannot be ellptically symmetric. 
 
-**Proof**: This is immediate from the Jacobian of the transformation. Since J is diagonal, it acts on the principal axes, but these are fixed by the marginal distribution parameters. Elliptical symmetry can only be maintained then if $J(X) = I_d$ for any $X$. Clearly, this only happens if the two marginals share the same distribution up to scale and translation.
+**Proof**: This is immediate from the Jacobian of the transformation. Since J is diagonal, it acts on the coordinate axes, but these are fixed by the marginal distribution parameters. Elliptical symmetry can only be maintained then if $J(X) \propto I_d$ for all values of $X$. Clearly, this only happens if the two marginals share the same distribution up to scale and translation.
 
 **Lemma**: $G$ and $\tilde G$ share the same covariance matrix $\Sigma$, the dispersion matrix of the stable vector $X$.
 
-**Proof**: The covariance $\mathbb E [\tilde G \tilde G^\text{T}]$ can be looked at entry-wise. We use the fact that $\sigma_i = \sqrt 2 \gamma_i$, for any marginal distribution $i$. Let $Z$ be a standard normal random variable. On the diagonal, clearly $\mathbb E [\tilde G_j^2] = 2\gamma_j^2 \mathbb E[(\Phi^{-1}(U_j))^2]= 2\gamma_j^2 \mathbb E[Z^2] = 2\gamma_j^2 = \sigma_j^2$ by construction. 
+**Proof**: This updated proof isn't very elegant, but at least it should make it clear why the statement above is true.
 
-On the off diagonal, for any $i \neq j$, we have: 
+The covariance $\mathbb E [\tilde G \tilde G^\text{T}]$ can be looked at entry-wise. Consider any pair of margins $i,j$ with $i<j$. Let $T_i(X) = \Phi^{-1}(F_{X_i}(X_i))$, the linked copula transform without the final coordinate rescaling. Define transformation $T(X) = (T_1(X_1), \dots, T_d(X_d))$. Note that this transformation can be thought of as applying the same transformation to iid random variables at each coordinate, since $T_i(X) = \Phi^{-1}(F(Y))$, where $Y = X_i/\gamma_i$ and $F$ is the standard symmetric stable cdf, since $X_i/\gamma_i \overset{d}{=} X_j/\gamma_j$.
 
-$$
-\begin{aligned}
-\mathbb E [\tilde G_i \tilde G_j] =& 2 \gamma_i \gamma_j \mathbb E [\Phi^{-1}(F_{X_i}(X_i))\Phi^{-1}(F_{X_j}(X_j))] \\
-&=2 \gamma_i \gamma_j \mathbb E \bigg[\Phi^{-1}\bigg(\Phi\bigg(\frac{X_i}{\sqrt W \sigma_i}\bigg)\bigg)\Phi^{-1}\bigg(\Phi\bigg(\frac{X_j}{\sqrt W \sigma_j}\bigg)\bigg)\bigg] \\
-&= 2 \gamma_i \gamma_j \mathbb E \bigg[\Phi^{-1}\bigg(\Phi\bigg(\frac{\sqrt W G_i}{\sqrt W \sigma_i}\bigg)\bigg)\Phi^{-1}\bigg(\Phi\bigg(\frac{\sqrt W G_j}{\sqrt W \sigma_j}\bigg)\bigg)\bigg] \\
-&= 2 \gamma_i \gamma_j \mathbb E \bigg[\Phi^{-1}\bigg(\Phi\bigg(\frac{ G_i}{\sigma_i}\bigg)\bigg)\Phi^{-1}\bigg(\Phi\bigg(\frac{G_j}{ \sigma_j}\bigg)\bigg)\bigg] \\
-&= \sigma_i \sigma_j \mathbb E \bigg[\frac{G_i G_j}{\sigma_i \sigma_j}\bigg] \\
-&= \mathbb E[G_i G_j] \\
-&= \sigma_{ij}
-\end{aligned}
-$$
+Note that the dispersion matrix $\Sigma_{ij}$ of $(Y_i, Y_j)$ is exactly the correlation matrix of $(G_i, G_j)$. 
 
-Putting these together, we reconstruct the original covariance matrix of $G$, and $\mathbb E[\tilde G \tilde G^\text T] = \mathbb E[GG^\text T] = \Sigma$
+Because $X$ and $Y$ are radially symmetric random variables (e.g. $(X_1, Y_1) \overset{d}{=} (-X_1, -Y_1)$), the coordinate-wise monotonic transformation $T((X_i, X_j))$ will result in a random vector that will also be radially symmetric. Because each marginal random variable is identical, the principal axes of the covariance matrix of $T((X_i, X_j))$ are also preserved, and components undergo equal scaling. This means that the eigenvalues of the correlation matrix of $T((X_i, X_j))$, which fully determing the correlation coefficient of are unchanged. Applying this for all such $i,j$, we have that the correlation matrix of $T(X)$ is the same as the correlation matrix of $G$. 
+
+Finally, we rescale each coordinate $i$ by $\tilde G_i = \sqrt{2}\gamma_iT(X_i)$ to match the component-wise variances of $G$, and so $G$ and $\tilde G$ share the same covariance matrix $\Sigma$, the dispersion matrix of the stable vector $X$.
 
 ## More Things
 
 - The deformation (as measured by the Jacobian) seems related to the KL-divergence of the starting and ending marginals. We might be doing the transformation that minimizes the KL-divergence between $X$ and $\tilde G$ while preserving both Gaussian marginals and covariance? 
 - Can we build a correction to force the dependence to be elliptical (getting the actual MLE)
 - Normalizing Flows could be an interesting way to make the final distribution more elliptical (and thus more efficient) by learning the transform to get from $\tilde G \rightarrow G$.
+
