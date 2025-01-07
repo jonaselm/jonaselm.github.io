@@ -98,7 +98,7 @@ Also, note that our new dependence structure maintains its symmetry about the pr
 
 The covariance $\mathbb E [\tilde G \tilde G^\text{T}]$ can be looked at entry-wise. Consider any pair of margins $i,j$ with $i<j$. Let $T_i(X) = \Phi^{-1}(F_{X_i}(X_i))$, the linked copula transform without the final coordinate rescaling. Define transformation $T(X) = (T_1(X_1), \dots, T_d(X_d))$. Note that this transformation can be thought of as applying the same transformation to iid random variables at each coordinate, since $T_i(X) = \Phi^{-1}(F(Y))$, where $Y = (X_i-\mu_i)/\gamma_i$ and $F$ is the standard symmetric stable cdf, since $(X_i-\mu_i)/\gamma_i \overset{d}{=} (X_j-\mu_j)/\gamma_j$.
 
-Note that the dispersion matrix $\Sigma_{ij}$ of $(Y_i, Y_j)$ is exactly the correlation matrix of $(G_i, G_j)$. 
+Note that the dispersion matrix $\Sigma_{ij}$ of $(Y_i, Y_j)$ is simply a scalar multiple of the correlation matrix of $(G_i, G_j)$. 
 
 Because $X$ and $Y$ are radially symmetric random variables (e.g. $(X_1, Y_1) \overset{d}{=} (-X_1, -Y_1)$), the coordinate-wise monotonic transformation $T((X_i, X_j))$ will result in a random vector that will also be radially symmetric, since radial symmetry is a property of the copula of $X$ (Nelsen, 1993), and copulas are invariant monotone transformations. Because each marginal random variable is identical, the principal axes of the covariance matrix of $T((X_i, X_j))$ are also preserved, and components undergo equal scaling. This means that the eigenvalues of the correlation matrix of $T((X_i, X_j))$, which fully determing the correlation coefficient of are unchanged. Applying this for all such $i,j$, we have that the correlation matrix of $T(X)$ is the same as the correlation matrix of $G$. 
 
