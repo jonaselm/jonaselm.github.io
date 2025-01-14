@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.553">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Research - Optimal RIE Derivation</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">Research</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./background.html"> 
+<span class="menu-text">Background</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./progress.html"> 
+<span class="menu-text">Current Progress</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./open_questions.html"> 
+<span class="menu-text">Open Questions</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+          <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#preliminaries" id="toc-preliminaries" class="nav-link active" data-scroll-target="#preliminaries">Preliminaries</a></li>
+  <li><a href="#basic-setup" id="toc-basic-setup" class="nav-link" data-scroll-target="#basic-setup">Basic Setup</a></li>
+  <li><a href="#oracle-estimator" id="toc-oracle-estimator" class="nav-link" data-scroll-target="#oracle-estimator">Oracle Estimator</a></li>
+  <li><a href="#adding-a-dash-of-rmt-eigenvector-overlaps" id="toc-adding-a-dash-of-rmt-eigenvector-overlaps" class="nav-link" data-scroll-target="#adding-a-dash-of-rmt-eigenvector-overlaps">Adding a Dash of RMT: Eigenvector Overlaps</a></li>
+  <li><a href="#another-dash-of-rmt-removing-dependence-on-sigma" id="toc-another-dash-of-rmt-removing-dependence-on-sigma" class="nav-link" data-scroll-target="#another-dash-of-rmt-removing-dependence-on-sigma">Another Dash of RMT: Removing Dependence on <span class="math inline">\(\Sigma\)</span></a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Optimal RIE Derivation</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>This comes from “A First Course in Random Matrix Theory”, with some more simple details worked out and specifically for the multiplicative case (e.g.&nbsp;a covariance matrix)… This explanation is hopefully self-contained and doesn’t rely on too much RMT knowledge.</p>
+<section id="preliminaries" class="level3">
+<h3 class="anchored" data-anchor-id="preliminaries">Preliminaries</h3>
+<p>Suppose we have a sample data matrix <span class="math inline">\(X \in \mathbb R^{T \times N}\)</span>, with <span class="math inline">\(X = Y\Sigma^{1/2}\)</span>, where <span class="math inline">\(Y\)</span> is a TxN matrix of standard Gaussian entries, and <span class="math inline">\(\Sigma\)</span> is the true covariance matrix of <span class="math inline">\(X\)</span>.</p>
+<p>Then <span class="math inline">\(W_q = \frac{1}{T}Y ^ \text T Y\)</span> is a wishart matrix with aspect ratio <span class="math inline">\(q=N/T\)</span>, and the sample covariance matrix follows the model <span class="math inline">\(E = \frac{1}{T}X^\text T X = \Sigma ^{1/2} {W_q \Sigma}^{1/2}\)</span>.</p>
+<p>We want to estiamte <span class="math inline">\(\Sigma\)</span> optimally.</p>
+</section>
+<section id="basic-setup" class="level3">
+<h3 class="anchored" data-anchor-id="basic-setup">Basic Setup</h3>
+<p>Leveraging its eigendecomposition, we can also writ the sample covariance matrix as the average of rank-1 matrices: <span class="math inline">\(E = \sum_{i=1}^N \lambda_i v_iv_i^{\text T}\)</span>. We want a Rotationally Invariant Estimator (RIE) of <span class="math inline">\(\hat\Sigma = \Xi(E)\)</span>, such that <span class="math inline">\(\Xi(OEO^{\text T})=O\Xi(E)O^{\text T}\)</span> – e.g.&nbsp;if the sample covariance matrix is rotated by some matrix O, then our estimation of <span class="math inline">\(\Sigma\)</span> will also be rotated the same way. The intuition (p.302) is that we don’t have priors on the eigenvectors of <span class="math inline">\(\Sigma\)</span>, so the sample eigenvectors provide at least as good a prior as any other choice we have. This means that our estimator has the same eigenvectors as <span class="math inline">\(E\)</span>:</p>
+<p><span class="math inline">\(\Xi(E) = \sum_{i=1}^N \xi_i v_iv_i^{\text T}\)</span>, and the goal now becomes to find the adjustment to the empirical eigenvalues <span class="math inline">\(\lambda_i\)</span> of <span class="math inline">\(\Sigma\)</span> to get the corresponding “optimally adjusted” eigenvalues <span class="math inline">\(\xi_i\)</span>.</p>
+</section>
+<section id="oracle-estimator" class="level3">
+<h3 class="anchored" data-anchor-id="oracle-estimator">Oracle Estimator</h3>
+<p>Here, “optimal” means we want to minimize squared Frobenius error (there are many practical reasons to choose this error for financial applications). So, the optimal choice of eigenvalues <span class="math inline">\(\xi_i\)</span> minimizes:</p>
+<p><span class="math display">\[
+\begin{aligned}
+||\Sigma - \hat \Sigma||_F^2 &amp;= \text{Tr}(\Xi(E) - \Sigma)^2 \\
+&amp; = \sum_{i=1}^N v_i^{\text T}(\Xi(E) - \Sigma)v_i &amp;(*) \\
+&amp;= \sum_{i=1}^N v_i^{\text T}(\Xi(E)^2 - 2\Xi(E)\Sigma + \Sigma^2)v_i \\
+&amp;= \sum_{i=1}^N \bigg( v_i^{\text T} \Xi(E)^2 v_i - 2v_i^{\text T}\Xi(E)\Sigma v_i +v_i^{\text T} \Sigma^2v_i \bigg) \\
+&amp;= \sum_{i=1}^N \bigg( v_i^{\text T} V\Omega^2V^{\text T} v_i - 2v_i^{\text T} V\Omega^2V^{\text T}\Sigma v_i +v_i^{\text T} \Sigma^2v_i \bigg) \\
+&amp;= \sum_{i=1}^N \bigg( \xi_i^2 - 2\xi_i v_i^{\text T}\Sigma v_i + v_i^{\text T} \Sigma^2v_i \bigg)
+\end{aligned}
+\]</span></p>
+<p>Where (*) holds as a property of a trace projected onto an orthonormal basis, and <span class="math inline">\(\Omega = \text{diag}(\xi_1, \dots, \xi_n)\)</span>, the eigenvalues of the estimator.</p>
+<p>Maximizing this quantity:</p>
+<p><span class="math display">\[
+\begin{aligned}
+\frac{\partial}{\partial \xi_k} \bigg( \xi_k^2 - 2\xi_k v_k^{\text T}\Sigma v_k + v_k^{\text T} \Sigma^2v_k \bigg) &amp;=  
+2\xi_k - 2 v_k\Sigma v_k^{\text T}\\
+\implies &amp; \xi_k^* = v_k\Sigma v_k^{\text T}
+\end{aligned}
+\]</span></p>
+<p>This <span class="math inline">\(\xi_k^*\)</span> is the Oracle Estimator for the true eigenvalues of <span class="math inline">\(\Sigma\)</span> given <span class="math inline">\(E\)</span>. Of course, this isn’t helpful since we don’t know the true <span class="math inline">\(\Sigma\)</span> in the first place. This is where Random Matrix Theory comes in – specifically, it’s how we recast our dependence on <span class="math inline">\(\Sigma\)</span> as a representation that depends only on our realization <span class="math inline">\(E\)</span> (the “large-dimension miracle”).</p>
+</section>
+<section id="adding-a-dash-of-rmt-eigenvector-overlaps" class="level3">
+<h3 class="anchored" data-anchor-id="adding-a-dash-of-rmt-eigenvector-overlaps">Adding a Dash of RMT: Eigenvector Overlaps</h3>
+<p>Rewriting the estimator by expanding it over the eigenvectors of <span class="math inline">\(\Sigma\)</span>:</p>
+<p><span class="math display">\[
+\begin{aligned}
+\xi_k &amp;= v_k\Sigma v_k^{\text T} \\
+&amp;=  v_k (\sum_{i=1}^N \mu_i u_i u_i^{\text T})v_k^{\text T} \\
+&amp;= \sum_{i=1}^N \mu_i v_k u_i u_i^{\text T}v_k^{\text T} \\
+&amp;= \sum_{i=1}^N \mu_i (u_i^{\text T}v_k)^2 \\
+&amp;\underset{N \rightarrow \infty}{\longrightarrow} \int \mu \Phi(\lambda_k, \mu) \rho_\Sigma(\mu) d\mu
+\end{aligned}
+\]</span></p>
+<p>Where above, <span class="math inline">\(\Phi(\lambda_k, \mu_j) = N\mathbb E[(v_i^{\text T}u_k)^2]\)</span>, with expectation taken over different realizations of the randomness. (See p.298 for an alternative interpretation). This expectation is necessary because unlike the eigenvalues of the sample covariance matrix, the eigenvectors will continue to flucuate when N goes to infinity, never reaching any kind of deterministic limit.</p>
+<p>Note from the above that if it just so happens that our sample covariance matrix <span class="math inline">\(E\)</span> has the same eigenvectors as <span class="math inline">\(\Sigma\)</span>, then <span class="math inline">\((u_i^{\text T}v_k)^2=1\)</span>, and the optimal estimate for <span class="math inline">\(\xi_k\)</span> is just the average eigenvalue of <span class="math inline">\(\Sigma\)</span>. In general, it depends on the squared “overlaps” between the eigenvectors of the sample covariance matrix and the true covariance matrix.</p>
+<p>These overlaps are related to the Resolvent of the sample covariance matrix as follows:</p>
+<p><span class="math display">\[
+\begin{aligned}
+G_E(z) &amp;= (zI_d - E)^{-1} \\
+&amp;= (zI_d - V\Lambda V^{\text T})^{-1}\\
+&amp;= (zI_d - V\Lambda V^{\text T})^{-1}\\
+&amp;= (V(z-\Lambda)V^{\text T})^{-1}\\
+&amp;= V(z-\Lambda)^{-1}V^{\text T} \\
+&amp;= \sum_{i=1}^N\frac{v_iv_i^{\text T}}{z-\lambda_i}\\
+\text{ So we get: }\\
+u^{\text T}G_E(z)u &amp;= \sum_{i=1}^N\frac{u^{\text T}v_iv_i^{\text T}u}{z-\lambda_i}\\
+&amp;= \sum_{i=1}^N\frac{(u^{\text T}v_i)^2}{z-\lambda_i}
+\end{aligned}
+\]</span></p>
+<p>For any <span class="math inline">\(u \in \mathbb R^N\)</span> and (typically, but not necessarily small) <span class="math inline">\(z \in \mathbb C\)</span>.</p>
+<p>The result above means that the projection of the Resolvent matrix onto a true eigenvector <span class="math inline">\(u\)</span> provides the weighted sum of squared overlaps (aka directional consistency) between the true and sample covariance matrices’ eigenvectors, where weighting is inversely proportional to the spectral distances <span class="math inline">\(z-\lambda_i\)</span> using only the sample eigenvalues (e.g.&nbsp;those from the noisy matrix). This acts as a sort of bridge between the eigendecomposition of our noisy matrix <span class="math inline">\(E\)</span> and <span class="math inline">\(\Sigma\)</span>.</p>
+<p>When our u is a unit vector (e.g.&nbsp;a vector extracted from our orthonormal basis of <span class="math inline">\(\Sigma\)</span>), observe that for all <span class="math inline">\(i\)</span> we have <span class="math inline">\((u^{\text T}v_i)^2\leq 1\)</span> and <span class="math inline">\(\sum_{i=1}^N(u^{\text T}v_i)^2=1\)</span>.</p>
+<p>Looking carefully at our new sum, we notice that the projection of the Resolvent matrix results in something resembling the Stieltjes transform, defined as <span class="math inline">\(\mathfrak g_E(z)=\frac{1}{N}\text{Tr}(G_E(z))=\frac{1}{N}\sum_{i=1}\frac{1}{z-\lambda_i}\)</span>. While the Stieltjes transform <span class="math inline">\(\mathfrak g_E(z)\)</span> averages over all eigenvalues with equal weight 1/N, the projection onto <span class="math inline">\(u\)</span> gives a weighted average where weights are the squared overlaps. So, we give more weight to directions where the eigenvectors match up well.</p>
+<p>Now, we can use the Stieltjes inversion formula on this weighted term:</p>
+<p><span class="math display">\[
+\begin{aligned}
+\Im \{\ u^{\text T}G_E(\lambda_i - i\eta)u \}\ &amp;\approx \pi \rho_E(\lambda_i)\Phi(\lambda_k, \mu_j) \\
+&amp;\implies \Phi(\lambda_k, \mu_j) \approx \frac{\Im \{\ u^{\text T}G_E(\lambda_i - i\eta)u \}\ }{\pi\rho_E(\lambda_i)}
+\end{aligned}
+\]</span></p>
+<p>In other words, we get the spectral density of E, with multiplicative scaling factors that encode the alignment of the eigenvectors. For example, if our eigenvectors are perfectly aligned, we give full weight to the sample eigenvalues. If they’re somehow orthogonal, the sample eigenvalue contributes zero weight to the density.</p>
+<p>Unfortunately, we still need to know the true eigenvectors in order to prject the Resolvent on to them…</p>
+</section>
+<section id="another-dash-of-rmt-removing-dependence-on-sigma" class="level3">
+<h3 class="anchored" data-anchor-id="another-dash-of-rmt-removing-dependence-on-sigma">Another Dash of RMT: Removing Dependence on <span class="math inline">\(\Sigma\)</span></h3>
+<p>Using the stuff we derived above, we can now rewrite our adjusted eigenvalues by plugging the Stieltjes representation of the projection into the limiting case:</p>
+<p><span class="math display">\[
+\begin{aligned}
+\xi_k = \sum_{i=1}^N \mu_i (u_i^{\text T}v_k)^2
+&amp;\longrightarrow \lim_{\eta \rightarrow 0^+} \sum_{i=1}^N \mu_i \frac{\Im \{\ u_i^{\text T}G_E(\lambda_i - i\eta)u_i \}\ }{\pi\rho_E(\lambda_i)} \\
+&amp;= \frac{1}{\pi\rho_E(\lambda_k)} \lim_{\eta \rightarrow 0^+} \Im \bigg\{\ \sum_{i=1}^N  \bigg(u_i^{\text T}\mu_i G_E(\lambda_i - i\eta)u_i \bigg)\bigg\}\ \\
+&amp;= \frac{1}{\pi\rho_E(\lambda_k)}\lim_{\eta \rightarrow 0^+} \Im\bigg[\text{Tr}(\Sigma G_E(\lambda_i - i\eta)) \bigg]\\
+&amp;=\frac{1}{\pi\rho_E(\lambda_k)}\lim_{\eta \rightarrow 0^+} \Im \bigg[\tau(\Sigma G_E(\lambda_i - i\eta))\bigg]
+\end{aligned}
+\]</span></p>
+<p>Here, the last line is an informal convention where the normalized trace is used by convention in place of the trace in the high-dimensional asymptotic setting to ensure convergence to a number, the second-to-last line comes from the fact that if we expand the trace by the eigenbasis of <span class="math inline">\(\Sigma\)</span>, we get Sigma back…</p>
+<p><strong>Okay, here’s where the magic happens:</strong> Continuing using the subordination equation (19.30), we write <span class="math inline">\(G_E(z) = Y(z)G_\Sigma(Z(z))\)</span>, where in the multiplicative case, <span class="math inline">\(Y(z) = Z(z)/z\)</span>.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Note, if we don’t want to take it at face value that this subordination relationship is true, let’s derive it…</strong></p>
+<p>Since our original setup involves multiplying <span class="math inline">\(E = \Sigma ^{1/2} {W_q \Sigma}^{1/2}\)</span>, we can use the S-transform for freely convoluted matrices (remember, <span class="math inline">\(\Sigma\)</span> is a deterministic matrix, so it is automatically mutually free w/r/t any random matrix): <span class="math inline">\(S_E(t) = S_\Sigma(t) S_{W_q}(t)\)</span>.</p>
+<p>For a Wishart matrix <span class="math inline">\(W_q\)</span>, the S-transform is explicitly known: <span class="math inline">\(S_{W_q}(t)=\frac{1}{1+qt}\)</span>. So now we have <span class="math inline">\(S_E(t) = S_\Sigma(t) \frac{1}{1+qt}\)</span>.</p>
+<p>Next, we leverage the t-transform, which is related to the Stieltjes transform <span class="math inline">\(\mathfrak{g}_E(z)\)</span>, of <span class="math inline">\(E\)</span> by: <span class="math inline">\(t(z)=z\mathfrak g_E(z)-1\)</span>. The S-transform is (by definition): <span class="math inline">\(S_\Sigma(t)= \frac{1+t_\Sigma(z)}{t_\Sigma(z)}\frac{z}{t_\Sigma(z)}\)</span>. Plugging this in:</p>
+<p><span class="math inline">\(S_E(t) = \frac{1+t_E(z)}{t_E(z)}\frac{z}{t_E(z)} = \frac{1+t_\Sigma(z)}{t_\Sigma(z)}\frac{z}{t_\Sigma(z)} \frac{1}{1+qt_E(z)}\)</span>.</p>
+<p>Simplifying the equality involving the right two terms, this becomes: <span class="math inline">\(t_E(z) = t_\Sigma\bigg( \frac{t_E(z)}{1+qt_E(z)}\bigg)\)</span>. Plugging back in the definition of the t-transform:</p>
+<p><span class="math inline">\(z\mathfrak g_E(z)-1 = Z\mathfrak g_\Sigma(Z)-1\)</span>, where <span class="math inline">\(Z=\frac{t_E(z)}{1+qt_E(z)}\)</span> (from the argument in <span class="math inline">\(t_\Sigma\)</span> above).</p>
+<p>So <span class="math inline">\(\mathfrak g_E(z) = \frac{1}{z}\frac{t_E(z)}{1+qt_E(z)}\mathfrak g_\Sigma(Z)\)</span>. Letting <span class="math inline">\(Y(z)=Z(z)/z=\frac{1}{z}\frac{t_E(z)}{1+qt_E(z)}\)</span>, we finally get <span class="math inline">\(\mathfrak g_E(z) = Y(z)\mathfrak g_\Sigma(Z(z))\)</span>.This is weaker than the original claim from the book that the resolvent matrices are related by this subordination relationship, but it’s sufficient to prove the next part.</p>
+</div>
+</div>
+<p>Plugging this into the expression above:</p>
+<p><span class="math display">\[
+\begin{aligned}
+\tau(\Sigma G_E(z))=Y\tau(\Sigma G_\Sigma(Z))&amp;=Y\tau\bigg((\Sigma-Z\mathbf I_d + Z \mathbf I_d)(Z \mathbf I_d - C)^{-1}\bigg) \\
+&amp;=YZ\mathfrak g_\Sigma(Z)-Y \\
+&amp;= Z\mathfrak g_E(z) -Y(z)
+\end{aligned}
+\]</span></p>
+<p>This is an expression that does not expliticly depend on <span class="math inline">\(\Sigma\)</span> anymore.</p>
+<p>This means we have a general form for the multiplicative RIE eigenvalues that doesn’t depend on anything more than the multiplicative form of the matrix <span class="math inline">\(E\)</span> and freeness:</p>
+<p><span class="math display">\[
+\begin{aligned}
+\xi_k &amp;= \frac{1}{\pi\rho_E(\lambda_k)}\lim_{\eta \rightarrow 0^+} Z(z_k)\mathfrak g_E(z_k) -Y(z_k), &amp; z_k := \lambda_k-i\eta
+\end{aligned}
+\]</span></p>
+<p>Now, all of the quantities on the right hand side can be estimated from data. For our specific case of Wishart noise, it’s appealing to use the subordination relation of (13.46) using the T-matrix, which is an alternative form of the resolvent, and not to be confused with the T transform: <span class="math inline">\(T_E(z) = zG_E(z)-I\)</span>. The T-transform has its own subordination relation for multiplication of this form, making it a little easier to deal with due to the leading <span class="math inline">\(z\)</span> term, and a wonder why we didn’t start with that in the first place… <span class="math inline">\(T_E(z)=T_\Sigma[zS_W(t_E(z))]\)</span>. Rewriting (19.29) using this:</p>
+<p><span class="math display">\[
+\begin{aligned}
+\xi_k &amp;=\frac{1}{\pi\rho_E(\lambda_k)}\lim_{\eta \rightarrow 0^+} \Im \bigg[\tau(\Sigma G_E(\lambda_i - i\eta))\bigg] \\
+&amp;= \frac{1}{\pi\rho_E(\lambda_k)}\lim_{\eta \rightarrow 0^+} \Im \bigg[\tau(\Sigma \frac{1}{z}T_\Sigma[zS_W(t_E(z))])\bigg]\\
+&amp;=\frac{\lim_{\eta \rightarrow 0^+} \Im \bigg[\tau(\Sigma T_\Sigma[zS_W(t_E(z))])\bigg]}{\lim_{\eta \rightarrow 0^+} \Im t_E(z)} &amp; z:=\lambda -i\eta
+\end{aligned}
+\]</span></p>
+<p>Hopefully you’ve been reading the book carefully at this point, since this derivation is left out but uses the not-so-obvious special T-version of the Sokhotski-Plemelj formula: <span class="math inline">\(\lim_{\eta \rightarrow 0^+} \Im t(x-i\eta) = \pi x \rho(x)\)</span> found in (11.90)</p>
+<p>Simplifying the numerator, using the fact that <span class="math inline">\(T_\Sigma(z)=\Sigma G_\Sigma(z) =\Sigma(zI-\Sigma)^{-1}\)</span> (11.91):</p>
+<p><span class="math display">\[
+\begin{aligned}
+\tau(\Sigma T_\Sigma[zS_W(t_E(z))]) &amp;= \tau(\Sigma^2(zS_W(t)I-\Sigma)^{-1})\\
+&amp;= \tau(\Sigma(\Sigma - zS_W(t)I+zS_W(t)I)(zS_W(t)I-\Sigma)^{-1})\\
+&amp;= \tau(\Sigma)+zS_W(t)t_\Sigma(zS_W(t)) \\
+&amp;= \tau(\Sigma)+zS_W(t)t_E(z)\\
+&amp;\implies \Im[\tau(\Sigma)+zS_W(t)t_E(z)] = \Im[zS_W(t)t_E(z)]
+\end{aligned}
+\]</span></p>
+<p>FINALLY, putting all of this together:</p>
+<p><span class="math display">\[
+\begin{aligned}
+\xi_k
+&amp;=\frac{\lim_{\eta \rightarrow 0^+} \Im \bigg[\tau(\Sigma T_\Sigma[zS_W(t_E(z))])\bigg]}{\lim_{\eta \rightarrow 0^+} \Im t_E(z)} &amp; z:=\lambda -i\eta \\
+&amp;= \lambda \frac{\lim_{\eta \rightarrow 0^+} \Im[S_W(t)t_E(z)]}{\lim_{\eta \rightarrow 0^+} \Im t_E(z)}
+\end{aligned}
+\]</span></p>
+<p>This is true for any multiplicative noise process where the noise has the S-transform described by <span class="math inline">\(S_W(z)\)</span> and the estimated properties of <span class="math inline">\(E\)</span> are gleaned from the sample covariance matrix.</p>
+<p>Returning to our original assumptions, if <span class="math inline">\(W=W_q\)</span> is a Wishart matrix, then <span class="math inline">\(S_{W_q}=(1+qt)^{-1}\)</span>. In the bulk region <span class="math inline">\(\lambda_- &lt; \lambda &lt; \lambda_+\)</span> of the eigenvalue spectrum, <span class="math inline">\(t=t_E(z)\)</span> is complex with nonzero imaginary part.</p>
+<p>Next, observet that <span class="math inline">\(\Im\bigg[\frac{t}{1+qt}\bigg]=\Im\bigg[\frac{t(1+qt^*)}{|1+qt|^2}\bigg]=\Im\bigg[\frac{t+q|t|^2}{|1+qt|^2}\bigg]=\frac{1}{|1+qt|^2}\Im t\)</span></p>
+<p>Plugging this in:</p>
+<p><span class="math display">\[
+\begin{aligned}
+\xi(\lambda) &amp;= \lambda \frac{\lim_{\eta \rightarrow 0^+} \Im[\frac{t}{1+qt}]}{\lim_{\eta \rightarrow 0^+} \Im t} \\
+&amp;= \frac{\lambda}{|1+qt_E(\lambda-i\eta)|^2}\bigg|_{\eta \rightarrow 0^+}\\
+&amp;= \frac{\lambda}{|1+-q+q\mathfrak g_E(\lambda-i\eta)|^2}\bigg|_{\eta \rightarrow 0^+}
+\end{aligned}
+\]</span></p>
+<p>That’s it.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
