@@ -1,0 +1,23 @@
+---
+title: "Sub-Gaussian Stable Distribution Derivation"
+---
+
+This comes from the book "Stable Non-Gaussian Random Processes" by Samorodnitsky and Taqqu. 
+
+**Proposition 2.5.2:** The sub-Gaussian $\alpha$-stable random vector $X$ defined as $X = (A^{1/2}G_1, A^{1/2}G_2, \dots, A^{1/2}G_d)$ with zero-mean Gaussian vector $G = (G_1, G_2, \dots, G_d)$ and $A \sim S_{\alpha/2}((\cos\frac{\pi \alpha}{4})^{2/\alpha}, 1, 0)$ independent of $G$, has characteristic function:
+
+$$
+\mathbb E[\exp\{i\theta^{\text T}X\}]= \exp(-\frac{1}{2}(\theta^{\text T}\Sigma\theta)^{\alpha/2}) = \exp\left(-\frac{1}{2} \sum_{i=1}^d \sum_{j=1}^d \theta_i \theta_j R_{ij}^{\alpha/2}\right)
+$$
+
+*Proof:*
+
+First, note that the Laplace transform of $A$, $\mathbb E \exp(-t A) = \exp(-t^{\alpha/2})$ for $t \geq 0$. (Prop 1.2.12)
+
+Then:
+
+$$
+\begin{aligned}
+\mathbb E[\exp\{i\theta^{\text T}X\}] &= \mathbb E \mathbb E [iA^{1/2}G]
+\end{aligned}
+$$

@@ -31,7 +31,7 @@ In the case of elliptically symmetric stable distributions (including the Gaussi
 
 **To summarize in one step:**
 
-$\hat \Sigma = \frac{1}{n-1}\sum_{i=1}^n \tilde G_i^T\tilde G_i$.
+$\hat{\Sigma} = \frac{1}{n-1} \tilde{\mathbf{G}}^{\text{T}} \tilde{\mathbf{G}}$.
 
 Where $\tilde G_j = \sqrt 2 \gamma_j \Phi^{-1}(\hat F_{X_{j}}(X_{j}))$, $j = 1, \dots, d$ is the $j$-th column of the approximately-Gaussian sample matrix $\tilde G$, with:
 

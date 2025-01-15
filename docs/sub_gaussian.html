@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Research - Linked Copula Transform Estimator</title>
+<title>Research - Sub-Gaussian Stable Distribution Derivation</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -19,40 +19,6 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
-}
-/* CSS for syntax highlighting */
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -179,26 +145,14 @@ window.Quarto = {
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">On this page</h2>
-   
-  <ul>
-  <li><a href="#orignal-idea" id="toc-orignal-idea" class="nav-link active" data-scroll-target="#orignal-idea">Orignal Idea</a></li>
-  <li><a href="#procedure" id="toc-procedure" class="nav-link" data-scroll-target="#procedure">Procedure</a></li>
-  <li><a href="#some-practical-results" id="toc-some-practical-results" class="nav-link" data-scroll-target="#some-practical-results">Some Practical Results</a></li>
-  <li><a href="#why-this-works" id="toc-why-this-works" class="nav-link" data-scroll-target="#why-this-works">Why This Works</a></li>
-  <li><a href="#some-more-formal-results" id="toc-some-more-formal-results" class="nav-link" data-scroll-target="#some-more-formal-results">Some More Formal Results</a></li>
-  <li><a href="#more-things" id="toc-more-things" class="nav-link" data-scroll-target="#more-things">More Things</a></li>
-  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
-  </ul>
-</nav>
+        
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Linked Copula Transform Estimator</h1>
+<h1 class="title">Sub-Gaussian Stable Distribution Derivation</h1>
 </div>
 
 
@@ -215,91 +169,21 @@ window.Quarto = {
 </header>
 
 
-<section id="orignal-idea" class="level2">
-<h2 class="anchored" data-anchor-id="orignal-idea">Orignal Idea</h2>
-<p>A <a href="https://en.wikipedia.org/wiki/Copula_(statistics)">copula</a> is a multivariate CDF that encodes the dependence of a random vector. They provide a way to uncouple the distribution of the marginals from the dependence structure. Because the copulae of X and G in our problem formulation are both parameterized by <span class="math inline">\(\textbf R\)</span>, the correlation matrix that corresponds to <span class="math inline">\(\Sigma\)</span>, the covariance matrix of G/dispersion matrix of X, the MLE of this parameter from the copula distribution itself may be more easily computed than that of the stable vector. (Note: This is probably not true)</p>
-<p>I realized that we don’t actually need to calculate the MLE for the copula – since we have the estimated marginals of the stable vector X, we can “push forward” from our empirical copula to Gaussian marginals, since their parameters are now fully specified (the standard deviation of any marginal <span class="math inline">\(i\)</span> is <span class="math inline">\(\sigma_i = \sqrt 2 \gamma_i\)</span>, where <span class="math inline">\(\gamma_i\)</span> is the corresponding stable scale). From there, we can calculate the sample covariance matrix of this final distribution to get our MLE of <span class="math inline">\(\Sigma\)</span>.</p>
-<p>Clearly, this doesn’t work in both directions. If <span class="math inline">\(\Sigma = I_d\)</span>, then the multivariate Gaussian has independent marginals, and an independence copula which has uniform (flat) density. Since an elliptical stable distribution can’t have independent components, the resulting stable vector will be “star shaped”, not spherical.</p>
-<p>Putting a stable copula on Gaussian marginals, the resulting distribution no longer has an elliptical dependence structure due to the higher tail dependence imposed by the stable copula. Even so, this new distribution shares the covariance matrix of <span class="math inline">\(G\)</span>, and is an approximate-MLE method in the sense that the new (stable copula + Gaussian marginals) distribution is approximately multivariate Gaussian, deviating more as <span class="math inline">\(\alpha \rightarrow 0\)</span> deforms the level curves further from an ellipse. (Proofs of these facts below)</p>
-</section>
-<section id="procedure" class="level2">
-<h2 class="anchored" data-anchor-id="procedure">Procedure</h2>
-<p>The procedure for what I’m calling the <strong>Linked Copula Transform Estimator</strong> is as follows. The marginal distributions of our <span class="math inline">\(X\)</span> and <span class="math inline">\(G\)</span> vectors are linked in the sense that knowing the parameters of <span class="math inline">\(X\)</span> fully specifies the Gaussian marginals: the scale paramter is related by <span class="math inline">\(\sigma = \sqrt 2 \gamma\)</span>, and the location parameter is shared.</p>
-<p>The copula of <span class="math inline">\(X\)</span> is a d-dimensional CDF on <span class="math inline">\([0,1]^d\)</span> with uniform marginals that captures all of the dependence (but not the scale) between <span class="math inline">\(X\)</span> and <span class="math inline">\(G\)</span>. The random vector</p>
-<p><span class="math inline">\((U_1, \dots, U_d) = (F_{X_1}(x_1), \dots, F_{X_d}(x_d))\)</span></p>
-<p>converts realizations <span class="math inline">\(x\)</span> to a sample from the copula of <span class="math inline">\(F_{\textbf X}\)</span>.</p>
-<p>In the case of elliptically symmetric stable distributions (including the Gaussian), the copula encodes (and is parameterized by) the shape of the correlation matrix defined by <span class="math inline">\((\sqrt{\text{diag}(\Sigma)})^{-1}\Sigma(\sqrt{\text{diag}(\Sigma)})^{-1}\)</span>. Since <span class="math inline">\(X\)</span> has a stable copula, it encodes the same elliptical shape as the Gaussian copula of G. The procedure to estiamte this covariance matrix is as follows:</p>
-<ol type="1">
-<li>Estimate each marginal distribution via numerical univarite MLE. This is quick and accurate and can be made even faster through paralellization.</li>
-<li>Transform each observation <span class="math inline">\(X_i\)</span> into a uniform vector <span class="math inline">\(U_i\)</span> drawn from the copula distribution of <span class="math inline">\(X\)</span> by pushing it through its CDF (which is again available numerically)</li>
-<li>Transform each observation <span class="math inline">\(U_i\)</span> into <span class="math inline">\(\tilde G_i\)</span> by pushing each marginal through the appropriately scaled inverse Gaussian CDF/erf: <span class="math inline">\(\tilde G_{ij} = 2\gamma_j\text{erf}^{-1}(2*U_{ij}-1)\)</span>.</li>
-<li>The resulting data matrix <span class="math inline">\(\tilde G\)</span> now has Gaussian marginals corresponding to those of <span class="math inline">\(X\)</span>, with a the empirical copula of <span class="math inline">\(X\)</span>. This distribution is approximately multivariate normal and <span class="math inline">\(\Sigma\)</span> can now be estimated via MLE in closed form as the sample covariance matrix.</li>
-</ol>
-<p><strong>To summarize in one step:</strong></p>
-<p><span class="math inline">\(\hat{\Sigma} = \frac{1}{n-1} \tilde{\mathbf{G}}^{\text{T}} \tilde{\mathbf{G}}\)</span>.</p>
-<p>Where <span class="math inline">\(\tilde G_j = \sqrt 2 \gamma_j \Phi^{-1}(\hat F_{X_{j}}(X_{j}))\)</span>, <span class="math inline">\(j = 1, \dots, d\)</span> is the <span class="math inline">\(j\)</span>-th column of the approximately-Gaussian sample matrix <span class="math inline">\(\tilde G\)</span>, with:</p>
-<ul>
-<li><span class="math inline">\(\hat F_{X_{j}}\)</span> the <span class="math inline">\(\alpha\)</span>-stable distribution function of marginal <span class="math inline">\(j\)</span> with parameters determined via direct MLE,</li>
-<li><span class="math inline">\(\Phi^{-1}\)</span> the inverse standard normal CDF,</li>
-<li><span class="math inline">\(\gamma_j\)</span> the scale parameter of <span class="math inline">\(\hat F_{X_{j}}\)</span>,</li>
-<li>and <span class="math inline">\(\tilde G_j\)</span> denoting the <span class="math inline">\(j\)</span>-th column of the approximately-Gaussian sample matrix <span class="math inline">\(\tilde G\)</span>.</li>
-</ul>
-<p>(Note that <span class="math inline">\(\tilde G\)</span> is mean zero by construction.)</p>
-</section>
-<section id="some-practical-results" class="level2">
-<h2 class="anchored" data-anchor-id="some-practical-results">Some Practical Results</h2>
-<p>I tested the LCTE across the following paramters:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>n_samples <span class="op">=</span> [<span class="dv">100</span>, <span class="dv">200</span>, <span class="dv">500</span>, <span class="dv">1000</span>, <span class="dv">2500</span>, <span class="dv">5000</span>] </span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>dimensions <span class="op">=</span> [<span class="dv">2</span>, <span class="dv">5</span>, <span class="dv">10</span>, <span class="dv">50</span>, <span class="dv">75</span>, <span class="dv">150</span>, <span class="dv">250</span>, <span class="dv">300</span>] </span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>alphas <span class="op">=</span> [<span class="fl">0.5</span>, <span class="fl">1.0</span>, <span class="fl">1.5</span>, <span class="fl">1.9</span>] </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>The LTCE was benchmarked against direct numerical MLE implemented in the <code>stable</code> R package via a python wrapper. I believe that this implementation of stable MLE is the current state of the art. I measured normalized error - <span class="math inline">\(||\hat \Sigma - \Sigma||/||\Sigma||\)</span> - for both the LTCE and the direct MLE, against both the true covariance matrix of <span class="math inline">\(G\)</span> as well as the sample covariance matrix calculated on the “latent” G, which is stored as part of the test class. This test was time-consuming because of the extremely slow estimation of the direct MLE approach in high dimensions. To save time, I only performed a single estimate at each unique set of parameters, but reporting a statistic of many such estimates seems worthwhile. Since there doesn’t seem to be a dramatic difference across the choice of n_samples, I averaged these results in the plots below.</p>
-<p>Looking at estimator performance, the LTCE seems to reliably outperform the direct MLE by approximately 10% - 20%.</p>
-<p><img src="images/copula_error.png" class="img-fluid"></p>
-<p>Some likely reasons for this performance are below.</p>
-<p>Even more significant are the computational advantages of the LTCE. Because costly numerical integration only happens in the univariate marginals, it’s computationally inexpensive and scales linearly with the dimension. It’s clear that this approach dramatically outperforms direct MLE for dimensions larger than about 5:</p>
-<p><img src="images/copula_time.png" class="img-fluid"></p>
-</section>
-<section id="why-this-works" class="level2">
-<h2 class="anchored" data-anchor-id="why-this-works">Why This Works</h2>
-<p>The speed improvements are obvious, but I think the LTCE achieves lower estimator error because even though the tail dependence results in a non-elliptical dependence structure (e.g.&nbsp;it’s a deformed elliptical, similar to the t-copula case), <span class="math inline">\(\tilde G\)</span> and <span class="math inline">\(G\)</span> share a covariance matrix (proof below). Thus, the sample covariance matrix of <span class="math inline">\(\tilde G\)</span> is an unbiased estimator of <span class="math inline">\(\Sigma\)</span>.</p>
-<p>Better yet, in finite samples, this estimator is more efficient than the stable MLE due to the simple fact that the variance of the stable MLE is only guaranteed to be asymptotically finite, whereas the Linked Copula Transform Estimator has finite variance for any <span class="math inline">\(n\)</span>, since the transformation via the stable CDF induces finite support to the sample, and the transform back to Gaussian random variables doesn’t violate this. As a consequence, the LCTE has finite variance even if the marginal parameter estimates are misspecified.</p>
-<p>Moreover, since the stable copula is empirical rather than parameteric, relatively smaller samples are unlikely to see extreme events under which the deforemations of the elliptical dependence structure are worst. In other words, the transformed sample is likely to be much more elliptical in shape than it appears analytically (e.g.&nbsp;via the Jacobian below), resulting in better estimates.</p>
-<p>Thinking about what’s actually going on using the Jacobian of the transformation in 2 dimensions:</p>
+<p>This comes from the book “Stable Non-Gaussian Random Processes” by Samorodnitsky and Taqqu.</p>
+<p><strong>Proposition 2.5.2:</strong> The sub-Gaussian <span class="math inline">\(\alpha\)</span>-stable random vector <span class="math inline">\(X\)</span> defined as <span class="math inline">\(X = (A^{1/2}G_1, A^{1/2}G_2, \dots, A^{1/2}G_d)\)</span> with zero-mean Gaussian vector <span class="math inline">\(G = (G_1, G_2, \dots, G_d)\)</span> and <span class="math inline">\(A \sim S_{\alpha/2}((\cos\frac{\pi \alpha}{4})^{2/\alpha}, 1, 0)\)</span> independent of <span class="math inline">\(G\)</span>, has characteristic function:</p>
 <p><span class="math display">\[
-J =
-\begin{bmatrix}
-\gamma_1\frac{f_{X_1}(X_1)}{\phi(\Phi^{-1}(F_{X_1}(X_1)))} &amp; 0 \\[2ex]
-0 &amp; \gamma_2\frac{f_{X_2}(X_2)}{\phi(\Phi^{-1}(F_{X_2}(X_2)))}
-\end{bmatrix}
+\mathbb E[\exp\{i\theta^{\text T}X\}]= \exp(-\frac{1}{2}(\theta^{\text T}\Sigma\theta)^{\alpha/2}) = \exp\left(-\frac{1}{2} \sum_{i=1}^d \sum_{j=1}^d \theta_i \theta_j R_{ij}^{\alpha/2}\right)
 \]</span></p>
-<p>Clearly, we have a nonlinear transformation happening in the principal axes, so shape is only maintained if the Jacobian is a multiple of the identity matrix. (I think) this can only happen when we start with a Gaussian… but obviously, the Jacobian is small when <span class="math inline">\(\alpha\)</span> is near 2. One consequence of this is that we’re closer to an elliptical dependence structure (and thus <span class="math inline">\(\tilde G\)</span> is closer to a multivariate normal) when <span class="math inline">\(\alpha\)</span> is close to 2. As <span class="math inline">\(\alpha \rightarrow 2\)</span> I believe LCTE converges to the MLE for <span class="math inline">\(\Sigma\)</span>.</p>
-<p>Also, note that our new dependence structure maintains its symmetry about the principal axes, since it’s clear that <span class="math inline">\(J(X) = J(-X)\)</span>. Actually, the Jacobian is completely invariant to the sign of any component, preserving radial symmetry of the distribution despite the non-elliptical deformation.</p>
-</section>
-<section id="some-more-formal-results" class="level2">
-<h2 class="anchored" data-anchor-id="some-more-formal-results">Some More Formal Results</h2>
-<p><strong>Lemma</strong>: The stable copula applied to any (fixed) stable marginals with <span class="math inline">\(\alpha_1 \neq \alpha_2\)</span> cannot be ellptically symmetric.</p>
-<p><strong>Proof</strong>: This is immediate from the Jacobian of the transformation. Since J is diagonal, it acts on the coordinate axes, but these are fixed by the marginal distribution parameters. Elliptical symmetry can only be maintained then if <span class="math inline">\(J(X) \propto I_d\)</span> for all values of <span class="math inline">\(X\)</span>. Clearly, this only happens if the two marginals share the same distribution up to scale and translation.</p>
-<p><strong>Lemma</strong>: <span class="math inline">\(G\)</span> and <span class="math inline">\(\tilde G\)</span> share the same covariance matrix <span class="math inline">\(\Sigma\)</span>, the dispersion matrix of the stable vector <span class="math inline">\(X\)</span>.</p>
-<p><strong>Proof</strong>: This updated proof isn’t very elegant, but at least it should make it clear why the statement above is true.</p>
-<p>The covariance <span class="math inline">\(\mathbb E [\tilde G \tilde G^\text{T}]\)</span> can be looked at entry-wise. Consider any pair of margins <span class="math inline">\(i,j\)</span> with <span class="math inline">\(i&lt;j\)</span>. Let <span class="math inline">\(T_i(X) = \Phi^{-1}(F_{X_i}(X_i))\)</span>, the linked copula transform without the final coordinate rescaling. Define transformation <span class="math inline">\(T(X) = (T_1(X_1), \dots, T_d(X_d))\)</span>. Note that this transformation can be thought of as applying the same transformation to iid random variables at each coordinate, since <span class="math inline">\(T_i(X) = \Phi^{-1}(F(Y))\)</span>, where <span class="math inline">\(Y = (X_i-\mu_i)/\gamma_i\)</span> and <span class="math inline">\(F\)</span> is the standard symmetric stable cdf, since <span class="math inline">\((X_i-\mu_i)/\gamma_i \overset{d}{=} (X_j-\mu_j)/\gamma_j\)</span>.</p>
-<p>Note that the dispersion matrix <span class="math inline">\(\Sigma_{ij}\)</span> of <span class="math inline">\((Y_i, Y_j)\)</span> is simply a scalar multiple of the correlation matrix of <span class="math inline">\((G_i, G_j)\)</span>.</p>
-<p>Because <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> are radially symmetric random variables (e.g.&nbsp;<span class="math inline">\((X_1, Y_1) \overset{d}{=} (-X_1, -Y_1)\)</span>), the coordinate-wise monotonic transformation <span class="math inline">\(T((X_i, X_j))\)</span> will result in a random vector that will also be radially symmetric, since radial symmetry is a property of the copula of <span class="math inline">\(X\)</span> (Nelsen, 1993), and copulas are invariant monotone transformations. Because each marginal random variable is identical, the principal axes of the covariance matrix of <span class="math inline">\(T((X_i, X_j))\)</span> are also preserved, and components undergo equal scaling. This means that the eigenvalues of the correlation matrix of <span class="math inline">\(T((X_i, X_j))\)</span>, which fully determing the correlation coefficient of are unchanged. Applying this for all such <span class="math inline">\(i,j\)</span>, we have that the correlation matrix of <span class="math inline">\(T(X)\)</span> is the same as the correlation matrix of <span class="math inline">\(G\)</span>.</p>
-<p>Finally, we rescale each coordinate <span class="math inline">\(i\)</span> by <span class="math inline">\(\tilde G_i = \sqrt{2}\gamma_iT(X_i)\)</span> to match the component-wise variances of <span class="math inline">\(G\)</span>, and so <span class="math inline">\(G\)</span> and <span class="math inline">\(\tilde G\)</span> share the same covariance matrix <span class="math inline">\(\Sigma\)</span>, the dispersion matrix of the stable vector <span class="math inline">\(X\)</span>.</p>
-</section>
-<section id="more-things" class="level2">
-<h2 class="anchored" data-anchor-id="more-things">More Things</h2>
-<ul>
-<li>The deformation (as measured by the Jacobian) seems related to the KL-divergence of the starting and ending marginals. We might be doing the transformation that minimizes the KL-divergence between <span class="math inline">\(X\)</span> and <span class="math inline">\(\tilde G\)</span> while preserving both Gaussian marginals and covariance?</li>
-<li>Can we build a correction to force the dependence to be elliptical (getting the actual MLE)</li>
-<li>Normalizing Flows could be an interesting way to make the final distribution more elliptical (and thus more efficient) by learning the transform to get from <span class="math inline">\(\tilde G \rightarrow G\)</span>.</li>
-</ul>
-</section>
-<section id="references" class="level2">
-<h2 class="anchored" data-anchor-id="references">References</h2>
-<p>Roger B. Nelsen (1993) Some concepts of bivariate symmetry, Journal of Nonparametric Statistics, 3:1, 95-101, DOI: 10.1080/10485259308832574</p>
+<p>Proof:</p>
+<p>First, note that the Laplace transform of <span class="math inline">\(A\)</span>, <span class="math inline">\(\mathbb E \exp(-t A) = \exp(-t^{\alpha/2})\)</span> for <span class="math inline">\(t \geq 0\)</span>. (Prop 1.2.12)</p>
+<p>Then:</p>
+<p><span class="math display">\[
+\begin{aligned}
+\mathbb E[\exp\{i\theta^{\text T}X\}] &amp;= \mathbb E \mathbb E [iA^{1/2}G]
+\end{aligned}
+\]</span></p>
 
 
-</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
