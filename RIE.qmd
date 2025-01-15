@@ -206,7 +206,7 @@ $$
 \begin{aligned}
 \xi(\lambda) &= \lambda \frac{\lim_{\eta \rightarrow 0^+} \Im[\frac{t}{1+qt}]}{\lim_{\eta \rightarrow 0^+} \Im t} \\
 &= \frac{\lambda}{|1+qt_E(\lambda-i\eta)|^2}\bigg|_{\eta \rightarrow 0^+}\\
-&= \frac{\lambda}{|1+-q+q\mathfrak g_E(\lambda-i\eta)|^2}\bigg|_{\eta \rightarrow 0^+}
+&= \frac{\lambda}{|1+-q+q\lambda\mathfrak g_E(\lambda-i\eta)|^2}\bigg|_{\eta \rightarrow 0^+}
 \end{aligned} 
 $$
 
