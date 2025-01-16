@@ -7,7 +7,7 @@ This comes from the book "Stable Non-Gaussian Random Processes" by Samorodnitsky
 **Proposition 2.5.2:** The sub-Gaussian $\alpha$-stable random vector $X$ defined as $X = (A^{1/2}G_1, A^{1/2}G_2, \dots, A^{1/2}G_d)$ with zero-mean Gaussian vector $G = (G_1, G_2, \dots, G_d)$ and $A \sim S_{\alpha/2}((\cos\frac{\pi \alpha}{4})^{2/\alpha}, 1, 0)$ independent of $G$, has characteristic function:
 
 $$
-\mathbb E[\exp\{i\theta^{\text T}X\}]= \exp(-\frac{1}{2}(\theta^{\text T}\Sigma\theta)^{\alpha/2}) = \exp\left(-\frac{1}{2} \sum_{i=1}^d \sum_{j=1}^d \theta_i \theta_j R_{ij}^{\alpha/2}\right)
+\mathbb E[\exp\{i\theta^{\text T}X\}]=\exp\left(-\bigg|\frac{1}{2} \sum_{i=1}^d \sum_{j=1}^d \theta_i \theta_j R_{ij}\bigg|^{\alpha/2}\right) = \exp(-(\frac{1}{2}\theta^{\text T}\Sigma\theta)^{\alpha/2}) 
 $$
 
 *Proof:*
@@ -20,6 +20,6 @@ $$
 \begin{aligned}
 \mathbb E[\exp\{i\theta^{\text T}X\}] &= \mathbb E_A\mathbb E_G \exp[iA^{1/2}G|A] &\text{(Conditioning on A)}\\
 &= \mathbb E_A\exp[-\frac{1}{2}A\theta^{\text T}\Sigma\theta] &\text{(Gaussian CF)}\\
-&= \exp(-\frac{1}{2}(\theta^{\text T}\Sigma\theta)^{\alpha/2}) &\text{(Laplace transform of } A)
+&= \exp(-(\frac{1}{2}\theta^{\text T}\Sigma\theta)^{\alpha/2}) &\text{(Laplace transform of } A)
 \end{aligned}
 $$
