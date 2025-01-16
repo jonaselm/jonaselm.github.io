@@ -12,12 +12,14 @@ $$
 
 *Proof:*
 
-First, note that the Laplace transform of $A$, $\mathbb E \exp(-t A) = \exp(-t^{\alpha/2})$ for $t \geq 0$. (Prop 1.2.12)
+First, note that by construction, the Laplace transform of $A$, $\mathbb E \exp(-t A) = \exp(-t^{\alpha/2})$ for $t \geq 0$. (See Prop 1.2.12 for why this is true, and the more general Laplace transform as a function of the scale parameter).
 
-Then:
+Then this is seen easily by conditioning the characteristic function of the proposed random variable on A:
 
 $$
 \begin{aligned}
-\mathbb E[\exp\{i\theta^{\text T}X\}] &= \mathbb E \mathbb E [iA^{1/2}G]
+\mathbb E[\exp\{i\theta^{\text T}X\}] &= \mathbb E_A\mathbb E_G \exp[iA^{1/2}G|A] &\text{(Conditioning on A)}\\
+&= \mathbb E_A\exp[-\frac{1}{2}A\theta^{\text T}\Sigma\theta] &\text{(Gaussian CF)}\\
+&= \exp(-\frac{1}{2}(\theta^{\text T}\Sigma\theta)^{\alpha/2}) &\text{(Laplace transform of } A)
 \end{aligned}
 $$
