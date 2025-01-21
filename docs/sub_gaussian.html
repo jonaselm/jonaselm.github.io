@@ -179,7 +179,8 @@ window.Quarto = {
 <p>Then this is seen easily by conditioning the characteristic function of the proposed random variable on A:</p>
 <p><span class="math display">\[
 \begin{aligned}
-\mathbb E[\exp\{i\theta^{\text T}X\}] &amp;= \mathbb E_A\mathbb E_G \exp[iA^{1/2}G|A] &amp;\text{(Conditioning on A)}\\
+\mathbb E[\exp\{i\theta^{\text T}X\}] &amp;= \mathbb  E[\exp\{i\theta^{\text T}A^{1/2}G\}] \\
+&amp;= \mathbb E_A\mathbb E_G \exp[i\theta^{\text T}A^{1/2}G|A] &amp;\text{(Conditioning on A)}\\
 &amp;= \mathbb E_A\exp[-\frac{1}{2}A\theta^{\text T}\Sigma\theta] &amp;\text{(Gaussian CF)}\\
 &amp;= \exp(-(\frac{1}{2}\theta^{\text T}\Sigma\theta)^{\alpha/2}) &amp;\text{(Laplace transform of } A)
 \end{aligned}

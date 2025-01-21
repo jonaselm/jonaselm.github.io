@@ -18,7 +18,8 @@ Then this is seen easily by conditioning the characteristic function of the prop
 
 $$
 \begin{aligned}
-\mathbb E[\exp\{i\theta^{\text T}X\}] &= \mathbb E_A\mathbb E_G \exp[iA^{1/2}G|A] &\text{(Conditioning on A)}\\
+\mathbb E[\exp\{i\theta^{\text T}X\}] &= \mathbb  E[\exp\{i\theta^{\text T}A^{1/2}G\}] \\
+&= \mathbb E_A\mathbb E_G \exp[i\theta^{\text T}A^{1/2}G|A] &\text{(Conditioning on A)}\\
 &= \mathbb E_A\exp[-\frac{1}{2}A\theta^{\text T}\Sigma\theta] &\text{(Gaussian CF)}\\
 &= \exp(-(\frac{1}{2}\theta^{\text T}\Sigma\theta)^{\alpha/2}) &\text{(Laplace transform of } A)
 \end{aligned}
