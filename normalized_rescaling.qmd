@@ -5,7 +5,7 @@ format: html
 
 ### Procedure
 
-The procedure for the normalized rescaling estimator is as follows. Given a matrix of (stable) observations $\mathbf X = [X_{*,1}, \dots, X_{*,d}] \in \mathbb R^{n \times d}$ with each row representing a distinct realization and each of the $d$ columns a dimension of the dataset: 
+The procedure for the normalized projective estimator is as follows. Given a matrix of (stable) observations $\mathbf X = [X_{*,1}, \dots, X_{*,d}] \in \mathbb R^{n \times d}$ with each row representing a distinct realization and each of the $d$ columns a dimension of the dataset: 
 
 1) Estimate marginal parameters of each column $X_{*,j}$ $j=1, \dots, d$ via univariate stable MLE.
 2) Center each margin by subtracting its location paramter estimate: $X_{*,j}^{(c)} = X_{*,j} - \mu_j^{MLE}$
