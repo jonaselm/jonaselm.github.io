@@ -203,8 +203,8 @@ In testing, this new approach works incredibly well, besting direct MLE calculat
 
 Results and detailed procedures here here: [Linked Copula Transform Estimator](copula_transform.qmd).
 
-## Normalized LCTE
+## Normalized Projective Estimator
 
+Details here: [Normalized Projective Estimator](normalized_rescaling.qmd)
 
-
-[Last Updated on January 6, 2024]
+[Last Updated on February 13, 2024]
