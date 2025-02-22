@@ -259,19 +259,17 @@ window.Quarto = {
 \frac{1}{d}\|\Lambda^{1/2}Z\|^2 &amp; = \frac{1}{d} \sum_{i=1}^d \lambda_i Z_i^2 \\
 &amp;= \frac{1}{d}\sum_{i=1}^d (\lambda_i Z_i^2 - \lambda_i + \lambda_i)\\
 &amp;= \frac{1}{d}\sum_{i=1}^d \lambda_i(Z_i^2 - 1)+ \frac{1}{d}\sum_{i=1}^d \lambda_i \\
-&amp;\underset{d \rightarrow \infty}{\overset{\text{a.s.}}{\longrightarrow}} 0+\frac{1}{d}\sum_{i=1}^d \lambda_i \\
-&amp;= \frac{1}{d}\text{Tr}(\Sigma) \\
-&amp;= \bar{\sigma}^2
+&amp;=\frac{1}{d}\sum_{i=1}^d \lambda_i(Z_i^2 - 1)+ \frac{1}{d}\text{Tr}(\Sigma) \\
+&amp;\underset{d \rightarrow \infty}{\overset{\text{a.s.}}{\longrightarrow}} 0+ \bar{\sigma}^2\\
 \end{aligned}
 \]</span></p>
-<p>The argument that <span class="math inline">\(\frac{1}{d}\sum_{i=1}^d \lambda_i(Z_i^2 - 1)\underset{d \rightarrow \infty}{\overset{\text{a.s.}}{\longrightarrow}} 0\)</span> follows from Kolmogorov’s Criterion for the SLLN with independent but non-identically distributed random variables, since the sufficient conditions <span class="math inline">\(Y_i:= \lambda_i(Z_i^2 - 1)\)</span>, <span class="math inline">\(\mathbb E Y=0\)</span> and <span class="math inline">\(\sum_i^\infty \text{Var}(Y_i)/i^2 = \sum_i^\infty 2\lambda_i^2/i^2 \leq \sum_i^\infty 2M^2/i^2 =2M^2\frac{\pi^2}{6}&lt;\infty\)</span> are met.</p>
-<p>Here, <span class="math inline">\(\bar{\sigma}^2\)</span> is the average variance of the components of <span class="math inline">\(G\)</span>. Applying the continuous mapping theorem, we get <span class="math inline">\(\frac{1}{d}\|\Lambda^{1/2}Z\|^2 \underset{d \rightarrow \infty}{\overset{\text{a.s.}}{\longrightarrow}} \bar{\sigma}^2 \implies \frac{\|\Lambda^{1/2}Z\|}{\sqrt d}\underset{d \rightarrow \infty}{\overset{\text{a.s.}}{\longrightarrow}}\bar{\sigma}\)</span>.</p>
+<p>The argument that <span class="math inline">\(\frac{1}{d}\sum_{i=1}^d \lambda_i(Z_i^2 - 1)\underset{d \rightarrow \infty}{\overset{\text{a.s.}}{\longrightarrow}} 0\)</span> follows from Kolmogorov’s Criterion for the SLLN with independent but non-identically distributed random variables, since the sufficient conditions <span class="math inline">\(Y_i:= \lambda_i(Z_i^2 - 1)\)</span>, <span class="math inline">\(\mathbb E Y_i=0\)</span> and <span class="math inline">\(\sum_i^\infty \text{Var}(Y_i)/i^2 = \sum_i^\infty 2\lambda_i^2/i^2 \leq \sum_i^\infty 2M^2/i^2 =2M^2\frac{\pi^2}{6}&lt;\infty\)</span> are met.</p>
+<p>Here, <span class="math inline">\(\bar{\sigma}^2\)</span> is the average variance of the components of <span class="math inline">\(G\)</span>. In a more Random Matrix Theory context, it’s also the normalized trace of <span class="math inline">\(\Sigma\)</span>: <span class="math inline">\(\tau(\Sigma)\)</span>, using the notation of Potters &amp; Bouchaud. By the assumptions on the eigenvalues of <span class="math inline">\(\Sigma\)</span>, for any choice of <span class="math inline">\(d\)</span>, this is a constant with <span class="math inline">\(m \leq \bar{\sigma}^2 \leq M\)</span>. Taking square roots and applying the continuous mapping theorem, we get <span class="math inline">\(\frac{1}{d}\|\Lambda^{1/2}Z\|^2 \underset{d \rightarrow \infty}{\overset{\text{a.s.}}{\longrightarrow}} \bar{\sigma}^2 \implies \frac{\|\Lambda^{1/2}Z\|}{\sqrt d \bar{\sigma}}\underset{d \rightarrow \infty}{\overset{\text{a.s.}}{\longrightarrow}} 1\)</span>.</p>
 <p>Note for any fixed indices <span class="math inline">\(i,j\)</span>, the bivariate vector elliptical vector <span class="math inline">\((X_i, X_j)\)</span> doesn’t depend on <span class="math inline">\(d\)</span>, nor does the corresponding latent Gaussian bivariate vector <span class="math inline">\((G_i, G_j)\)</span> – (the same is true for arbitrary fixed dimension <span class="math inline">\(k\)</span>). In other words, the components are the marginal distributions, and don’t change by adding more dimensions to the vector.</p>
 <p>Putting this all together, we get:</p>
 <p><span class="math display">\[
 \begin{aligned}
-\frac{(X_i, X_j)}{\|X\|} &amp;= \frac{(G_i, G_j)}{\|\Lambda^{1/2}Z\|} \underset{d \rightarrow \infty}{\overset{\text{a.s.}}{\longrightarrow}} \frac{(G_i, G_j)}{\sqrt d \bar \sigma} \\
-\implies &amp;\sqrt d \bar \sigma \frac{(X_i, X_j)}{\|X\|} \underset{d \rightarrow \infty}{\overset{\text{a.s.}}{\longrightarrow}} (G_i, G_j)
+\sqrt d \bar \sigma \frac{(X_i, X_j)}{\|X\|} =\sqrt d  \bar \sigma \frac{(G_i, G_j)}{\|\Lambda^{1/2}Z\|}  \underset{d \rightarrow \infty}{\overset{\text{a.s.}}{\longrightarrow}} (G_i, G_j)
 \end{aligned}
 \]</span></p>
 <p>Now, consider that for the full vector <span class="math inline">\(G\)</span>, we can write: <span class="math display">\[

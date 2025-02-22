@@ -68,15 +68,14 @@ $$
 \frac{1}{d}\|\Lambda^{1/2}Z\|^2 & = \frac{1}{d} \sum_{i=1}^d \lambda_i Z_i^2 \\
 &= \frac{1}{d}\sum_{i=1}^d (\lambda_i Z_i^2 - \lambda_i + \lambda_i)\\
 &= \frac{1}{d}\sum_{i=1}^d \lambda_i(Z_i^2 - 1)+ \frac{1}{d}\sum_{i=1}^d \lambda_i \\
-&\underset{d \rightarrow \infty}{\overset{\text{a.s.}}{\longrightarrow}} 0+\frac{1}{d}\sum_{i=1}^d \lambda_i \\
-&= \frac{1}{d}\text{Tr}(\Sigma) \\
-&= \bar{\sigma}^2
+&=\frac{1}{d}\sum_{i=1}^d \lambda_i(Z_i^2 - 1)+ \frac{1}{d}\text{Tr}(\Sigma) \\
+&\underset{d \rightarrow \infty}{\overset{\text{a.s.}}{\longrightarrow}} 0+ \bar{\sigma}^2\\
 \end{aligned}
 $$
 
-The argument that $\frac{1}{d}\sum_{i=1}^d \lambda_i(Z_i^2 - 1)\underset{d \rightarrow \infty}{\overset{\text{a.s.}}{\longrightarrow}} 0$ follows from Kolmogorov's Criterion for the SLLN with independent but non-identically distributed random variables, since the sufficient conditions $Y_i:= \lambda_i(Z_i^2 - 1)$, $\mathbb E Y=0$ and $\sum_i^\infty \text{Var}(Y_i)/i^2 = \sum_i^\infty 2\lambda_i^2/i^2 \leq \sum_i^\infty 2M^2/i^2 =2M^2\frac{\pi^2}{6}<\infty$ are met.
+The argument that $\frac{1}{d}\sum_{i=1}^d \lambda_i(Z_i^2 - 1)\underset{d \rightarrow \infty}{\overset{\text{a.s.}}{\longrightarrow}} 0$ follows from Kolmogorov's Criterion for the SLLN with independent but non-identically distributed random variables, since the sufficient conditions $Y_i:= \lambda_i(Z_i^2 - 1)$, $\mathbb E Y_i=0$ and $\sum_i^\infty \text{Var}(Y_i)/i^2 = \sum_i^\infty 2\lambda_i^2/i^2 \leq \sum_i^\infty 2M^2/i^2 =2M^2\frac{\pi^2}{6}<\infty$ are met.
 
-Here, $\bar{\sigma}^2$ is the average variance of the components of $G$. Applying the continuous mapping theorem, we get $\frac{1}{d}\|\Lambda^{1/2}Z\|^2 \underset{d \rightarrow \infty}{\overset{\text{a.s.}}{\longrightarrow}} \bar{\sigma}^2 \implies \frac{\|\Lambda^{1/2}Z\|}{\sqrt d}\underset{d \rightarrow \infty}{\overset{\text{a.s.}}{\longrightarrow}}\bar{\sigma}$. 
+Here, $\bar{\sigma}^2$ is the average variance of the components of $G$. In a more Random Matrix Theory context, it's also the normalized trace of $\Sigma$: $\tau(\Sigma)$, using the notation of Potters & Bouchaud. By the assumptions on the eigenvalues of $\Sigma$, for any choice of $d$, this is a constant with $m \leq \bar{\sigma}^2 \leq M$. Taking square roots and applying the continuous mapping theorem, we get $\frac{1}{d}\|\Lambda^{1/2}Z\|^2 \underset{d \rightarrow \infty}{\overset{\text{a.s.}}{\longrightarrow}} \bar{\sigma}^2 \implies \frac{\|\Lambda^{1/2}Z\|}{\sqrt d \bar{\sigma}}\underset{d \rightarrow \infty}{\overset{\text{a.s.}}{\longrightarrow}} 1$. 
 
 Note for any fixed indices $i,j$, the bivariate vector elliptical vector $(X_i, X_j)$ doesn't depend on $d$, nor does the corresponding latent Gaussian bivariate vector $(G_i, G_j)$ -- (the same is true for arbitrary fixed dimension $k$). In other words, the components are the marginal distributions, and don't change by adding more dimensions to the vector.
 
@@ -84,8 +83,7 @@ Putting this all together, we get:
 
 $$
 \begin{aligned}
-\frac{(X_i, X_j)}{\|X\|} &= \frac{(G_i, G_j)}{\|\Lambda^{1/2}Z\|} \underset{d \rightarrow \infty}{\overset{\text{a.s.}}{\longrightarrow}} \frac{(G_i, G_j)}{\sqrt d \bar \sigma} \\ 
-\implies &\sqrt d \bar \sigma \frac{(X_i, X_j)}{\|X\|} \underset{d \rightarrow \infty}{\overset{\text{a.s.}}{\longrightarrow}} (G_i, G_j)
+\sqrt d \bar \sigma \frac{(X_i, X_j)}{\|X\|} =\sqrt d  \bar \sigma \frac{(G_i, G_j)}{\|\Lambda^{1/2}Z\|}  \underset{d \rightarrow \infty}{\overset{\text{a.s.}}{\longrightarrow}} (G_i, G_j)
 \end{aligned}
 $$
 
