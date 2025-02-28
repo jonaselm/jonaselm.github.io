@@ -38,11 +38,21 @@ The Normalized Projective approach does seem to edge out Rotated MLE in most cas
 
 Nevertheless, this led to the idea -- "Rotated Projective" -- of rotating to a new basis with approximately equal scale in all coordinate directions (this should be the minimum error estimate). Since the projective approach only needs to estimate $\text{Tr}(\Sigma)$, which is invariant under rotations, this approach should work reasonably well, even if the rotation isn't optimal.
 
-In simulation, the Rotated Projective Estimator does seem to edge out the others (at least in total error), but not by much (this advantage is so small that on the plots above, it covers the projective approach). Some of this may be because the eigenvalues of the true covariance matrices being used for simulation are uniformly distributed. Inutitively, the equi-scale rotation should do best when there's a big difference between top and bottom eigenvalues. I'm taking a closer look at more of a spiked covariance model. It's possible that a sufficiently spiked model will break the assumptions of the Projective approach too much (see Explanation below).
+In simulation, the Rotated Projective Estimator does seem to edge out the others (at least in total error), but not by much (this advantage is so small that on the plots above, it covers the projective approach). The benefits of this approach seem to disappear in the spiked covariance model. 
 
-But this approach of rotating to an approximately equi-scale basis and doing MLE in that basis should be doable for the Rotated MLE approach as well. 
+When the covariance matrix is spiked, the projective method is disadvantaged when the largest eigenvalues are dominant relative to the total variance of the data. The workaround is that we can work in a higher ambient dimension and only retain the relevant submatrix of the larger full-dimensional covariance matrix.
 
-Working on these are the next steps...
+To test this, I used the covariance matrix from our internal U.S. equity factor model, and combined it with estimated factor exposures and specific risk with 6,422 dimensions (factors plus individual securities). Because specific risk is uncorrelated by assumption and amounts to approximately 60% of any security's total variance, working in a higher dimensional ambient space guarantees that we diminish the effects of larger eigenfactors, and get concentration of measure to our projected Gaussian. We want to retain only some subset of this ambient dimension (e.g. the factors themselves). The results of some simple/early testing are below, and are consistent with the uniform case:
+
+![](images/projective_error_spiked.png)
+
+As expected, we also get convergence to the latent Gaussian sample covariance matrix even when n is small relative to d:
+
+![](images/projective_error_to_gaussian_spiked.png)
+
+As the sample size increases, the performance gap gets closed relative to the projective method. Likewise, rotated MLE outperforms the projective method when the covariance matrix is spiked but the ambient dimension is low. Practically speaking, these aren't regimes we're operating in, but these are the limitations of this approach. We may want to talk about both projective and rotated MLE, since both give convergence guarantees to the latent Gaussian SCM but rotated MLE may be preferable if we're working in relatively low dimensions with many observations. 
+
+We may also be able to create artificial observations that help acheive the concentration of measure effects that make the projection method work. The key is to have linearly independent components with known moments. If we can do some nonlinear transformation to make new columns with linearly independent noise, these random variables can be arbitrary as long as they're subgaussian.
 
 ### Explanation
 
@@ -61,7 +71,9 @@ $$
 \end{aligned}
 $$
 
-Looking at terms in the denominator:
+Define the normalized trace from (Potters & Bouchaud, 2020) as $\tau(\mathbf A) := \frac{1}{d}\mathbb E[\text{Tr}(\mathbf A)]$. Then for a covariance matrix as described above, $\tau(\Sigma)$ is finite and $m \leq \tau(\Sigma) \leq M$. Note that we can also interpret the normalized trace as the average variance of the components of $G$, $\bar{\sigma}^2$ from the procedure described above.
+
+Looking more closely at the norm from the expression above:
 
 $$
 \begin{aligned}
@@ -69,13 +81,14 @@ $$
 &= \frac{1}{d}\sum_{i=1}^d (\lambda_i Z_i^2 - \lambda_i + \lambda_i)\\
 &= \frac{1}{d}\sum_{i=1}^d \lambda_i(Z_i^2 - 1)+ \frac{1}{d}\sum_{i=1}^d \lambda_i \\
 &=\frac{1}{d}\sum_{i=1}^d \lambda_i(Z_i^2 - 1)+ \frac{1}{d}\text{Tr}(\Sigma) \\
+&= \frac{1}{d}\sum_{i=1}^d \lambda_i(Z_i^2 - 1)+ \bar{\sigma}^2\\
 &\underset{d \rightarrow \infty}{\overset{\text{a.s.}}{\longrightarrow}} 0+ \bar{\sigma}^2\\
 \end{aligned}
 $$
 
 The argument that $\frac{1}{d}\sum_{i=1}^d \lambda_i(Z_i^2 - 1)\underset{d \rightarrow \infty}{\overset{\text{a.s.}}{\longrightarrow}} 0$ follows from Kolmogorov's Criterion for the SLLN with independent but non-identically distributed random variables, since the sufficient conditions $Y_i:= \lambda_i(Z_i^2 - 1)$, $\mathbb E Y_i=0$ and $\sum_i^\infty \text{Var}(Y_i)/i^2 = \sum_i^\infty 2\lambda_i^2/i^2 \leq \sum_i^\infty 2M^2/i^2 =2M^2\frac{\pi^2}{6}<\infty$ are met.
 
-Here, $\bar{\sigma}^2$ is the average variance of the components of $G$. In a more Random Matrix Theory context, it's also the normalized trace of $\Sigma$: $\tau(\Sigma)$, using the notation of Potters & Bouchaud. By the assumptions on the eigenvalues of $\Sigma$, for any choice of $d$, this is a constant with $m \leq \bar{\sigma}^2 \leq M$. Taking square roots and applying the continuous mapping theorem, we get $\frac{1}{d}\|\Lambda^{1/2}Z\|^2 \underset{d \rightarrow \infty}{\overset{\text{a.s.}}{\longrightarrow}} \bar{\sigma}^2 \implies \frac{\|\Lambda^{1/2}Z\|}{\sqrt d \bar{\sigma}}\underset{d \rightarrow \infty}{\overset{\text{a.s.}}{\longrightarrow}} 1$. 
+Taking square roots and applying the continuous mapping theorem, we get $\frac{1}{d}\|\Lambda^{1/2}Z\|^2 \underset{d \rightarrow \infty}{\overset{\text{a.s.}}{\longrightarrow}} \bar{\sigma}^2 \implies \frac{\|\Lambda^{1/2}Z\|}{\sqrt d \bar{\sigma}}\underset{d \rightarrow \infty}{\overset{\text{a.s.}}{\longrightarrow}} 1$. 
 
 Note for any fixed indices $i,j$, the bivariate vector elliptical vector $(X_i, X_j)$ doesn't depend on $d$, nor does the corresponding latent Gaussian bivariate vector $(G_i, G_j)$ -- (the same is true for arbitrary fixed dimension $k$). In other words, the components are the marginal distributions, and don't change by adding more dimensions to the vector.
 
@@ -120,4 +133,18 @@ The fact that the denominator in the normalized vector simplifies to a Gaussian 
 
 If we're interested in how much error this approximation adds to the process, a reasonable thing to look at might be the probability of a large distance between the estimator versus the latent Gaussian sample covariance matrix, $\Sigma_G$ (if it were observable). This simplifies to:
 
-[Need to add more details, but this simplifies to a quadratic form that one can apply Hanson-Wright to (Vershynin Thm 6.2.1) to show this error has sub-Gaussian concentration for small deviations. This explains the rapid convergence to the latent Gaussian SCM in my simulations.]
+$$
+\begin{aligned}
+\mathbb P\bigg(\bigg \| d\bar\sigma^2 \frac{XX^\top}{\|X\|^2} - GG^\top\bigg \|_F \geq t \bigg) & = \mathbb P\bigg(\bigg \| d\bar\sigma^2 \frac{GG^\top}{\|G\|^2} - GG^\top\bigg \|_F \geq t \bigg) \\ 
+&= \mathbb P\bigg(\bigg \| GG^\top \bigg( \frac{d\bar\sigma^2}{\|G\|^2} - 1 \bigg) \bigg \|_F \geq t \bigg) \\
+&= \mathbb P\bigg( \| GG^\top \|_F \bigg| \frac{d\bar\sigma^2}{\|G\|^2} - 1 \bigg|  \geq t \bigg) \\
+&= \mathbb P\bigg( \| G \|^2 \bigg| \frac{d\bar\sigma^2}{\|G\|^2} - 1 \bigg|  \geq t \bigg) \\
+&= \mathbb P( | \|G\|^2 - d \bar\sigma^2 |  \geq t ) \\
+&= \mathbb P( | \|\Sigma^{1/2}Z\|^2 - d \bar\sigma^2 |  \geq t ) \\
+&= \mathbb P( | (\Sigma^{1/2}Z)^\top(\Sigma^{1/2}Z) - d \bar\sigma^2 |  \geq t ) \\
+&= \mathbb P( | Z^\top \Sigma Z - d \bar\sigma^2 |  \geq t ) \\
+&\leq 2\exp\bigg[-c \min\bigg(\frac{t^2}{\|\Sigma\|_F^2}, \frac{t}{\|\Sigma\|_{\text{op}}}\bigg)\bigg]
+\end{aligned}
+$$
+
+for some constant $c>0$. The last line is a direct plug of the Hanson-Wright inequality. 
