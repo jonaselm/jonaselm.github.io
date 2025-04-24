@@ -1,0 +1,225 @@
+---
+title: "Projective Estimator"
+format: html
+---
+
+### Data Model and Setup
+
+**Note:** The notation here is a little confusing -- I want to distinguish between the estimation dimension and the ambient dimension, but there's potentially a better way to do it without introducing so much notation. 
+
+Let $\{X^{(d)}\}$ be a sequence of centered random vectors where $X^{(d)} \in \mathbb R^d$, having corresponding dispersion/shape matrices $\{\Sigma^{(d)}\}$, $d \geq 1$ such that:
+
+- The leading principal $k \times k$ submatrix of $\Sigma^{(d)}$ equals $\Sigma^{(k)}$ for all $k \leq d$. 
+- For any $d$, $\Sigma^{(d)} \in \mathbb R^{d \times d}$ is well-behaved in the sense that it is positive definite and its eigenvalues $\lambda_i$, $i=1, \dots, d$ are uniformly bounded so that there exist two constants $m, M >0$ independent of $d$ such that $m \leq \lambda_i \leq M$ for all $i$. Additionally, assume that the average eigenvalue (or normalized trace in a random matrix theory context) converges to a fixed constant: $\frac{1}{d}\text{tr}(\Sigma^{(d)})\rightarrow \tau>0$ as $d \rightarrow \infty$.
+
+Define $X=X_{[k]}$ as the first $k$ coordinates of $X^{(d)}$. Then, as defined above for any $k \leq d$, the dispersion matrix of $X_{[k]}$ is simply $\Sigma^{(k)}$, irrespective of the ambient dimension $d$.
+
+Assume that each $X$ has the familiar stochastic representation $X= \sqrt{W}G$, where $W \sim S_{\alpha/2}(\cos(\pi \alpha/4)^{(2/\alpha)},1, 0;1)$, a maximally skewed scalar random variable with support on the positive real numbers, and $G \sim N(0, \Sigma^{(d)})$, a multivariate normal random vector independent of $W$ with covariance matrix $\Sigma^{(d)}$.
+
+Under this setup, each $X \sim \alpha$-SG($\Sigma^{(d)}$) -- an elliptical stable random vector centered at the origin, whose shape matrix is the covariance matrix of the latent Gaussian vector $G$ (e.g. the characteristic function of $X$ is $\mathbb E[\exp\{i\theta^{\text T}X\}]= \exp(-(\frac{1}{2}\theta^{\text T}\Sigma^{(d)}\theta)^{\alpha/2})$ (Samorodnitsky and Taqqu, Proposition 2.5.2))
+
+We observe $n$ such i.i.d. realized vectors via a data matrix $\mathbf X \in \mathbb{R}^{n\times d}$ so that each row is one $d$-dimensional observation. We are interested in estimating the shape matrix of $X$ for some $k \leq d$. In other words, our estimation dimension of interest may be smaller than the ambient dimension of our random vector. Without loss of generality, assume that the leading dimensions are the estimation dimensions.
+
+::: {.callout-note}
+This  $X_i = \sqrt{W}G$ setup is a so-called [normal variance mixture](https://en.wikipedia.org/wiki/Normal_variance-mean_mixture). In the literature, W may be referred to as a subordinator (stable distribution literature), or a texture or a 2nd-order modular variate (signal processing). The distribution of this random variable determines the distribution of $X$. For example if $W$ is inverse-gamma distributed rather than stable, $X$ has a multivariate t distribution. This estimation approach works for any normal variance-mean mixture.
+:::
+
+ Some examples of situations where this comes up include:
+
+- **Investing**: Estimating the dependence structure for a portfolio of $k=50$ stocks that trade in a market of $d=6,500$ total securities.
+- **Genomics**: Estimating pathway-level dependence across $k=100$ genes from genome-wide expression profiles across $d=20,000$ genes. 
+
+Rather than discard these additional ambient dimensions (as is typical), because the same subordinator acts on each realization across the whole ambient space, we can use them to project an approximately Gaussian $k$-vector and get a better estimate of $\Sigma^{(k)}$ under the right conditions. 
+
+### Estimation Procedure
+
+1) Estimate marginal scale parameters $\gamma_j^{MLE}$, $j = 1, \dots, d$ via maximum likelihood.  
+2) Use these marginal estimates to estimate the trace of the full ambient-dimensional latent covariance matrix: $\widehat{\text{tr}(\Sigma^{(d)})} = d\hat\tau := 2\sum_{j=1}^d  {\gamma_j^{MLE}}^2$ (Note: the 2 prefactor comes from differences between standard parameterizations of a Gaussian vs. general stable random vector used in the STABLE software). 
+3) Normalize each row of $\mathbf X$ by its Euclidean norm: $\tilde X_{i,*} = X_{i,*}/\|X_{i,*}\|$, $i = 1, \dots, n$
+4) Retain just the estimation dimensions: $\tilde{\mathbf G} :=  \mathbf{\tilde{X}_{[k]}} \in \mathbb R^{n \times k}$.
+5) The dispersion matrix estimate is the sample covariance matrix of $\tilde{\mathbf G}$, rescaled by the estimated trace of the full-ambient-dimension latent covariance matrix:  $\hat \Sigma = \frac{d\hat\tau}{n}\tilde{\mathbf G}^{\top}\tilde{\mathbf G}$
+
+
+### Theoretical Properties
+
+Returning to the representation $X = \sqrt{W}G$, the normalized stable vector $X$ is equal to the normalized version of the corresponding latent Gaussian vector $G$.
+
+To see why, note that from the eigendecomposition of $\Sigma$, we can write $\Sigma = O\Lambda O^\top = O\Lambda^{1/2}\Lambda^{1/2} O^\top$. Call $\Sigma^{1/2} :=O\Lambda^{1/2}$. Let $Z \sim N(0, I_d)$ so that $G = \Sigma^{1/2}Z$.
+
+Then we can write:
+
+$$
+\begin{aligned}
+\frac{X}{\|X\|} = \frac{\sqrt WG}{\|\sqrt WG\|} = \frac{\sqrt WG}{\|\sqrt W\Sigma^{1/2}Z\|} &= \frac{\sqrt WG}{\sqrt W\|O\Lambda^{1/2}Z\|} = \frac{G}{\|\Lambda^{1/2}Z\|}
+\end{aligned}
+$$
+
+Looking more closely at the norm from the expression above:
+
+$$
+\begin{aligned}
+\frac{1}{d}\|\Lambda^{1/2}Z\|^2 & = \frac{1}{d} \sum_{i=1}^d \lambda_i Z_i^2 \\
+&= \frac{1}{d}\sum_{i=1}^d (\lambda_i Z_i^2 - \lambda_i + \lambda_i)\\
+&= \frac{1}{d}\sum_{i=1}^d \lambda_i(Z_i^2 - 1)+ \frac{1}{d}\sum_{i=1}^d \lambda_i \\
+&=\frac{1}{d}\sum_{i=1}^d \lambda_i(Z_i^2 - 1)+ \frac{1}{d}\text{tr}(\Sigma^{(d)}) \\
+&= \frac{1}{d}\sum_{i=1}^d \lambda_i(Z_i^2 - 1)+ \tau\\
+&\underset{d \rightarrow \infty}{\overset{\text{a.s.}}{\longrightarrow}} 0+ \tau\
+\end{aligned}
+$$
+
+The argument that $\frac{1}{d}\sum_{i=1}^d \lambda_i(Z_i^2 - 1)\underset{d \rightarrow \infty}{\overset{\text{a.s.}}{\longrightarrow}} 0$ follows from Kolmogorov's Criterion for the SLLN with independent but non-identically distributed random variables, since the sufficient conditions $Y_i:= \lambda_i(Z_i^2 - 1)$, $\mathbb E Y_i=0$ and $\sum_i^\infty \text{Var}(Y_i)/i^2 = \sum_i^\infty 2\lambda_i^2/i^2 \leq \sum_i^\infty 2M^2/i^2 =2M^2\frac{\pi^2}{6}<\infty$ are met.
+
+Taking square roots and applying the continuous mapping theorem, we get $\frac{1}{d}\|\Lambda^{1/2}Z\|^2 \underset{d \rightarrow \infty}{\overset{\text{a.s.}}{\longrightarrow}} \tau \implies \frac{\|\Lambda^{1/2}Z\|}{\sqrt {d \tau}}\underset{d \rightarrow \infty}{\overset{\text{a.s.}}{\longrightarrow}} 1$. 
+
+This means that for any fixed indices $i,j$, we get:
+
+$$
+\begin{aligned}
+\sqrt {d \tau} \frac{(X_i, X_j)}{\|X\|} =\sqrt {d \tau}\frac{(G_i, G_j)}{\|\Lambda^{1/2}Z\|}  \underset{d \rightarrow \infty}{\overset{\text{a.s.}}{\longrightarrow}} (G_i, G_j)
+\end{aligned}
+$$
+
+Now, consider that for the estimation vector $G':=G_{[k]}$, we can write: 
+$$
+\mathbb E [G'G'^\top] = 
+\begin{pmatrix}
+\mathbb{E}[G_1'^2] & \mathbb{E}[G_1'G_2'] & \cdots & \mathbb{E}[G_1'G_k'] \\
+\mathbb{E}[G_2'G_1'] & \mathbb{E}[G_2'^2] & \cdots & \mathbb{E}[G_2'G_k'] \\
+\vdots & \vdots & \ddots & \vdots \\
+\mathbb{E}[G_k'G_1'] & \mathbb{E}[G_k'G_2'] & \cdots & \mathbb{E}[G_k'^2]
+\end{pmatrix}
+$$
+
+So that we can recover $\mathbb E [G'G'^\top] =\Sigma^{(k)}$ without ever looking at more than two components of $G$ at a time. While the matrix $\Sigma^{(k)}$ can be allowed to grow with $d$ if we wish, each entry is independent of the ambient dimension. 
+
+Note that $(\frac{Z_i}{\|Z\|})^2$, $i=1, \dots, d$ is uniformly integrable, since in the uncorrelated case, a uniform random variable on the sphere $\mathbb S^{d-1}$ must satisfy $\sum_{i=1}^d (\frac{Z_i}{\|Z\|})^2=1$ and by symmetry $\mathbb E(\frac{Z_i}{\|Z\|})^2=\frac{1}{d}$. So $\mathbb E(\sqrt d \frac{Z_i}{\|Z\|})^2=1$ and doesn't depend on d. Since the eigenvalues of the covariance matrix are uniformly bounded and independent of $d$, $(\frac{\sqrt {d \tau} X_i}{\|X\|})^2=(\frac{\sqrt {d \tau} G_i}{\|G\|})^2$ are also uniformly integrable. 
+
+Then for any fixed $i,j \leq d$, $(\frac{\sqrt {d \tau} X_i}{\|X\|}\frac{\sqrt {d \tau} X_j}{\|X\|})$ is uniformly integrable (since it's bounded above by $\max\{(\frac{\sqrt d X_i}{\|X\|})^2,(\frac{\sqrt d X_j}{\|X\|})^2\}$, which is itself uniformly integrable), and the following interchange of limits and expectation is warranted:
+$$
+\lim_{d\to\infty} \mathbb{E}\!\left[d\,\tau\,\frac{X_i}{\|X\|}\frac{X_j}{\|X\|}\right] = \mathbb{E}\!\left[ \lim_{d\to\infty}d\tau\,\frac{X_i}{\|X\|}\frac{X_j}{\|X\|}\right] = \mathbb{E}[G_iG_j] = \Sigma_{i,j}
+$$
+
+Since this quantity doesn't depend on $d$, this shows that
+$$
+d\,\tau\,\mathbb{E}\!\left[\frac{X_{[k]}}{\|X\|}\frac{X_{[k]}}{\|X\|}^\top\right] \to \mathbb{E}[G_{[k]}G_{[k]}^\top] = \Sigma^{(k)}
+$$
+
+in the sense that every finite block converges entrywise.
+
+#### Efficiency 
+
+In the Gaussian case, the Slepian-Bangs formula gives the (i,j)th element of the Fisher Information Matrix for the Gaussian as  $[F]_{i,j} = n\cdot \text{tr}\{{\Sigma}^{-1}\frac{\partial{\Sigma}}{\partial \theta_i}{\Sigma}^{-1}\frac{\partial{\Sigma}}{\partial \theta_j}\}$. 
+
+This leads to the familiar Cramér-Rao Bound (CRB) for the (i,j)th element of the inverse of this matrix: ($\text{CRB}(\Sigma_{ij}) = \frac 1 n [\Sigma_{ii}\Sigma_{jj}+\Sigma_{ij}^2]$. 
+
+When $\tau$ is known (e.g. in special cases such as when we can assume equal variance for all dimensions) actual estimator we're using in the Estimation Procedure section above is (an average of) an Angular Central Gaussian (ACG) random variables (see [Tyler, 1987](https://www.jstor.org/stable/2336697)). When $\tau$ is not known and an estimate must be used, it's more complicated and the distribution depends on the sample size. In either case, there is no closed form for the variance of an ACG variable of arbitrary dimension and a Taylor series expansion needs to be used. 
+
+We assume that [DuMouchel's criteria](https://projecteuclid.org/journals/annals-of-statistics/volume-1/issue-5/On-the-Asymptotic-Normality-of-the-Maximum-Likelihood-Estimate-when/10.1214/aos/1176342516.full) for the asymptotic normality of stable MLEs are satisfied, and that $n$ is sufficiently large that the marginal scale estimators have finite variance. Beyond that, we don't rely on any limiting arguments about the sample size.
+
+For any $i,j \leq k$:
+
+$$
+\begin{aligned}
+\mathbb E(d\hat\tau G_iG_j) &= \mathbb E(d\hat\tau G_iG_j - d\tau G_iG_j +  d\tau G_iG_j ) \\
+&= \mathbb E(d\tau G_iG_j + d(\hat\tau - \tau) G_iG_j) \\ 
+&= d\tau\text{Cov}(G_i,G_j) + \mathbb E[d(\hat\tau - \tau) G_iG_j] \\
+&\leq d\tau\Sigma_{ij} +\sqrt{\text{Var}(d\hat\tau)} \sqrt{\mathbb E[(G_iG_j)^2]} \\
+&= d\tau\Sigma_{ij} + \sqrt{\mathcal O (d^{1-\beta})} \sqrt{\mathcal O(1)} \\
+&= d\tau\Sigma_{ij} + \mathcal O (d^{(1-\beta)/2})
+\end{aligned}
+$$
+
+Where $0 < \beta \leq \frac{1}{2}$ is a term that depends on the correlation of the marginal MLEs (since $\tau$ is the average of finite variance random variables that cannot be perfectly correlated). So the bias term is $\mathcal O (d^{(1-\beta)/2})$ or smaller.
+
+Using a Taylor series expansion for the expectation and variance of the ratio $\hat\Sigma_{ij} = d\hat\tau X_iX_j/\|X\|^2$ around $(\mathbb E(d\hat\tau G_iG_j), \mathbb E(\|G\|^2))=(d\tau\Sigma_{i,j}+ \mathcal O (d^{(1-\beta)/2}), d\tau)$, starting with the moments:
+
+$$
+\begin{aligned}
+\mathbb E (d\hat\tau X_iX_j/\|X\|^2) =\mathbb E (d\hat\tau G_iG_j/\|G\|^2) &= \mathbb E [ d\hat\tau G_iG_j/\|G\|^2 +  d\tau G_iG_j/\|G\|^2 - d\tau G_iG_j/\|G\|^2] \\
+&= \mathbb E [ d\tau G_iG_j/\|G\|^2] + \mathbb E [d(\hat\tau - \tau) G_iG_j/\|G\|^2] \\
+&= \frac{\mathbb E(d\hat\tau G_iG_j)}{\mathbb E(\|G\|^2)}+\mathcal O (\frac{1}{d})+ \mathbb E [d(\hat\tau - \tau) G_iG_j/\|G\|^2] \\
+&\leq \frac{\mathbb E(d\hat\tau G_iG_j)}{\mathbb E(\|G\|^2)}+\mathcal O (\frac{1}{d})+ \sqrt{\text{Var}(\hat\tau)}\sqrt{\mathbb E [(dG_iG_j/\|G\|^2)^2]}\\
+&= \frac{\mathbb E(d\hat\tau G_iG_j)}{\mathbb E(\|G\|^2)}+\mathcal O (\frac{1}{d})+ \sqrt{\mathcal O (d^{-\beta})}\sqrt{\mathcal O(1)}\\
+&= \frac{\mathbb E(d\hat\tau G_iG_j)}{\mathbb E(\|G\|^2)}+\mathcal O (\frac{1}{d^{\beta/2}}) \\
+&= \frac{d\tau\Sigma_{i,j}+ \mathcal O (d^{(1-\beta)/2})}{d\tau} +\mathcal O (\frac{1}{d^{\beta/2}}) \\
+&=  \frac{d\tau\Sigma_{i,j}}{d\tau} +  \frac{\mathcal O (d^{(1-\beta)/2})}{d\tau}+\mathcal O (\frac{1}{d^{\beta/2}}) \\
+&= \Sigma_{ij}+\mathcal O (\frac{1}{d^{\beta/2}}) 
+\end{aligned}
+$$
+
+Another building block:
+
+$$
+\begin{aligned}
+\mathbb E [ (d\hat\tau G_iG_j/\|G\|^2)^2] &= \mathbb E [ (d\hat\tau G_iG_j/\|G\|^2 +  d\tau G_iG_j/\|G\|^2 - d\tau G_iG_j/\|G\|^2)^2] \\ 
+&= \mathbb E \bigg[ \bigg(d\tau G_iG_j/\|G\|^2 +d(\hat\tau - \tau) G_iG_j/\|G\|^2\bigg)^2\bigg] \\
+&=  \mathbb E \bigg[\bigg(\frac{d\tau G_iG_j}{\|G\|^2}\bigg)^2\bigg] + \mathbb E \bigg[\frac{2d^2\tau(\hat\tau - \tau)G_i^2G_j^2}{\|G\|^4} +\bigg(\frac{d(\hat\tau - \tau) G_iG_j}{\|G\|^2}\bigg)^2\bigg] \\
+&= \bigg[\frac{d^2\tau^2\Sigma_{ij}^2}{d^2\tau^2} + \frac{d^2\tau^2\text{Var}(G_iG_j)}{d^2\tau^2}+ \mathcal O(\frac 1 d )\bigg] + \mathbb E \bigg[\frac{2d^2\tau(\hat\tau - \tau)G_i^2G_j^2}{\|G\|^4} +\bigg(\frac{d(\hat\tau - \tau) G_iG_j}{\|G\|^2}\bigg)^2\bigg] & (*) \\
+&= \bigg[\Sigma_{ij}^2+ (\Sigma_{ii}\Sigma_{jj}+\Sigma_{ij}^2) + \mathcal O(\frac 1 d )\bigg] + \mathbb E \bigg[\frac{2d^2\tau(\hat\tau - \tau)G_i^2G_j^2}{\|G\|^4} +\bigg(\frac{d(\hat\tau - \tau) G_iG_j}{\|G\|^2}\bigg)^2\bigg] \\
+&= \bigg[\Sigma_{ij}^2+ (\Sigma_{ii}\Sigma_{jj}+\Sigma_{ij}^2) + \mathcal O(\frac 1 d )\bigg] + \mathbb E \bigg[\frac{2d^2\tau(\hat\tau - \tau)G_i^2G_j^2}{\|G\|^4}\bigg] + \mathbb E \bigg[\bigg(\frac{d(\hat\tau - \tau) G_iG_j}{\|G\|^2}\bigg)^2\bigg] \\
+&\leq \bigg[\Sigma_{ij}^2+ (\Sigma_{ii}\Sigma_{jj}+\Sigma_{ij}^2) + \mathcal O(\frac 1 d )\bigg] + \sqrt{\text{Var}(\hat\tau)}\sqrt{\mathbb E \frac{4d^4\tau G_i^4G_j^4}{\|G\|^8}} + \sqrt{\mathbb E(\hat\tau - \tau)^4}\sqrt{\mathbb E\frac{4d^4\tau^2 G_i^4G_j^4}{\|G\|^8}} & (**)\\
+&= \bigg[\Sigma_{ij}^2+ (\Sigma_{ii}\Sigma_{jj}+\Sigma_{ij}^2) + \mathcal O(\frac 1 d )\bigg] +\sqrt{\mathcal O(\frac{1}{d^\beta})}\sqrt{\mathcal O(1)}+\sqrt{\mathcal O(\frac{1}{d^{2\beta}})}\sqrt{\mathcal O(1)}\\ 
+&= 2\Sigma_{ij}^2+ \Sigma_{ii}\Sigma_{jj} + \mathcal O (\frac{1}{d^{\beta/2}}) 
+\end{aligned}
+$$
+
+Above, (*) follows from another Taylor series expansion of the first bracketed term, and (**) comes from bounding the order of the expectations with respect to $d$ using the Cauchy-Schwartz inequality.
+
+Putting these together for the variance:
+
+$$
+\begin{aligned}
+\text{Var}(d\hat\tau G_iG_j/\|G\|^2) &= \mathbb E \bigg[ (d\hat\tau G_iG_j/\|G\|^2)^2\bigg] - \mathbb E \bigg[d\hat\tau G_iG_j/\|G\|^2 \bigg]^2\\
+& = \bigg[2\Sigma_{ij}^2+ \Sigma_{ii}\Sigma_{jj} + \mathcal O (\frac{1}{d^{\beta/2}})\bigg] - \bigg[\Sigma_{ij}+\mathcal O (\frac{1}{d^{\beta/2}})\bigg]^2  \\
+&= \bigg[2\Sigma_{ij}^2+ \Sigma_{ii}\Sigma_{jj} + \mathcal O (\frac{1}{d^{\beta/2}})\bigg] - \bigg[\Sigma_{ij}^2+\mathcal O (\frac{1}{d^{\beta/2}})\bigg]\\
+& = \Sigma_{ii}\Sigma_{jj}+\Sigma_{ij}^2 + \mathcal O (\frac{1}{d^{\beta/2}})
+\end{aligned}
+$$
+
+So, for fixed indices $i,j$, even if we fix the sample size $n$, the variance of our estimator achieves the Gaussian CRB plus a bias term that vanishes as $d$ increases. When we let $n$ grow, by the independence of the samples, both terms in the variance above scale by $\frac 1 n$.
+
+Choose estimation dimension $k = k(d) = \mathcal o(d^{\beta/4})$. Then, looking at the MSE of our estimator over the entire set of possible indices $i,j \leq k$ for any individual row of our estimation matrix $\textbf X_{[k]}$, and defining $\Omega$ as the CRLB matrix for $\Sigma^{(k)}$:
+
+$$
+\begin{aligned}
+\mathbb E \|\hat \Sigma^{(k)} - \Sigma^{(k)}  \|_F^2 &= \mathbb E \bigg \| d\hat\tau \frac{X_{[k]} X_{[k]}^{\top}}{\|X\|^2} - \Sigma^{(k)}  \bigg\|_F^2 \\
+&= \mathbb E \bigg \| d\hat\tau \frac{G_{[k]}G_{[k]}^{\top}}{\|G\|^2} - \Sigma^{(k)} \bigg\|_F^2 \\
+&= \mathbb E \sum_{i,j} (d\hat\tau G_iG_j/\|G\|^2 - \Sigma_{ij})^2 \\
+&= \sum_{i,j} \text{Var}(d\hat\tau G_iG_j/\|G\|^2)+ \sum_{i,j}(\Sigma_{ij} - \mathbb E\hat \Sigma_{ij})^2\\ 
+&= \sum_{i,j} \text{Var}(d\hat\tau G_iG_j/\|G\|^2)+\sum_{i,j}\mathcal O (\frac{1}{ d^{\beta}}) \\
+&= \sum_{i,j}\bigg[\Sigma_{ii}\Sigma_{jj}+\Sigma_{ij}^2 + \mathcal O(\frac{1}{d^{\beta/2} })\bigg] +\sum_{i,j}\mathcal O (\frac{1}{ d^{\beta}})  \\
+&= \sum_{i,j}[\Sigma_{ii}\Sigma_{jj}+\Sigma_{ij}^2]+\mathcal O(\frac{k^2}{d^{\beta/2} }) \\
+&= \text{tr}(\Omega) + \mathcal O(\frac{1}{d^{\beta/2} }) \\
+\implies  \frac{\mathbb E \|\hat \Sigma - \Sigma \|_F^2}{\text{tr}(\Omega)} &= 1 + \mathcal O(\frac{1}{d^{\beta/2} }) \\ 
+\end{aligned}
+$$
+
+So taking the limit as $d \rightarrow \infty$, our estimator saturates the Gaussian global lower MSE bound as long as we choose $k = k(d) = \mathcal o(d^{\beta/4})$ (e.g. $k$ can be allowed to go to infinity along with $d$, provided it grows no faster than $d^\frac{\beta}{4}$). 
+
+With $n$ i.i.d. rows, the variance terms scale as $1/n$, so averaging over multiple observations shrinks the additive Frobenius error by a factor of $1/n$, but leaves the risk ratio above unchanged. 
+
+#### Asymptotic Superefficiency
+
+Because we saturate the Gaussian global lower MSE bound, this estimator is "superefficient" (with respect to the Frobenius norm metric above) under the right conditions. 
+
+In the limit as $d \rightarrow \infty$, the projective achieves a lower global MSE than possible under the Cramér–Rao bound matrix for the original distribution. This doesn't contradict the usual Cramér–Rao theory, because these optimal bounds are defined in terms of a particular distribution, and we are using a parameter-preserving transformation to an auxiliary distribution with a lower bound on MSE. 
+
+One side-effect of this is much lower model-misspecification risk.
+
+To see this, consider the multivariate-t distribution. [Besson & Abromovich (2018)](https://arxiv.org/pdf/1306.6415) extend the Slepian-Bangs formula for the Fisher Information Matrix (FIM) to the broader class of elliptically contoured distributions, and derive the formua for the FIM of the multivariate-t case. 
+
+[Multivariate t proof]
+
+[Superefficiency of ACG?]
+
+[Alpha stable proof]
+
+#### Finite-Dimensional Superefficiency 
+
+The superefficiency results above do not require $d \rightarrow \infty$. 
+
+By relying on a Gaussian vector norm for concentration of measure, we can apply the Hanson-Wright inequality to get a probabalistic bound on the efficiency gains relative to the original distribution. 
+
+
+
+### Simulation Study

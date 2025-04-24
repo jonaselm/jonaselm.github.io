@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.40">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Projective Estimator – Research</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-549806ee2085284f45b00abea8c6df48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-6bd9cfa162949bde0a231f530c97869d.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">Research</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./background.html"> 
+<span class="menu-text">Background</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./progress.html"> 
+<span class="menu-text">Current Progress</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./open_questions.html"> 
+<span class="menu-text">Open Questions</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#data-model-and-setup" id="toc-data-model-and-setup" class="nav-link active" data-scroll-target="#data-model-and-setup">Data Model and Setup</a></li>
+  <li><a href="#estimation-procedure" id="toc-estimation-procedure" class="nav-link" data-scroll-target="#estimation-procedure">Estimation Procedure</a></li>
+  <li><a href="#theoretical-properties" id="toc-theoretical-properties" class="nav-link" data-scroll-target="#theoretical-properties">Theoretical Properties</a></li>
+  <li><a href="#simulation-study" id="toc-simulation-study" class="nav-link" data-scroll-target="#simulation-study">Simulation Study</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Projective Estimator</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="data-model-and-setup" class="level3">
+<h3 class="anchored" data-anchor-id="data-model-and-setup">Data Model and Setup</h3>
+<p><strong>Note:</strong> The notation here is a little confusing – I want to distinguish between the estimation dimension and the ambient dimension, but there’s potentially a better way to do it without introducing so much notation.</p>
+<p>Let <span class="math inline">\(\{X^{(d)}\}\)</span> be a sequence of centered random vectors where <span class="math inline">\(X^{(d)} \in \mathbb R^d\)</span>, having corresponding dispersion/shape matrices <span class="math inline">\(\{\Sigma^{(d)}\}\)</span>, <span class="math inline">\(d \geq 1\)</span> such that:</p>
+<ul>
+<li>The leading principal <span class="math inline">\(k \times k\)</span> submatrix of <span class="math inline">\(\Sigma^{(d)}\)</span> equals <span class="math inline">\(\Sigma^{(k)}\)</span> for all <span class="math inline">\(k \leq d\)</span>.</li>
+<li>For any <span class="math inline">\(d\)</span>, <span class="math inline">\(\Sigma^{(d)} \in \mathbb R^{d \times d}\)</span> is well-behaved in the sense that it is positive definite and its eigenvalues <span class="math inline">\(\lambda_i\)</span>, <span class="math inline">\(i=1, \dots, d\)</span> are uniformly bounded so that there exist two constants <span class="math inline">\(m, M &gt;0\)</span> independent of <span class="math inline">\(d\)</span> such that <span class="math inline">\(m \leq \lambda_i \leq M\)</span> for all <span class="math inline">\(i\)</span>. Additionally, assume that the average eigenvalue (or normalized trace in a random matrix theory context) converges to a fixed constant: <span class="math inline">\(\frac{1}{d}\text{tr}(\Sigma^{(d)})\rightarrow \tau&gt;0\)</span> as <span class="math inline">\(d \rightarrow \infty\)</span>.</li>
+</ul>
+<p>Define <span class="math inline">\(X=X_{[k]}\)</span> as the first <span class="math inline">\(k\)</span> coordinates of <span class="math inline">\(X^{(d)}\)</span>. Then, as defined above for any <span class="math inline">\(k \leq d\)</span>, the dispersion matrix of <span class="math inline">\(X_{[k]}\)</span> is simply <span class="math inline">\(\Sigma^{(k)}\)</span>, irrespective of the ambient dimension <span class="math inline">\(d\)</span>.</p>
+<p>Assume that each <span class="math inline">\(X\)</span> has the familiar stochastic representation <span class="math inline">\(X= \sqrt{W}G\)</span>, where <span class="math inline">\(W \sim S_{\alpha/2}(\cos(\pi \alpha/4)^{(2/\alpha)},1, 0;1)\)</span>, a maximally skewed scalar random variable with support on the positive real numbers, and <span class="math inline">\(G \sim N(0, \Sigma^{(d)})\)</span>, a multivariate normal random vector independent of <span class="math inline">\(W\)</span> with covariance matrix <span class="math inline">\(\Sigma^{(d)}\)</span>.</p>
+<p>Under this setup, each <span class="math inline">\(X \sim \alpha\)</span>-SG(<span class="math inline">\(\Sigma^{(d)}\)</span>) – an elliptical stable random vector centered at the origin, whose shape matrix is the covariance matrix of the latent Gaussian vector <span class="math inline">\(G\)</span> (e.g.&nbsp;the characteristic function of <span class="math inline">\(X\)</span> is <span class="math inline">\(\mathbb E[\exp\{i\theta^{\text T}X\}]= \exp(-(\frac{1}{2}\theta^{\text T}\Sigma^{(d)}\theta)^{\alpha/2})\)</span> (Samorodnitsky and Taqqu, Proposition 2.5.2))</p>
+<p>We observe <span class="math inline">\(n\)</span> such i.i.d. realized vectors via a data matrix <span class="math inline">\(\mathbf X \in \mathbb{R}^{n\times d}\)</span> so that each row is one <span class="math inline">\(d\)</span>-dimensional observation. We are interested in estimating the shape matrix of <span class="math inline">\(X\)</span> for some <span class="math inline">\(k \leq d\)</span>. In other words, our estimation dimension of interest may be smaller than the ambient dimension of our random vector. Without loss of generality, assume that the leading dimensions are the estimation dimensions.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>This <span class="math inline">\(X_i = \sqrt{W}G\)</span> setup is a so-called <a href="https://en.wikipedia.org/wiki/Normal_variance-mean_mixture">normal variance mixture</a>. In the literature, W may be referred to as a subordinator (stable distribution literature), or a texture or a 2nd-order modular variate (signal processing). The distribution of this random variable determines the distribution of <span class="math inline">\(X\)</span>. For example if <span class="math inline">\(W\)</span> is inverse-gamma distributed rather than stable, <span class="math inline">\(X\)</span> has a multivariate t distribution. This estimation approach works for any normal variance-mean mixture.</p>
+</div>
+</div>
+<p>Some examples of situations where this comes up include:</p>
+<ul>
+<li><strong>Investing</strong>: Estimating the dependence structure for a portfolio of <span class="math inline">\(k=50\)</span> stocks that trade in a market of <span class="math inline">\(d=6,500\)</span> total securities.</li>
+<li><strong>Genomics</strong>: Estimating pathway-level dependence across <span class="math inline">\(k=100\)</span> genes from genome-wide expression profiles across <span class="math inline">\(d=20,000\)</span> genes.</li>
+</ul>
+<p>Rather than discard these additional ambient dimensions (as is typical), because the same subordinator acts on each realization across the whole ambient space, we can use them to project an approximately Gaussian <span class="math inline">\(k\)</span>-vector and get a better estimate of <span class="math inline">\(\Sigma^{(k)}\)</span> under the right conditions.</p>
+</section>
+<section id="estimation-procedure" class="level3">
+<h3 class="anchored" data-anchor-id="estimation-procedure">Estimation Procedure</h3>
+<ol type="1">
+<li>Estimate marginal scale parameters <span class="math inline">\(\gamma_j^{MLE}\)</span>, <span class="math inline">\(j = 1, \dots, d\)</span> via maximum likelihood.<br>
+</li>
+<li>Use these marginal estimates to estimate the trace of the full ambient-dimensional latent covariance matrix: <span class="math inline">\(\widehat{\text{tr}(\Sigma^{(d)})} = d\hat\tau := 2\sum_{j=1}^d  {\gamma_j^{MLE}}^2\)</span> (Note: the 2 prefactor comes from differences between standard parameterizations of a Gaussian vs.&nbsp;general stable random vector used in the STABLE software).</li>
+<li>Normalize each row of <span class="math inline">\(\mathbf X\)</span> by its Euclidean norm: <span class="math inline">\(\tilde X_{i,*} = X_{i,*}/\|X_{i,*}\|\)</span>, <span class="math inline">\(i = 1, \dots, n\)</span></li>
+<li>Retain just the estimation dimensions: <span class="math inline">\(\tilde{\mathbf G} :=  \mathbf{\tilde{X}_{[k]}} \in \mathbb R^{n \times k}\)</span>.</li>
+<li>The dispersion matrix estimate is the sample covariance matrix of <span class="math inline">\(\tilde{\mathbf G}\)</span>, rescaled by the estimated trace of the full-ambient-dimension latent covariance matrix: <span class="math inline">\(\hat \Sigma = \frac{d\hat\tau}{n}\tilde{\mathbf G}^{\top}\tilde{\mathbf G}\)</span></li>
+</ol>
+</section>
+<section id="theoretical-properties" class="level3">
+<h3 class="anchored" data-anchor-id="theoretical-properties">Theoretical Properties</h3>
+<p>Returning to the representation <span class="math inline">\(X = \sqrt{W}G\)</span>, the normalized stable vector <span class="math inline">\(X\)</span> is equal to the normalized version of the corresponding latent Gaussian vector <span class="math inline">\(G\)</span>.</p>
+<p>To see why, note that from the eigendecomposition of <span class="math inline">\(\Sigma\)</span>, we can write <span class="math inline">\(\Sigma = O\Lambda O^\top = O\Lambda^{1/2}\Lambda^{1/2} O^\top\)</span>. Call <span class="math inline">\(\Sigma^{1/2} :=O\Lambda^{1/2}\)</span>. Let <span class="math inline">\(Z \sim N(0, I_d)\)</span> so that <span class="math inline">\(G = \Sigma^{1/2}Z\)</span>.</p>
+<p>Then we can write:</p>
+<p><span class="math display">\[
+\begin{aligned}
+\frac{X}{\|X\|} = \frac{\sqrt WG}{\|\sqrt WG\|} = \frac{\sqrt WG}{\|\sqrt W\Sigma^{1/2}Z\|} &amp;= \frac{\sqrt WG}{\sqrt W\|O\Lambda^{1/2}Z\|} = \frac{G}{\|\Lambda^{1/2}Z\|}
+\end{aligned}
+\]</span></p>
+<p>Looking more closely at the norm from the expression above:</p>
+<p><span class="math display">\[
+\begin{aligned}
+\frac{1}{d}\|\Lambda^{1/2}Z\|^2 &amp; = \frac{1}{d} \sum_{i=1}^d \lambda_i Z_i^2 \\
+&amp;= \frac{1}{d}\sum_{i=1}^d (\lambda_i Z_i^2 - \lambda_i + \lambda_i)\\
+&amp;= \frac{1}{d}\sum_{i=1}^d \lambda_i(Z_i^2 - 1)+ \frac{1}{d}\sum_{i=1}^d \lambda_i \\
+&amp;=\frac{1}{d}\sum_{i=1}^d \lambda_i(Z_i^2 - 1)+ \frac{1}{d}\text{tr}(\Sigma^{(d)}) \\
+&amp;= \frac{1}{d}\sum_{i=1}^d \lambda_i(Z_i^2 - 1)+ \tau\\
+&amp;\underset{d \rightarrow \infty}{\overset{\text{a.s.}}{\longrightarrow}} 0+ \tau\
+\end{aligned}
+\]</span></p>
+<p>The argument that <span class="math inline">\(\frac{1}{d}\sum_{i=1}^d \lambda_i(Z_i^2 - 1)\underset{d \rightarrow \infty}{\overset{\text{a.s.}}{\longrightarrow}} 0\)</span> follows from Kolmogorov’s Criterion for the SLLN with independent but non-identically distributed random variables, since the sufficient conditions <span class="math inline">\(Y_i:= \lambda_i(Z_i^2 - 1)\)</span>, <span class="math inline">\(\mathbb E Y_i=0\)</span> and <span class="math inline">\(\sum_i^\infty \text{Var}(Y_i)/i^2 = \sum_i^\infty 2\lambda_i^2/i^2 \leq \sum_i^\infty 2M^2/i^2 =2M^2\frac{\pi^2}{6}&lt;\infty\)</span> are met.</p>
+<p>Taking square roots and applying the continuous mapping theorem, we get <span class="math inline">\(\frac{1}{d}\|\Lambda^{1/2}Z\|^2 \underset{d \rightarrow \infty}{\overset{\text{a.s.}}{\longrightarrow}} \tau \implies \frac{\|\Lambda^{1/2}Z\|}{\sqrt {d \tau}}\underset{d \rightarrow \infty}{\overset{\text{a.s.}}{\longrightarrow}} 1\)</span>.</p>
+<p>This means that for any fixed indices <span class="math inline">\(i,j\)</span>, we get:</p>
+<p><span class="math display">\[
+\begin{aligned}
+\sqrt {d \tau} \frac{(X_i, X_j)}{\|X\|} =\sqrt {d \tau}\frac{(G_i, G_j)}{\|\Lambda^{1/2}Z\|}  \underset{d \rightarrow \infty}{\overset{\text{a.s.}}{\longrightarrow}} (G_i, G_j)
+\end{aligned}
+\]</span></p>
+<p>Now, consider that for the estimation vector <span class="math inline">\(G':=G_{[k]}\)</span>, we can write: <span class="math display">\[
+\mathbb E [G'G'^\top] =
+\begin{pmatrix}
+\mathbb{E}[G_1'^2] &amp; \mathbb{E}[G_1'G_2'] &amp; \cdots &amp; \mathbb{E}[G_1'G_k'] \\
+\mathbb{E}[G_2'G_1'] &amp; \mathbb{E}[G_2'^2] &amp; \cdots &amp; \mathbb{E}[G_2'G_k'] \\
+\vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
+\mathbb{E}[G_k'G_1'] &amp; \mathbb{E}[G_k'G_2'] &amp; \cdots &amp; \mathbb{E}[G_k'^2]
+\end{pmatrix}
+\]</span></p>
+<p>So that we can recover <span class="math inline">\(\mathbb E [G'G'^\top] =\Sigma^{(k)}\)</span> without ever looking at more than two components of <span class="math inline">\(G\)</span> at a time. While the matrix <span class="math inline">\(\Sigma^{(k)}\)</span> can be allowed to grow with <span class="math inline">\(d\)</span> if we wish, each entry is independent of the ambient dimension.</p>
+<p>Note that <span class="math inline">\((\frac{Z_i}{\|Z\|})^2\)</span>, <span class="math inline">\(i=1, \dots, d\)</span> is uniformly integrable, since in the uncorrelated case, a uniform random variable on the sphere <span class="math inline">\(\mathbb S^{d-1}\)</span> must satisfy <span class="math inline">\(\sum_{i=1}^d (\frac{Z_i}{\|Z\|})^2=1\)</span> and by symmetry <span class="math inline">\(\mathbb E(\frac{Z_i}{\|Z\|})^2=\frac{1}{d}\)</span>. So <span class="math inline">\(\mathbb E(\sqrt d \frac{Z_i}{\|Z\|})^2=1\)</span> and doesn’t depend on d.&nbsp;Since the eigenvalues of the covariance matrix are uniformly bounded and independent of <span class="math inline">\(d\)</span>, <span class="math inline">\((\frac{\sqrt {d \tau} X_i}{\|X\|})^2=(\frac{\sqrt {d \tau} G_i}{\|G\|})^2\)</span> are also uniformly integrable.</p>
+<p>Then for any fixed <span class="math inline">\(i,j \leq d\)</span>, <span class="math inline">\((\frac{\sqrt {d \tau} X_i}{\|X\|}\frac{\sqrt {d \tau} X_j}{\|X\|})\)</span> is uniformly integrable (since it’s bounded above by <span class="math inline">\(\max\{(\frac{\sqrt d X_i}{\|X\|})^2,(\frac{\sqrt d X_j}{\|X\|})^2\}\)</span>, which is itself uniformly integrable), and the following interchange of limits and expectation is warranted: <span class="math display">\[
+\lim_{d\to\infty} \mathbb{E}\!\left[d\,\tau\,\frac{X_i}{\|X\|}\frac{X_j}{\|X\|}\right] = \mathbb{E}\!\left[ \lim_{d\to\infty}d\tau\,\frac{X_i}{\|X\|}\frac{X_j}{\|X\|}\right] = \mathbb{E}[G_iG_j] = \Sigma_{i,j}
+\]</span></p>
+<p>Since this quantity doesn’t depend on <span class="math inline">\(d\)</span>, this shows that <span class="math display">\[
+d\,\tau\,\mathbb{E}\!\left[\frac{X_{[k]}}{\|X\|}\frac{X_{[k]}}{\|X\|}^\top\right] \to \mathbb{E}[G_{[k]}G_{[k]}^\top] = \Sigma^{(k)}
+\]</span></p>
+<p>in the sense that every finite block converges entrywise.</p>
+<section id="efficiency" class="level4">
+<h4 class="anchored" data-anchor-id="efficiency">Efficiency</h4>
+<p>In the Gaussian case, the Slepian-Bangs formula gives the (i,j)th element of the Fisher Information Matrix for the Gaussian as <span class="math inline">\([F]_{i,j} = n\cdot \text{tr}\{{\Sigma}^{-1}\frac{\partial{\Sigma}}{\partial \theta_i}{\Sigma}^{-1}\frac{\partial{\Sigma}}{\partial \theta_j}\}\)</span>.</p>
+<p>This leads to the familiar Cramér-Rao Bound (CRB) for the (i,j)th element of the inverse of this matrix: (<span class="math inline">\(\text{CRB}(\Sigma_{ij}) = \frac 1 n [\Sigma_{ii}\Sigma_{jj}+\Sigma_{ij}^2]\)</span>.</p>
+<p>When <span class="math inline">\(\tau\)</span> is known (e.g.&nbsp;in special cases such as when we can assume equal variance for all dimensions) actual estimator we’re using in the Estimation Procedure section above is (an average of) an Angular Central Gaussian (ACG) random variables (see <a href="https://www.jstor.org/stable/2336697">Tyler, 1987</a>). When <span class="math inline">\(\tau\)</span> is not known and an estimate must be used, it’s more complicated and the distribution depends on the sample size. In either case, there is no closed form for the variance of an ACG variable of arbitrary dimension and a Taylor series expansion needs to be used.</p>
+<p>We assume that <a href="https://projecteuclid.org/journals/annals-of-statistics/volume-1/issue-5/On-the-Asymptotic-Normality-of-the-Maximum-Likelihood-Estimate-when/10.1214/aos/1176342516.full">DuMouchel’s criteria</a> for the asymptotic normality of stable MLEs are satisfied, and that <span class="math inline">\(n\)</span> is sufficiently large that the marginal scale estimators have finite variance. Beyond that, we don’t rely on any limiting arguments about the sample size.</p>
+<p>For any <span class="math inline">\(i,j \leq k\)</span>:</p>
+<p><span class="math display">\[
+\begin{aligned}
+\mathbb E(d\hat\tau G_iG_j) &amp;= \mathbb E(d\hat\tau G_iG_j - d\tau G_iG_j +  d\tau G_iG_j ) \\
+&amp;= \mathbb E(d\tau G_iG_j + d(\hat\tau - \tau) G_iG_j) \\
+&amp;= d\tau\text{Cov}(G_i,G_j) + \mathbb E[d(\hat\tau - \tau) G_iG_j] \\
+&amp;\leq d\tau\Sigma_{ij} +\sqrt{\text{Var}(d\hat\tau)} \sqrt{\mathbb E[(G_iG_j)^2]} \\
+&amp;= d\tau\Sigma_{ij} + \sqrt{\mathcal O (d^{1-\beta})} \sqrt{\mathcal O(1)} \\
+&amp;= d\tau\Sigma_{ij} + \mathcal O (d^{(1-\beta)/2})
+\end{aligned}
+\]</span></p>
+<p>Where <span class="math inline">\(0 &lt; \beta \leq \frac{1}{2}\)</span> is a term that depends on the correlation of the marginal MLEs (since <span class="math inline">\(\tau\)</span> is the average of finite variance random variables that cannot be perfectly correlated). So the bias term is <span class="math inline">\(\mathcal O (d^{(1-\beta)/2})\)</span> or smaller.</p>
+<p>Using a Taylor series expansion for the expectation and variance of the ratio <span class="math inline">\(\hat\Sigma_{ij} = d\hat\tau X_iX_j/\|X\|^2\)</span> around <span class="math inline">\((\mathbb E(d\hat\tau G_iG_j), \mathbb E(\|G\|^2))=(d\tau\Sigma_{i,j}+ \mathcal O (d^{(1-\beta)/2}), d\tau)\)</span>, starting with the moments:</p>
+<p><span class="math display">\[
+\begin{aligned}
+\mathbb E (d\hat\tau X_iX_j/\|X\|^2) =\mathbb E (d\hat\tau G_iG_j/\|G\|^2) &amp;= \mathbb E [ d\hat\tau G_iG_j/\|G\|^2 +  d\tau G_iG_j/\|G\|^2 - d\tau G_iG_j/\|G\|^2] \\
+&amp;= \mathbb E [ d\tau G_iG_j/\|G\|^2] + \mathbb E [d(\hat\tau - \tau) G_iG_j/\|G\|^2] \\
+&amp;= \frac{\mathbb E(d\hat\tau G_iG_j)}{\mathbb E(\|G\|^2)}+\mathcal O (\frac{1}{d})+ \mathbb E [d(\hat\tau - \tau) G_iG_j/\|G\|^2] \\
+&amp;\leq \frac{\mathbb E(d\hat\tau G_iG_j)}{\mathbb E(\|G\|^2)}+\mathcal O (\frac{1}{d})+ \sqrt{\text{Var}(\hat\tau)}\sqrt{\mathbb E [(dG_iG_j/\|G\|^2)^2]}\\
+&amp;= \frac{\mathbb E(d\hat\tau G_iG_j)}{\mathbb E(\|G\|^2)}+\mathcal O (\frac{1}{d})+ \sqrt{\mathcal O (d^{-\beta})}\sqrt{\mathcal O(1)}\\
+&amp;= \frac{\mathbb E(d\hat\tau G_iG_j)}{\mathbb E(\|G\|^2)}+\mathcal O (\frac{1}{d^{\beta/2}}) \\
+&amp;= \frac{d\tau\Sigma_{i,j}+ \mathcal O (d^{(1-\beta)/2})}{d\tau} +\mathcal O (\frac{1}{d^{\beta/2}}) \\
+&amp;=  \frac{d\tau\Sigma_{i,j}}{d\tau} +  \frac{\mathcal O (d^{(1-\beta)/2})}{d\tau}+\mathcal O (\frac{1}{d^{\beta/2}}) \\
+&amp;= \Sigma_{ij}+\mathcal O (\frac{1}{d^{\beta/2}})
+\end{aligned}
+\]</span></p>
+<p>Another building block:</p>
+<p><span class="math display">\[
+\begin{aligned}
+\mathbb E [ (d\hat\tau G_iG_j/\|G\|^2)^2] &amp;= \mathbb E [ (d\hat\tau G_iG_j/\|G\|^2 +  d\tau G_iG_j/\|G\|^2 - d\tau G_iG_j/\|G\|^2)^2] \\
+&amp;= \mathbb E \bigg[ \bigg(d\tau G_iG_j/\|G\|^2 +d(\hat\tau - \tau) G_iG_j/\|G\|^2\bigg)^2\bigg] \\
+&amp;=  \mathbb E \bigg[\bigg(\frac{d\tau G_iG_j}{\|G\|^2}\bigg)^2\bigg] + \mathbb E \bigg[\frac{2d^2\tau(\hat\tau - \tau)G_i^2G_j^2}{\|G\|^4} +\bigg(\frac{d(\hat\tau - \tau) G_iG_j}{\|G\|^2}\bigg)^2\bigg] \\
+&amp;= \bigg[\frac{d^2\tau^2\Sigma_{ij}^2}{d^2\tau^2} + \frac{d^2\tau^2\text{Var}(G_iG_j)}{d^2\tau^2}+ \mathcal O(\frac 1 d )\bigg] + \mathbb E \bigg[\frac{2d^2\tau(\hat\tau - \tau)G_i^2G_j^2}{\|G\|^4} +\bigg(\frac{d(\hat\tau - \tau) G_iG_j}{\|G\|^2}\bigg)^2\bigg] &amp; (*) \\
+&amp;= \bigg[\Sigma_{ij}^2+ (\Sigma_{ii}\Sigma_{jj}+\Sigma_{ij}^2) + \mathcal O(\frac 1 d )\bigg] + \mathbb E \bigg[\frac{2d^2\tau(\hat\tau - \tau)G_i^2G_j^2}{\|G\|^4} +\bigg(\frac{d(\hat\tau - \tau) G_iG_j}{\|G\|^2}\bigg)^2\bigg] \\
+&amp;= \bigg[\Sigma_{ij}^2+ (\Sigma_{ii}\Sigma_{jj}+\Sigma_{ij}^2) + \mathcal O(\frac 1 d )\bigg] + \mathbb E \bigg[\frac{2d^2\tau(\hat\tau - \tau)G_i^2G_j^2}{\|G\|^4}\bigg] + \mathbb E \bigg[\bigg(\frac{d(\hat\tau - \tau) G_iG_j}{\|G\|^2}\bigg)^2\bigg] \\
+&amp;\leq \bigg[\Sigma_{ij}^2+ (\Sigma_{ii}\Sigma_{jj}+\Sigma_{ij}^2) + \mathcal O(\frac 1 d )\bigg] + \sqrt{\text{Var}(\hat\tau)}\sqrt{\mathbb E \frac{4d^4\tau G_i^4G_j^4}{\|G\|^8}} + \sqrt{\mathbb E(\hat\tau - \tau)^4}\sqrt{\mathbb E\frac{4d^4\tau^2 G_i^4G_j^4}{\|G\|^8}} &amp; (**)\\
+&amp;= \bigg[\Sigma_{ij}^2+ (\Sigma_{ii}\Sigma_{jj}+\Sigma_{ij}^2) + \mathcal O(\frac 1 d )\bigg] +\sqrt{\mathcal O(\frac{1}{d^\beta})}\sqrt{\mathcal O(1)}+\sqrt{\mathcal O(\frac{1}{d^{2\beta}})}\sqrt{\mathcal O(1)}\\
+&amp;= 2\Sigma_{ij}^2+ \Sigma_{ii}\Sigma_{jj} + \mathcal O (\frac{1}{d^{\beta/2}})
+\end{aligned}
+\]</span></p>
+<p>Above, (*) follows from another Taylor series expansion of the first bracketed term, and (**) comes from bounding the order of the expectations with respect to <span class="math inline">\(d\)</span> using the Cauchy-Schwartz inequality.</p>
+<p>Putting these together for the variance:</p>
+<p><span class="math display">\[
+\begin{aligned}
+\text{Var}(d\hat\tau G_iG_j/\|G\|^2) &amp;= \mathbb E \bigg[ (d\hat\tau G_iG_j/\|G\|^2)^2\bigg] - \mathbb E \bigg[d\hat\tau G_iG_j/\|G\|^2 \bigg]^2\\
+&amp; = \bigg[2\Sigma_{ij}^2+ \Sigma_{ii}\Sigma_{jj} + \mathcal O (\frac{1}{d^{\beta/2}})\bigg] - \bigg[\Sigma_{ij}+\mathcal O (\frac{1}{d^{\beta/2}})\bigg]^2  \\
+&amp;= \bigg[2\Sigma_{ij}^2+ \Sigma_{ii}\Sigma_{jj} + \mathcal O (\frac{1}{d^{\beta/2}})\bigg] - \bigg[\Sigma_{ij}^2+\mathcal O (\frac{1}{d^{\beta/2}})\bigg]\\
+&amp; = \Sigma_{ii}\Sigma_{jj}+\Sigma_{ij}^2 + \mathcal O (\frac{1}{d^{\beta/2}})
+\end{aligned}
+\]</span></p>
+<p>So, for fixed indices <span class="math inline">\(i,j\)</span>, even if we fix the sample size <span class="math inline">\(n\)</span>, the variance of our estimator achieves the Gaussian CRB plus a bias term that vanishes as <span class="math inline">\(d\)</span> increases. When we let <span class="math inline">\(n\)</span> grow, by the independence of the samples, both terms in the variance above scale by <span class="math inline">\(\frac 1 n\)</span>.</p>
+<p>Choose estimation dimension <span class="math inline">\(k = k(d) = \mathcal o(d^{\beta/4})\)</span>. Then, looking at the MSE of our estimator over the entire set of possible indices <span class="math inline">\(i,j \leq k\)</span> for any individual row of our estimation matrix <span class="math inline">\(\textbf X_{[k]}\)</span>, and defining <span class="math inline">\(\Omega\)</span> as the CRLB matrix for <span class="math inline">\(\Sigma^{(k)}\)</span>:</p>
+<p><span class="math display">\[
+\begin{aligned}
+\mathbb E \|\hat \Sigma^{(k)} - \Sigma^{(k)}  \|_F^2 &amp;= \mathbb E \bigg \| d\hat\tau \frac{X_{[k]} X_{[k]}^{\top}}{\|X\|^2} - \Sigma^{(k)}  \bigg\|_F^2 \\
+&amp;= \mathbb E \bigg \| d\hat\tau \frac{G_{[k]}G_{[k]}^{\top}}{\|G\|^2} - \Sigma^{(k)} \bigg\|_F^2 \\
+&amp;= \mathbb E \sum_{i,j} (d\hat\tau G_iG_j/\|G\|^2 - \Sigma_{ij})^2 \\
+&amp;= \sum_{i,j} \text{Var}(d\hat\tau G_iG_j/\|G\|^2)+ \sum_{i,j}(\Sigma_{ij} - \mathbb E\hat \Sigma_{ij})^2\\
+&amp;= \sum_{i,j} \text{Var}(d\hat\tau G_iG_j/\|G\|^2)+\sum_{i,j}\mathcal O (\frac{1}{ d^{\beta}}) \\
+&amp;= \sum_{i,j}\bigg[\Sigma_{ii}\Sigma_{jj}+\Sigma_{ij}^2 + \mathcal O(\frac{1}{d^{\beta/2} })\bigg] +\sum_{i,j}\mathcal O (\frac{1}{ d^{\beta}})  \\
+&amp;= \sum_{i,j}[\Sigma_{ii}\Sigma_{jj}+\Sigma_{ij}^2]+\mathcal O(\frac{k^2}{d^{\beta/2} }) \\
+&amp;= \text{tr}(\Omega) + \mathcal O(\frac{1}{d^{\beta/2} }) \\
+\implies  \frac{\mathbb E \|\hat \Sigma - \Sigma \|_F^2}{\text{tr}(\Omega)} &amp;= 1 + \mathcal O(\frac{1}{d^{\beta/2} }) \\
+\end{aligned}
+\]</span></p>
+<p>So taking the limit as <span class="math inline">\(d \rightarrow \infty\)</span>, our estimator saturates the Gaussian global lower MSE bound as long as we choose <span class="math inline">\(k = k(d) = \mathcal o(d^{\beta/4})\)</span> (e.g.&nbsp;<span class="math inline">\(k\)</span> can be allowed to go to infinity along with <span class="math inline">\(d\)</span>, provided it grows no faster than <span class="math inline">\(d^\frac{\beta}{4}\)</span>).</p>
+<p>With <span class="math inline">\(n\)</span> i.i.d. rows, the variance terms scale as <span class="math inline">\(1/n\)</span>, so averaging over multiple observations shrinks the additive Frobenius error by a factor of <span class="math inline">\(1/n\)</span>, but leaves the risk ratio above unchanged.</p>
+</section>
+<section id="asymptotic-superefficiency" class="level4">
+<h4 class="anchored" data-anchor-id="asymptotic-superefficiency">Asymptotic Superefficiency</h4>
+<p>Because we saturate the Gaussian global lower MSE bound, this estimator is “superefficient” (with respect to the Frobenius norm metric above) under the right conditions.</p>
+<p>In the limit as <span class="math inline">\(d \rightarrow \infty\)</span>, the projective achieves a lower global MSE than possible under the Cramér–Rao bound matrix for the original distribution. This doesn’t contradict the usual Cramér–Rao theory, because these optimal bounds are defined in terms of a particular distribution, and we are using a parameter-preserving transformation to an auxiliary distribution with a lower bound on MSE.</p>
+<p>One side-effect of this is much lower model-misspecification risk.</p>
+<p>To see this, consider the multivariate-t distribution. <a href="https://arxiv.org/pdf/1306.6415">Besson &amp; Abromovich (2018)</a> extend the Slepian-Bangs formula for the Fisher Information Matrix (FIM) to the broader class of elliptically contoured distributions, and derive the formua for the FIM of the multivariate-t case.</p>
+<p>[Multivariate t proof]</p>
+<p>[Superefficiency of ACG?]</p>
+<p>[Alpha stable proof]</p>
+</section>
+<section id="finite-dimensional-superefficiency" class="level4">
+<h4 class="anchored" data-anchor-id="finite-dimensional-superefficiency">Finite-Dimensional Superefficiency</h4>
+<p>The superefficiency results above do not require <span class="math inline">\(d \rightarrow \infty\)</span>.</p>
+<p>By relying on a Gaussian vector norm for concentration of measure, we can apply the Hanson-Wright inequality to get a probabalistic bound on the efficiency gains relative to the original distribution.</p>
+</section>
+</section>
+<section id="simulation-study" class="level3">
+<h3 class="anchored" data-anchor-id="simulation-study">Simulation Study</h3>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

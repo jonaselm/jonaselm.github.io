@@ -56,9 +56,12 @@ We may also be able to create artificial observations that help acheive the conc
 
 ### Explanation
 
-Starting off, let $X$ be an $\alpha$-stable sub-Gaussian random vector in $\mathbb R^d$ with dispersion matrix $\Sigma \in \mathbb R^{d \times d}$. WLOG, assume $X$ is centered at the origin (if not, it can be centered first). 
+Let {$X^{(d)}$} be a sequence of centered random vectors where $X^{(d)} \in \mathbb R^d$, having corresponding dispersion matrices {$\Sigma^{(d)}$}, $d \geq 1$ such that:
 
-Using the subordinator representation, we can write $X=\sqrt W G$ in the usual way with $W \in \mathbb R^+$ a maximally skewed positive $\alpha/2$-stable subordinator and $G \sim N(0, \Sigma)$ independent of W. Assume that $\Sigma$ is "well-behaved" in the sense that it is positive definite and its eigenvalues $\lambda_i$ $i=1, \dots d$ are uniformly bounded so that there exist constants $m, M >0$ independent of $d$ such that $m \leq \lambda_i \leq M$ for all $i$. (These assumptions are probably a little too restrictive -- particularly the full rank aspect, but it simplifies the argument). 
+- The leading principal $k \times k$ submatrix of $\Sigma^{(d)}$ equals $\Sigma^{(k)}$ for all $k \leq d$. 
+- For any d, $\Sigma^{(d)} \in \mathbb R^{d \times d}$ is well-behaved in the sense that it is positive definite and its eigenvalues $\lambda_i$ $i=1, \dots d$ are uniformly bounded so that there exist constants $m, M >0$ independent of $d$ such that $m \leq \lambda_i \leq M$ for all $i$. Additionally, assume that the average trace converges to a fixed constant as $d \rightarrow \infty$.
+
+Using the subordinator representation, we can write $X=\sqrt W G$ in the usual way with $W \in \mathbb R^+$ a maximally skewed positive $\alpha/2$-stable subordinator and $G \sim N(0, \Sigma)$ independent of W. 
 
 From the eigendecomposition of $\Sigma$, we can write $\Sigma = O\Lambda O^\top = O\Lambda^{1/2}\Lambda^{1/2} O^\top$. Call $\Sigma^{1/2} :=O\Lambda^{1/2}$. Let $Z \sim N(0, I_d)$ so that $G = \Sigma^{1/2}Z$.
 
@@ -111,7 +114,7 @@ $$
 \end{pmatrix}
 $$
 
-So that we can recover $\mathbb E [GG^\top] = \Sigma$ without ever looking at more than two components of $G$ at a time. While the matrix $\Sigma$ clearly grows with $d$, each entry is independent of the ambient dimension. 
+So that we can recover $\mathbb E [GG^\top] =\Sigma$ without ever looking at more than two components of $G$ at a time. While the matrix $\Sigma$ clearly grows with $d$, each entry is independent of the ambient dimension. 
 
 Note that $(\frac{Z_i}{\|Z\|})^2$ $i=1, \dots, d$ is uniformly integrable, since in the uncorrelated case, a uniform random variable on the sphere $\mathbb S^{d-1}$ must satisfy $\sum_{i=1}^d (\frac{Z_i}{\|Z\|})^2=1$ and by symmetry $\mathbb E(\frac{Z_i}{\|Z\|})^2=\frac{1}{d}$. So $\mathbb E(\sqrt d \frac{Z_i}{\|Z\|})^2=1$ and doesn't depend on d. Since the eigenvalues of the covariance matrix are uniformly bounded and independent of $d$, $(\frac{\sqrt d X_i}{\|X\|})^2\overset{\text{a.s.}}{=}(\frac{\sqrt d G_i}{\|G\|})^2$ are also uniformly integrable. 
 
@@ -148,3 +151,74 @@ $$
 $$
 
 for some constant $c>0$. The last line is a direct plug of the Hanson-Wright inequality. 
+
+### Efficiency
+
+The projective estimator becomes a superefficient estimator of the dispersion matrix of a stable random vector when $d \rightarrow \infty$. This is because the Gaussian has the lowest CRLB for its scale parameter in the class of stable distributions:
+
+![](images/CRLB.png)
+
+This isn't actually an obvious result, since the Gaussian was thought by many to be the largest of all Cramér-Rao bounds (CRB) for many classes of similarly parameterized distributions (as claimed in B.3.26 in Spectral Analysis of Signals by Stoica and Moses), a fact disproven in [Abeida and Delmas (2019)](https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=8825518). For instance, this is also a quality of the multivariate-t when variance is finite, and potentially extends to other distributions. It's not obvious how to extend this analytically to stable distributions, since the second moments needed for the subordinator (aka modular variate) aren't met. 
+
+In [Dulek (2017)](https://ieeexplore.ieee.org/document/7811249), the author derives characteristic function-based lower bounds for Fisher information in the stable case. This could provide an analtyical argument for the superefficiency of this estimator.
+
+The normalized projective estimator attains the Cramér-Rao Lower Bound (CRLB) for the underlying Gaussian covariance matrix estimate in the limit. And since the Gaussian has the lower CRLB in the class of elliptical distributions parameterized by a shape matrix, this estimator is superefficient for our stable dispersion matrix estimate.
+
+While the distribution of $d\bar\sigma^2 X_iX_j/\|X\|^2$ doesn't have closed form moments, the variance of this estimator can be analyzed via its Taylor expansion.
+
+#### Gaussian CRB
+
+Assume like in our assumptions above that $G \sim N(0, \Sigma)$. Then the Slepian-Bangs formula gives the (i,j)th element of the Fisher Information Matrix for the Gaussian as  $[F]_{i,j} = N\cdot \text{Tr}\{{\Sigma}^{-1}\frac{\partial{\Sigma}}{\partial \theta_i}{\Sigma}^{-1}\frac{\partial{\Sigma}}{\partial \theta_j}\}$. 
+
+Looking elementwise, the CRB for the (i,j)-th entry of the covariance matrix is $\text{CRB}(\Sigma_{ij}) = \frac 1 n [\Sigma_{ii}\Sigma_{jj}+\Sigma_{ij}^2]$
+
+#### Projective Estimator 
+
+**[Note: Need to change X to G to be consistent with the earlier notation]**
+
+Call the estimate of  Using a Talor series expansion for the expectation and variance of the ratio $\hat\Sigma_{ij} = d\hat\sigma^2 X_iX_j/\|X\|^2$ around $(\mathbb E(d\hat\sigma^2 G_iG_j), \mathbb E(\|G\|^2))=(d\bar\sigma^2\text{Cov}(G_i,G_j), d\bar\sigma^2)$:
+
+$$
+\begin{aligned}
+\mathbb E (d\bar\sigma^2 X_iX_j/\|X\|^2) &=\mathbb E (d\bar\sigma^2 G_iG_j/\|G\|^2) = \mathbb E \bigg [  \bigg] \\
+&= \Sigma_{ij}+B_{ij}
+\end{aligned}
+$$
+
+Where $B_{ij} =  \mathcal O(\frac{1}{d^\beta \sqrt{n}})$ with $0 < \beta \leq \frac{1}{2}$.
+
+For the variance:
+
+$$
+\begin{aligned}
+\text{Var}(d\bar\sigma^2 G_iG_j/\|G\|^2) &= \\
+& = \Sigma_{ii}\Sigma_{jj}+\Sigma{ij}^2
+\end{aligned}
+$$
+
+Using this, and defining $\Omega$ as the CRLB matrix. Choose $m=m(d)$ so that $\frac{m(d)}{d} < \mathcal O(1/d^2)$. 
+
+Then assuming:
+
+- Finite variance of univariate stable scale MLEs (DuMouchel's criteria)
+- We are estimating the covariance matrix of a sub-vector, $X^{(m)}$ where $i,j \leq m$
+- $\mathcal O(n) =\mathcal O(m)$
+
+$$
+\begin{aligned}
+\mathbb E \|\hat \Sigma^{(m)} - \Sigma^{(m)}  \|_F^2 &= \mathbb E \bigg \| d\hat\sigma^2 \frac{X^{(m)} X^{(m)\top}}{\|X\|^2} - \Sigma^{(k)}  \bigg\|_F^2 \\
+&= \mathbb E \bigg \| d\hat\sigma^2 \frac{G^{(m)}G^{(m)\top}}{\|G\|^2} - \Sigma \bigg\|_F^2 \\
+&= \mathbb E \sum_{i,j} (d\hat\sigma^2 G_iG_j/\|G\|^2 - \Sigma_{ij})^2 \\
+&= \sum_{i,j} \text{Var}(d\hat\sigma^2 G_iG_j/\|G\|^2)+ \sum_{i,j} \mathbb E (\Sigma_{ij} -\hat \Sigma_{ij})^2\\ 
+&= \sum_{i,j} \text{Var}(d\hat\sigma^2 G_iG_j/\|G\|^2)+\sum_{i,j}\mathcal O (\frac{1}{d^{\beta/2}}) \\
+&= \sum_{i,j}\text{Var}(G_iG_j) +\sum_{i,j}\mathcal O(\frac{1}{d^\beta \sqrt{n}}) \\
+&= \sum_{i,j}\frac 1 n [\Sigma_{ii}\Sigma_{jj}+\Sigma_{ij}^2]+\mathcal O(\frac{1}{d^\beta \sqrt{n}}) \\
+&= \text{Tr}(\Omega) + \mathcal O(\frac{1}{d^\beta \sqrt{n}}) \\
+\implies  \frac{\mathbb E \|\hat \Sigma - \Sigma \|_F^2}{\text{Tr}(\Omega)} &= 1 + \mathcal O(\frac{1}{d^{1+\beta } \sqrt{n}}) \\ 
+\end{aligned}
+$$
+
+When the ambient dimension grows sufficiently faster than the estimation dimension, no unbiased estimator can have a strictly smaller total MSE in the limit.  
+
+* add assumptions 
+* fix (a,b) expansion details for sigma hat
