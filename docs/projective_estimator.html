@@ -356,19 +356,6 @@ d\,\tau\,\mathbb{E}\!\left[\frac{X_{[k]}}{\|X\|}\frac{X_{[k]}}{\|X\|}^\top\right
 <h4 class="anchored" data-anchor-id="finite-dimensional-superefficiency">Finite-Dimensional Superefficiency</h4>
 <p>The superefficiency results above do not require <span class="math inline">\(d \rightarrow \infty\)</span>.</p>
 <p>By relying on a Gaussian vector norm for concentration of measure, we can apply the Hanson-Wright inequality to get a probabalistic bound on the efficiency gains relative to the original distribution.</p>
-<p><span class="math display">\[
-\begin{aligned}
-\mathbb P\bigg(\bigg \| d\hat\tau \frac{XX^\top}{\|X\|^2} - GG^\top\bigg \|_F \geq t \bigg) &amp; = \mathbb P\bigg(\bigg \| d\hat\tau\frac{GG^\top}{\|G\|^2} - GG^\top\bigg \|_F \geq t \bigg) \\
-&amp;= \mathbb P\bigg(\bigg \| GG^\top \bigg( \frac{d\hat\tau}{\|G\|^2} - 1 \bigg) \bigg \|_F \geq t \bigg) \\
-&amp;= \mathbb P\bigg( \| GG^\top \|_F \bigg| \frac{d\bar\sigma^2}{\|G\|^2} - 1 \bigg|  \geq t \bigg) \\
-&amp;= \mathbb P\bigg( \| G \|^2 \bigg| \frac{d\hat\tau}{\|G\|^2} - 1 \bigg|  \geq t \bigg) \\
-&amp;= \mathbb P( | \|G\|^2 - d \hat\tau |  \geq t ) \\
-&amp;= \mathbb P( | \|\Sigma^{1/2}Z\|^2 - d \hat\tau|  \geq t ) \\
-&amp;= \mathbb P( | (\Sigma^{1/2}Z)^\top(\Sigma^{1/2}Z) - d \hat\tau |  \geq t ) \\
-&amp;= \mathbb P( | Z^\top \Sigma Z - d \hat\tau |  \geq t ) \\
-&amp;\leq 2\exp\bigg[-c \min\bigg(\frac{t^2}{\|\Sigma\|_F^2}, \frac{t}{\|\Sigma\|_{\text{op}}}\bigg)\bigg]
-\end{aligned}
-\]</span></p>
 </section>
 </section>
 <section id="simulation-study" class="level3">
