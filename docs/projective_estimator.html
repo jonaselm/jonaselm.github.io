@@ -285,7 +285,7 @@ d\,\tau\,\mathbb{E}\!\left[\frac{X_{[k]}}{\|X\|}\frac{X_{[k]}}{\|X\|}^\top\right
 &amp;= d\tau\Sigma_{ij} + \mathcal O (d^{(1-\beta)/2})
 \end{aligned}
 \]</span></p>
-<p>Where <span class="math inline">\(0 &lt; \beta \leq \frac{1}{2}\)</span> is a term that depends on the correlation of the marginal MLEs (since <span class="math inline">\(\tau\)</span> is the average of finite variance random variables that cannot be perfectly correlated). So the bias term is <span class="math inline">\(\mathcal O (d^{(1-\beta)/2})\)</span> or smaller.</p>
+<p>Where <span class="math inline">\(0 &lt; \beta \leq 1\)</span> is a term that depends on the correlation of the marginal MLEs (since <span class="math inline">\(\tau\)</span> is the average of finite variance random variables that cannot be perfectly correlated). So the bias term is <span class="math inline">\(\mathcal O (d^{(1-\beta)/2})\)</span> or smaller.</p>
 <p>Using a Taylor series expansion for the expectation and variance of the ratio <span class="math inline">\(\hat\Sigma_{ij} = d\hat\tau X_iX_j/\|X\|^2\)</span> around <span class="math inline">\((\mathbb E(d\hat\tau G_iG_j), \mathbb E(\|G\|^2))=(d\tau\Sigma_{i,j}+ \mathcal O (d^{(1-\beta)/2}), d\tau)\)</span>, starting with the moments:</p>
 <p><span class="math display">\[
 \begin{aligned}
@@ -355,7 +355,19 @@ d\,\tau\,\mathbb{E}\!\left[\frac{X_{[k]}}{\|X\|}\frac{X_{[k]}}{\|X\|}^\top\right
 <section id="finite-dimensional-superefficiency" class="level4">
 <h4 class="anchored" data-anchor-id="finite-dimensional-superefficiency">Finite-Dimensional Superefficiency</h4>
 <p>The superefficiency results above do not require <span class="math inline">\(d \rightarrow \infty\)</span>.</p>
-<p>By relying on a Gaussian vector norm for concentration of measure, we can apply the Hanson-Wright inequality to get a probabalistic bound on the efficiency gains relative to the original distribution.</p>
+<p>By relying on a Gaussian vector norm for concentration of measure, we can apply the Hanson-Wright inequality to get a probabalistic bound on the efficiency gains relative to the original distribution. <span class="math display">\[
+\begin{aligned}
+\mathbb P\bigg(\bigg \| d\hat\tau \frac{XX^\top}{\|X\|^2} - GG^\top\bigg \|_F \geq t \bigg) &amp; = \mathbb P\bigg(\bigg \| d\hat\tau\frac{GG^\top}{\|G\|^2} - GG^\top\bigg \|_F \geq t \bigg) \\
+&amp;= \mathbb P\bigg(\bigg \| GG^\top \bigg( \frac{d\hat\tau}{\|G\|^2} - 1 \bigg) \bigg \|_F \geq t \bigg) \\
+&amp;= \mathbb P\bigg( \| GG^\top \|_F \bigg| \frac{d\bar\sigma^2}{\|G\|^2} - 1 \bigg|  \geq t \bigg) \\
+&amp;= \mathbb P\bigg( \| G \|^2 \bigg| \frac{d\hat\tau}{\|G\|^2} - 1 \bigg|  \geq t \bigg) \\
+&amp;= \mathbb P( | \|G\|^2 - d \hat\tau |  \geq t ) \\
+&amp;= \mathbb P( | \|\Sigma^{1/2}Z\|^2 - d \hat\tau|  \geq t ) \\
+&amp;= \mathbb P( | (\Sigma^{1/2}Z)^\top(\Sigma^{1/2}Z) - d \hat\tau |  \geq t ) \\
+&amp;= \mathbb P( | Z^\top \Sigma Z - d \hat\tau |  \geq t ) \\
+&amp;\leq 2\exp\bigg[-c \min\bigg(\frac{t^2}{\|\Sigma\|_F^2}, \frac{t}{\|\Sigma\|_{\text{op}}}\bigg)\bigg]
+\end{aligned}
+\]</span></p>
 </section>
 </section>
 <section id="simulation-study" class="level3">

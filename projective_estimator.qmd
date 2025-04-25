@@ -129,7 +129,7 @@ $$
 \end{aligned}
 $$
 
-Where $0 < \beta \leq \frac{1}{2}$ is a term that depends on the correlation of the marginal MLEs (since $\tau$ is the average of finite variance random variables that cannot be perfectly correlated). So the bias term is $\mathcal O (d^{(1-\beta)/2})$ or smaller.
+Where $0 < \beta \leq 1$ is a term that depends on the correlation of the marginal MLEs (since $\tau$ is the average of finite variance random variables that cannot be perfectly correlated). So the bias term is $\mathcal O (d^{(1-\beta)/2})$ or smaller.
 
 Using a Taylor series expansion for the expectation and variance of the ratio $\hat\Sigma_{ij} = d\hat\tau X_iX_j/\|X\|^2$ around $(\mathbb E(d\hat\tau G_iG_j), \mathbb E(\|G\|^2))=(d\tau\Sigma_{i,j}+ \mathcal O (d^{(1-\beta)/2}), d\tau)$, starting with the moments:
 
@@ -219,5 +219,18 @@ To see this, consider the multivariate-t distribution. [Besson & Abromovich (201
 The superefficiency results above do not require $d \rightarrow \infty$. 
 
 By relying on a Gaussian vector norm for concentration of measure, we can apply the Hanson-Wright inequality to get a probabalistic bound on the efficiency gains relative to the original distribution. 
+$$
+\begin{aligned}
+\mathbb P\bigg(\bigg \| d\hat\tau \frac{XX^\top}{\|X\|^2} - GG^\top\bigg \|_F \geq t \bigg) & = \mathbb P\bigg(\bigg \| d\hat\tau\frac{GG^\top}{\|G\|^2} - GG^\top\bigg \|_F \geq t \bigg) \\ 
+&= \mathbb P\bigg(\bigg \| GG^\top \bigg( \frac{d\hat\tau}{\|G\|^2} - 1 \bigg) \bigg \|_F \geq t \bigg) \\
+&= \mathbb P\bigg( \| GG^\top \|_F \bigg| \frac{d\bar\sigma^2}{\|G\|^2} - 1 \bigg|  \geq t \bigg) \\
+&= \mathbb P\bigg( \| G \|^2 \bigg| \frac{d\hat\tau}{\|G\|^2} - 1 \bigg|  \geq t \bigg) \\
+&= \mathbb P( | \|G\|^2 - d \hat\tau |  \geq t ) \\
+&= \mathbb P( | \|\Sigma^{1/2}Z\|^2 - d \hat\tau|  \geq t ) \\
+&= \mathbb P( | (\Sigma^{1/2}Z)^\top(\Sigma^{1/2}Z) - d \hat\tau |  \geq t ) \\
+&= \mathbb P( | Z^\top \Sigma Z - d \hat\tau |  \geq t ) \\
+&\leq 2\exp\bigg[-c \min\bigg(\frac{t^2}{\|\Sigma\|_F^2}, \frac{t}{\|\Sigma\|_{\text{op}}}\bigg)\bigg]
+\end{aligned}
+$$
 
 ### Simulation Study
