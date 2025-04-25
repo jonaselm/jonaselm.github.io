@@ -190,7 +190,7 @@ $$
 &= \sum_{i,j}\bigg[\Sigma_{ii}\Sigma_{jj}+\Sigma_{ij}^2 + \mathcal O(\frac{1}{d^{\beta/2} })\bigg] +\sum_{i,j}\mathcal O (\frac{1}{ d^{\beta}})  \\
 &= \sum_{i,j}[\Sigma_{ii}\Sigma_{jj}+\Sigma_{ij}^2]+\mathcal O(\frac{k^2}{d^{\beta/2} }) \\
 &= \text{tr}(\Omega) + \mathcal O(\frac{1}{d^{\beta/2} }) \\
-\implies  \frac{\mathbb E \|\hat \Sigma - \Sigma \|_F^2}{\text{tr}(\Omega)} &= 1 + \mathcal O(\frac{1}{d^{\beta/2} }) \\ 
+\implies  \frac{\mathbb E \|\hat \Sigma - \Sigma \|_F^2}{\text{tr}(\Omega)} &= 1 + \mathcal O(\frac{1}{d^{\beta/2+1} }) \\ 
 \end{aligned}
 $$
 
@@ -220,6 +220,18 @@ The superefficiency results above do not require $d \rightarrow \infty$.
 
 By relying on a Gaussian vector norm for concentration of measure, we can apply the Hanson-Wright inequality to get a probabalistic bound on the efficiency gains relative to the original distribution. 
 
-
+$$
+\begin{aligned}
+\mathbb P\bigg(\bigg \| d\hat\tau \frac{XX^\top}{\|X\|^2} - GG^\top\bigg \|_F \geq t \bigg) & = \mathbb P\bigg(\bigg \| d\hat\tau\frac{GG^\top}{\|G\|^2} - GG^\top\bigg \|_F \geq t \bigg) \\ 
+&= \mathbb P\bigg(\bigg \| GG^\top \bigg( \frac{d\hat\tau}{\|G\|^2} - 1 \bigg) \bigg \|_F \geq t \bigg) \\
+&= \mathbb P\bigg( \| GG^\top \|_F \bigg| \frac{d\bar\sigma^2}{\|G\|^2} - 1 \bigg|  \geq t \bigg) \\
+&= \mathbb P\bigg( \| G \|^2 \bigg| \frac{d\hat\tau}{\|G\|^2} - 1 \bigg|  \geq t \bigg) \\
+&= \mathbb P( | \|G\|^2 - d \hat\tau |  \geq t ) \\
+&= \mathbb P( | \|\Sigma^{1/2}Z\|^2 - d \hat\tau|  \geq t ) \\
+&= \mathbb P( | (\Sigma^{1/2}Z)^\top(\Sigma^{1/2}Z) - d \hat\tau |  \geq t ) \\
+&= \mathbb P( | Z^\top \Sigma Z - d \hat\tau |  \geq t ) \\
+&\leq 2\exp\bigg[-c \min\bigg(\frac{t^2}{\|\Sigma\|_F^2}, \frac{t}{\|\Sigma\|_{\text{op}}}\bigg)\bigg]
+\end{aligned}
+$$
 
 ### Simulation Study
