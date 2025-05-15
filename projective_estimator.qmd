@@ -5,20 +5,34 @@ format: html
 
 ### Data Model and Setup
 
-**Note:** The notation here is a little confusing -- I want to distinguish between the estimation dimension and the ambient dimension, but there's potentially a better way to do it without introducing so much notation. 
-
-Let $\{X^{(d)}\}$ be a sequence of centered random vectors where $X^{(d)} \in \mathbb R^d$, having corresponding dispersion/shape matrices $\{\Sigma^{(d)}\}$, $d \geq 1$ such that:
+Let $\{X^{(d)}\}$ be a sequence of centered symmetric $\alpha$-stable random vectors where $X^{(d)} \in \mathbb R^d$, having corresponding dispersion/shape matrices $\{\Sigma^{(d)}\}$, $d \geq 1$ such that:
 
 - The leading principal $k \times k$ submatrix of $\Sigma^{(d)}$ equals $\Sigma^{(k)}$ for all $k \leq d$. 
-- For any $d$, $\Sigma^{(d)} \in \mathbb R^{d \times d}$ is well-behaved in the sense that it is positive definite and its eigenvalues $\lambda_i$, $i=1, \dots, d$ are uniformly bounded so that there exist two constants $m, M >0$ independent of $d$ such that $m \leq \lambda_i \leq M$ for all $i$. Additionally, assume that the average eigenvalue (or normalized trace in a random matrix theory context) converges to a fixed constant: $\frac{1}{d}\text{tr}(\Sigma^{(d)})\rightarrow \tau>0$ as $d \rightarrow \infty$.
+- For any $d$, $\Sigma^{(d)} \in \mathbb R^{d \times d}$ is positive definite and its eigenvalues $\lambda_i$, $i=1, \dots, d$ are uniformly bounded so that there exist two constants $m, M >0$ independent of $d$ such that $m \leq \lambda_i \leq M$ for all $i$. Additionally, assume that the average eigenvalue (or normalized trace in a random matrix theory context) converges to a fixed constant: $\frac{1}{d}\text{tr}(\Sigma^{(d)})\rightarrow \tau>0$ as $d \rightarrow \infty$.
 
-Define $X=X_{[k]}$ as the first $k$ coordinates of $X^{(d)}$. Then, as defined above for any $k \leq d$, the dispersion matrix of $X_{[k]}$ is simply $\Sigma^{(k)}$, irrespective of the ambient dimension $d$.
+Define the projection $X:=(X_1^{(d)}, \dots, X_k^{(d)}) \in \mathbb R^k$ with  $k \leq d$ as the first $k$ coordinates of $X^{(d)}$. Then, as defined above for any $k$, the dispersion matrix of $X$ is simply $\Sigma^{(k)}$ independent of the ambient dimension $d$. 
 
-Assume that each $X$ has the familiar stochastic representation $X= \sqrt{W}G$, where $W \sim S_{\alpha/2}(\cos(\pi \alpha/4)^{(2/\alpha)},1, 0;1)$, a maximally skewed scalar random variable with support on the positive real numbers, and $G \sim N(0, \Sigma^{(d)})$, a multivariate normal random vector independent of $W$ with covariance matrix $\Sigma^{(d)}$.
+This (potentially) lower-dimensional matrix $\Sigma^{(k)}$ is the quantity we're interested in estimating. 
 
-Under this setup, each $X \sim \alpha$-SG($\Sigma^{(d)}$) -- an elliptical stable random vector centered at the origin, whose shape matrix is the covariance matrix of the latent Gaussian vector $G$ (e.g. the characteristic function of $X$ is $\mathbb E[\exp\{i\theta^{\text T}X\}]= \exp(-(\frac{1}{2}\theta^{\text T}\Sigma^{(d)}\theta)^{\alpha/2})$ (Samorodnitsky and Taqqu, Proposition 2.5.2))
+As a symmetric $\alpha$-stable random vector, each projection of $X^{(d)}$ can be written in the familiar stochastic representation $X= \sqrt{W}G$, where $W \sim S_{\alpha/2}(\cos(\pi \alpha/4)^{(2/\alpha)},1, 0;1)$, a maximally skewed scalar random variable with support on the positive real numbers, and $G \sim N(0, \Sigma^{(k)})$, a multivariate normal random vector independent of $W$ with covariance matrix $\Sigma^{(k)}$.
 
-We observe $n$ such i.i.d. realized vectors via a data matrix $\mathbf X \in \mathbb{R}^{n\times d}$ so that each row is one $d$-dimensional observation. We are interested in estimating the shape matrix of $X$ for some $k \leq d$. In other words, our estimation dimension of interest may be smaller than the ambient dimension of our random vector. Without loss of generality, assume that the leading dimensions are the estimation dimensions.
+Under this setup, each $X$ is a random vector centered at the origin whose shape matrix is the covariance matrix of the latent Gaussian vector $G$ (e.g. the characteristic function of $X$ is $\mathbb E[\exp\{i\theta^{\text T}X\}]= \exp(-(\frac{1}{2}\theta^{\text T}\Sigma^{(k)}\theta)^{\alpha/2})$ (Samorodnitsky and Taqqu, Proposition 2.5.2)).
+
+Note that there is a one-to-one correspondence between the scale parameter $\gamma_i$ of the univariate stable random variable $X_i$ and the standard deviation $\sigma_i$ of the corresponding latent Gaussian $G_i$ under standard parameterizations that don't include the $\frac 1 2$ factor in the characteristic function in the preceeding paragraph: $\sigma = \sqrt 2 \gamma$. We use this fact in the estimation procedure to estimate the trace of the latent covariance matrix using observable stable realizations.
+
+In the full ambient space, we observe $n$ such i.i.d. realized vectors via a data matrix $\mathbf X \in \mathbb{R}^{n\times d}$ so that each row is one $d$-dimensional observation:
+
+$$
+\mathbf X \;=\;
+\begin{pmatrix}
+X^{(d)}_{1,1} & X^{(d)}_{1,2} & \cdots & X^{(d)}_{1,d}\\
+X^{(d)}_{2,1} & X^{(d)}_{2,2} & \cdots & X^{(d)}_{2,d}\\
+\vdots        & \vdots        & \ddots & \vdots\\
+X^{(d)}_{n,1} & X^{(d)}_{n,2} & \cdots & X^{(d)}_{n,d}
+\end{pmatrix}\!\in\!\mathbb R^{n\times d}
+$$ {#eq-data-matrix}
+
+We are interested in estimating the shape matrix of $X$ for some $k \leq d$. In other words, our estimation dimension of interest may be smaller than the observed ambient dimension of our random vector. Without loss of generality, assume that the leading dimensions are the estimation dimensions.
 
 ::: {.callout-note}
 This  $X_i = \sqrt{W}G$ setup is a so-called [normal variance mixture](https://en.wikipedia.org/wiki/Normal_variance-mean_mixture). In the literature, W may be referred to as a subordinator (stable distribution literature), or a texture or a 2nd-order modular variate (signal processing). The distribution of this random variable determines the distribution of $X$. For example if $W$ is inverse-gamma distributed rather than stable, $X$ has a multivariate t distribution. This estimation approach works for any normal variance-mean mixture.
@@ -31,26 +45,48 @@ This  $X_i = \sqrt{W}G$ setup is a so-called [normal variance mixture](https://e
 
 Rather than discard these additional ambient dimensions (as is typical), because the same subordinator acts on each realization across the whole ambient space, we can use them to project an approximately Gaussian $k$-vector and get a better estimate of $\Sigma^{(k)}$ under the right conditions. 
 
-### Estimation Procedure
+### Estimation Procedure and Relation to Existing Approaches
 
-1) Estimate marginal scale parameters $\gamma_j^{MLE}$, $j = 1, \dots, d$ via maximum likelihood.  
-2) Use these marginal estimates to estimate the trace of the full ambient-dimensional latent covariance matrix: $\widehat{\text{tr}(\Sigma^{(d)})} = d\hat\tau := 2\sum_{j=1}^d  {\gamma_j^{MLE}}^2$ (Note: the 2 prefactor comes from differences between standard parameterizations of a Gaussian vs. general stable random vector used in the STABLE software). 
-3) Normalize each row of $\mathbf X$ by its Euclidean norm: $\tilde X_{i,*} = X_{i,*}/\|X_{i,*}\|$, $i = 1, \dots, n$
-4) Retain just the estimation dimensions: $\tilde{\mathbf G} :=  \mathbf{\tilde{X}_{[k]}} \in \mathbb R^{n \times k}$.
-5) The dispersion matrix estimate is the sample covariance matrix of $\tilde{\mathbf G}$, rescaled by the estimated trace of the full-ambient-dimension latent covariance matrix:  $\hat \Sigma = \frac{d\hat\tau}{n}\tilde{\mathbf G}^{\top}\tilde{\mathbf G}$
+Estimation using the projective estimator is straightforward:
 
+1) Estimate marginal scale parameters $\gamma_j^{\text{MLE}}$, $j = 1, \dots, d$ via maximum likelihood.  
+2) Use these marginal estimates to estimate the average trace of the full ambient-dimensional latent covariance matrix: $\hat\tau :=\frac{1}{d}\widehat{\text{tr}(\Sigma^{(d)})} = \frac{2}{d}\sum_{j=1}^d  {\gamma_j^{\text{MLE}}}^2$ (Note: the 2 prefactor comes from differences between standard parameterizations of a Gaussian vs. general stable random vector used in the STABLE software). 
+3) The projective estimator is the average of rank-1 normalized covariance matrices rescaled by this scale estimate:
+$$
+\hat\Sigma = \frac{d\hat\tau}{n}\sum_{i=1}^n\frac{X_{i,\cdot}X_{i,\cdot}^\top }{\|X_{i,\cdot}^{(d)} \|_2^2}
+$$ {#eq-projective-estimator} 
+
+Where $X_{i,\cdot}^{(d)} \in \mathbb R^d$ is the column vector made up of the $i$-th row of $\mathbf X$, the $i$-th observation of the data matrix, and $X_{i,\cdot} \in \mathbb R^k$ is the $k$-dimensional projection as described above.
+
+It turns out that this estimator is a rescaled version of the Spatial-Sign Covariance Matrix (SSCM), which was introduced by [Locantore, et al. (1999)](https://link.springer.com/article/10.1007/BF02595862), and has been studied extensively in various settings (see [Chen & Wang (2025)](https://arxiv.org/abs/2502.10943) for a thorough review). The SSCM can also be viewed as a one-shot version of Tyler's M-Estimator, using the identity as its initial guess for the fixed-point formula. 
+
+Tyler's M-Estimator is the maximum likelihood estimator for the Angular Central Gaussian distribution ([Frahm & Uwe, 2007](https://www.econstor.eu/handle/10419/26740)), which is the distribution of the normalized data: $X^{(d)}/\|X^{(d)}\|=G^{(d)}/\|G^{(d)}\| \sim \text{ACG}(\Sigma^{(d)})$. In both cases, these estimators are scatter matrix estimators and do not recover the scale of the covariance matrix, which is not uniquely defined by the ACG distribution (details in [Tyler (1987)](https://www.jstor.org/stable/2336697)).
+
+For elliptical distributions, the SCCM maintains the eigenvectors and ordering of the eigenvalues of the scatter matrix ([Dürre et al. (2016)](https://www.sciencedirect.com/science/article/pii/S0167715215304065)), but distorts spacings in a complicated way that depends on $d$.
+
+Very recent work by Chen & Wang (2025) explores the spectral properties of the SSCM for a general setup. In particular, they show that the Marcenko-Pastur distribution holds as a limiting distribution for the eigenvalues of the SCCM under certain regularity conditions, including sufficiently well-behaved tails.
+
+To my knowledge existing work has not addressed the recovery of the proper scaling via high-dimensional norm concentration, the applicability of this approach to infinite variance distributions (regularly varying with $\alpha < 2$), the higher ambient dimension setup, the superefficiency of this estimator for certain heavy tailed distributions, or the recovery of the latent Gaussian vector G almost surely. 
+
+### Motivation
+
+Since the SCCM shares eigenvectors with the sample covariance matrix of G, which are consistent estimators of the shape matrix's eigenvectors, one approach to recover the full covariance matrix is to correct the eigenvalue distortions and reconstruct an estimate of the full covariance matrix. This is the motivation behind the Rotated MLE approach (not discussed in detail here). 
+
+The projective estimator has slightly different motivation; we want to leverage the fact that in the high-dimensional setting, for any fixed components $i,j$, $\sqrt{d\tau}(X_i/||X||^{(d)},X_j/||X||^{(d)}) \overset{a.s.}{\rightarrow} (G_i, G_j)$ as $d \rightarrow \infty$ (details below), as a consequence of concetration of vector norms in high dimensions and the marginalization property of Gaussians (that is, the sub-vector $(G_i, G_j)$ is invariant to the ambient dimension of $G$). In other words, the distortion of the eigenvalues becomes linear asyptotically as $d \rightarrow \infty$.
+
+This is how the projective estimator gets its name: the projective central limit theorem suggests that the lower-dimensional projection of an anisotropic distribution on the sphere $\mathbb S^{d-1}$ becomes Gaussian in the infinite-dimensional limit (subject to some regularity conditions).
 
 ### Theoretical Properties
 
-Returning to the representation $X = \sqrt{W}G$, the normalized stable vector $X$ is equal to the normalized version of the corresponding latent Gaussian vector $G$.
+Returning to the representation $X= \sqrt{W}G$, the normalized stable vector $X$ (of any dimension) is equal to the normalized version of the corresponding latent Gaussian vector $G$.
 
-To see why, note that from the eigendecomposition of $\Sigma$, we can write $\Sigma = O\Lambda O^\top = O\Lambda^{1/2}\Lambda^{1/2} O^\top$. Call $\Sigma^{1/2} :=O\Lambda^{1/2}$. Let $Z \sim N(0, I_d)$ so that $G = \Sigma^{1/2}Z$.
+To see why, note that from the eigendecomposition of $\Sigma^{(d)}$, we can write $\Sigma^{(d)}  = O\Lambda O^\top = O\Lambda^{1/2}\Lambda^{1/2} O^\top$. Call $\Sigma^{1/2} :=O\Lambda^{1/2}$. Let $Z \sim N(0, I_d)$ so that $G ^{(d)} = \Sigma^{1/2}Z$.
 
 Then we can write:
 
 $$
 \begin{aligned}
-\frac{X}{\|X\|} = \frac{\sqrt WG}{\|\sqrt WG\|} = \frac{\sqrt WG}{\|\sqrt W\Sigma^{1/2}Z\|} &= \frac{\sqrt WG}{\sqrt W\|O\Lambda^{1/2}Z\|} = \frac{G}{\|\Lambda^{1/2}Z\|}
+\frac{X}{\|X^{(d)} \|} = \frac{\sqrt WG}{\|\sqrt WG^{(d)} \|} = \frac{\sqrt WG}{\|\sqrt W\Sigma^{1/2}Z\|} &= \frac{\sqrt WG}{\sqrt W\|O\Lambda^{1/2}Z\|} = \frac{G}{\|\Lambda^{1/2}Z\|}
 \end{aligned}
 $$
 
@@ -75,33 +111,75 @@ This means that for any fixed indices $i,j$, we get:
 
 $$
 \begin{aligned}
-\sqrt {d \tau} \frac{(X_i, X_j)}{\|X\|} =\sqrt {d \tau}\frac{(G_i, G_j)}{\|\Lambda^{1/2}Z\|}  \underset{d \rightarrow \infty}{\overset{\text{a.s.}}{\longrightarrow}} (G_i, G_j)
+\sqrt {d \tau} \frac{(X_i, X_j)}{\|X^{(d)} \|} =\sqrt {d \tau}\frac{(G_i, G_j)}{\|\Lambda^{1/2}Z\|}  \underset{d \rightarrow \infty}{\overset{\text{a.s.}}{\longrightarrow}} (G_i, G_j)
 \end{aligned}
 $$
 
-Now, consider that for the estimation vector $G':=G_{[k]}$, we can write: 
+By the continuous mapping theorem, the product $d\,\tau\,\frac{X_i}{\|X^{(d)} \|}\frac{X_j}{\|X^{(d)} \|}\underset{d \rightarrow \infty}{\overset{\text{a.s.}}{\longrightarrow}} G_iG_j$ as well.
+
+Now, consider that for the latent Gaussian vector $G$, we can write: 
+
 $$
-\mathbb E [G'G'^\top] = 
+\mathbb E [GG^\top] = 
 \begin{pmatrix}
-\mathbb{E}[G_1'^2] & \mathbb{E}[G_1'G_2'] & \cdots & \mathbb{E}[G_1'G_k'] \\
-\mathbb{E}[G_2'G_1'] & \mathbb{E}[G_2'^2] & \cdots & \mathbb{E}[G_2'G_k'] \\
+\mathbb{E}[G_1^2] & \mathbb{E}[G_1G_2] & \cdots & \mathbb{E}[G_1G_k] \\
+\mathbb{E}[G_2G_1] & \mathbb{E}[G_2^2] & \cdots & \mathbb{E}[G_2G_k] \\
 \vdots & \vdots & \ddots & \vdots \\
-\mathbb{E}[G_k'G_1'] & \mathbb{E}[G_k'G_2'] & \cdots & \mathbb{E}[G_k'^2]
+\mathbb{E}[G_kG_1] & \mathbb{E}[G_kG_2] & \cdots & \mathbb{E}[G_k^2]
 \end{pmatrix}
 $$
 
-So that we can recover $\mathbb E [G'G'^\top] =\Sigma^{(k)}$ without ever looking at more than two components of $G$ at a time. While the matrix $\Sigma^{(k)}$ can be allowed to grow with $d$ if we wish, each entry is independent of the ambient dimension. 
+So that we can recover $\mathbb E [GG^\top] =\Sigma^{(k)}$ elementwise without ever considering projections of more than two components of $G$ at a time. While the size of the matrix $\Sigma^{(k)}$ can be allowed to grow with $d$ if we wish, each entry is independent of the ambient dimension. 
 
-Note that $(\frac{Z_i}{\|Z\|})^2$, $i=1, \dots, d$ is uniformly integrable, since in the uncorrelated case, a uniform random variable on the sphere $\mathbb S^{d-1}$ must satisfy $\sum_{i=1}^d (\frac{Z_i}{\|Z\|})^2=1$ and by symmetry $\mathbb E(\frac{Z_i}{\|Z\|})^2=\frac{1}{d}$. So $\mathbb E(\sqrt d \frac{Z_i}{\|Z\|})^2=1$ and doesn't depend on d. Since the eigenvalues of the covariance matrix are uniformly bounded and independent of $d$, $(\frac{\sqrt {d \tau} X_i}{\|X\|})^2=(\frac{\sqrt {d \tau} G_i}{\|G\|})^2$ are also uniformly integrable. 
+::: {#lem-uniform-int}
 
-Then for any fixed $i,j \leq d$, $(\frac{\sqrt {d \tau} X_i}{\|X\|}\frac{\sqrt {d \tau} X_j}{\|X\|})$ is uniformly integrable (since it's bounded above by $\max\{(\frac{\sqrt d X_i}{\|X\|})^2,(\frac{\sqrt d X_j}{\|X\|})^2\}$, which is itself uniformly integrable), and the following interchange of limits and expectation is warranted:
+## Uniform Integrability of Normalized Product Moments
+
+$d\,\tau\,\frac{X_i}{\|X^{(d)} \|}\frac{X_j}{\|X^{(d)} \|}$ is uniformly integrable.
+
+::: {.callout-note collapse="true"}
+## Proof
+
+First, $\bigg(\frac{Z_i}{\|Z\|}\bigg)^2 \sim \text{Beta}\bigg(\frac 1 2, \frac{d-1}{2}\bigg)$. This is shown in a few places, but an elegant proof can be found online [here](https://math.stackexchange.com/questions/1602036/marginal-distribution-of-uniform-vector-on-sphere). 
+
+So $\mathbb E\bigg[\bigg(\frac{Z_i}{\|Z\|}\bigg)^4\bigg]=\frac{3}{d(d+2)} \implies \mathbb E\bigg[\bigg\{\bigg(\sqrt d \frac{Z_i}{\|Z\|}\bigg)^2\bigg\}^2 \bigg]=\frac{3d}{(d+2)}\leq 3$ for all $d > 0$. Since $\bigg(\sqrt d \frac{Z_i}{\|Z\|}\bigg)^2$ has a uniform $L^2$ bound, it is uniformly integrable.
+
+Combining this with the assumptions that the eigenvalues of $\Sigma^{(d)}$ are uniformly bounded and independent of $d$, with $\lambda_{\text{max}}(\Sigma^{(d)}) \leq M$ and $\lambda_{\text{min}}(\Sigma^{(d)}) \geq m$:
+
 $$
-\lim_{d\to\infty} \mathbb{E}\!\left[d\,\tau\,\frac{X_i}{\|X\|}\frac{X_j}{\|X\|}\right] = \mathbb{E}\!\left[ \lim_{d\to\infty}d\tau\,\frac{X_i}{\|X\|}\frac{X_j}{\|X\|}\right] = \mathbb{E}[G_iG_j] = \Sigma_{i,j}
+\begin{aligned}
+\bigg(\frac{\sqrt {d \tau} X_i}{\|X^{(d)}\|}\bigg)^2 &= \frac{d \tau X_i^2}{\|X^{(d)}\|^2} \\
+&= \frac{d \tau (\sqrt W G_i)^2}{\|\sqrt WG^{(d)}\|^2} \\ 
+&= \frac{d \tau G_i^2}{\|G^{(d)}\|^2} \\
+& \leq  \frac{d \tau (\sqrt MZ_i)^2}{\|\Lambda^{1/2}Z\|^2} \\ 
+& \leq \frac{d \tau (\sqrt MZ_i)^2}{(\sqrt m\|Z\|)^2} \\
+&= \frac {\tau M}{m}\bigg(\sqrt d \frac{Z_i}{\|Z\|}\bigg)^2
+\end{aligned}
+$$
+
+That is a uniformly integrable random variable times a constant, which is also uniformly integrable.
+
+Then for any fixed $i,j$, by the Cauchy-Schwarz inequality, we have: 
+
+$$
+\begin{aligned}
+\bigg|d\,\tau\,\frac{X_i}{\|X^{(d)} \|}\frac{X_j}{\|X^{(d)} \|}\bigg| \leq \frac 1 2 \bigg ( \bigg(\frac{\sqrt {d \tau} X_i}{\|X^{(d)}\|}\bigg)^2 + \bigg(\frac{\sqrt {d \tau} X_j}{\|X^{(d)}\|}\bigg)^2\bigg)
+\end{aligned}
+$$
+
+Because each squared term on the right-hand side is already uniformly integrable, the product $\bigg(d\,\tau\,\frac{X_i}{\|X^{(d)} \|}\frac{X_j}{\|X^{(d)} \|}\bigg)$ is also uniformly integrable, as desired. $\square$
+:::
+
+:::
+
+By Lemma 1, uniform integrability and a.s. convergence of product described above means that the following interchange of limits and expectation is warranted by Vitali's convergence theorem:
+$$
+\lim_{d\to\infty} \mathbb{E}\!\left[d\,\tau\,\frac{X_i}{\|X^{(d)} \|}\frac{X_j}{\|X^{(d)} \|}\right] = \mathbb{E}\!\left[ \lim_{d\to\infty}d\tau\,\frac{X_i}{\|X^{(d)} \|}\frac{X_j}{\|X^{(d)} \|}\right] = \mathbb{E}[G_iG_j] = \Sigma_{ij}
 $$
 
 Since this quantity doesn't depend on $d$, this shows that
 $$
-d\,\tau\,\mathbb{E}\!\left[\frac{X_{[k]}}{\|X\|}\frac{X_{[k]}}{\|X\|}^\top\right] \to \mathbb{E}[G_{[k]}G_{[k]}^\top] = \Sigma^{(k)}
+d\,\tau\,\mathbb{E}\!\left[\frac{X}{\|X^{(d)} \|}\frac{X}{\|X^{(d)} \|}^\top\right] \to \mathbb{E}[GG^\top] = \Sigma^{(k)}
 $$
 
 in the sense that every finite block converges entrywise.
@@ -110,7 +188,7 @@ in the sense that every finite block converges entrywise.
 
 In the Gaussian case, the Slepian-Bangs formula gives the (i,j)th element of the Fisher Information Matrix for the Gaussian as  $[F]_{i,j} = n\cdot \text{tr}\{{\Sigma}^{-1}\frac{\partial{\Sigma}}{\partial \theta_i}{\Sigma}^{-1}\frac{\partial{\Sigma}}{\partial \theta_j}\}$. 
 
-This leads to the familiar Cramér-Rao Bound (CRB) for the (i,j)th element of the inverse of this matrix: ($\text{CRB}(\Sigma_{ij}) = \frac 1 n [\Sigma_{ii}\Sigma_{jj}+\Sigma_{ij}^2]$. 
+This leads to the familiar Cramér-Rao Bound (CRB) for the (i,j)th element of the inverse of this matrix: $\text{CRB}(\Sigma_{ij}) = \frac 1 n [\Sigma_{ii}\Sigma_{jj}+\Sigma_{ij}^2]$. 
 
 When $\tau$ is known (e.g. in special cases such as when we can assume equal variance for all dimensions) actual estimator we're using in the Estimation Procedure section above is (an average of) an Angular Central Gaussian (ACG) random variables (see [Tyler, 1987](https://www.jstor.org/stable/2336697)). When $\tau$ is not known and an estimate must be used, it's more complicated and the distribution depends on the sample size. In either case, there is no closed form for the variance of an ACG variable of arbitrary dimension and a Taylor series expansion needs to be used. 
 
