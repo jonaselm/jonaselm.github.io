@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Background – Research</title>
+<title>A Superefficiency Proof – Research</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -123,7 +123,7 @@ window.Quarto = {
 <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="./background.html" aria-current="page"> 
+    <a class="nav-link" href="./background.html"> 
 <span class="menu-text">Background</span></a>
   </li>  
   <li class="nav-item">
@@ -150,9 +150,8 @@ window.Quarto = {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#stable-distributions-and-heavy-tailed-random-vectors" id="toc-stable-distributions-and-heavy-tailed-random-vectors" class="nav-link active" data-scroll-target="#stable-distributions-and-heavy-tailed-random-vectors">Stable Distributions and Heavy-Tailed Random Vectors</a></li>
-  <li><a href="#high-dimensional-dependence-estimation" id="toc-high-dimensional-dependence-estimation" class="nav-link" data-scroll-target="#high-dimensional-dependence-estimation">High-Dimensional Dependence Estimation</a></li>
-  <li><a href="#current-estimator" id="toc-current-estimator" class="nav-link" data-scroll-target="#current-estimator">Current Estimator</a></li>
+  <li><a href="#gaussian-crb-vs.-mixtures" id="toc-gaussian-crb-vs.-mixtures" class="nav-link active" data-scroll-target="#gaussian-crb-vs.-mixtures">Gaussian CRB vs.&nbsp;Mixtures</a></li>
+  <li><a href="#optimal-efficiency-gap-bounds" id="toc-optimal-efficiency-gap-bounds" class="nav-link" data-scroll-target="#optimal-efficiency-gap-bounds">Optimal Efficiency Gap Bounds</a></li>
   </ul>
 </nav>
     </div>
@@ -161,7 +160,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Background</h1>
+<h1 class="title">A Superefficiency Proof</h1>
 </div>
 
 
@@ -178,74 +177,70 @@ window.Quarto = {
 </header>
 
 
-<p>Since I realize that this problem setting may be a little unfamiliar, I’m including a brief background on <span class="math inline">\(\alpha\)</span>-stable random variables and the research question.</p>
-<p>I’m interested in estimating the dependence of a random vector when covariance may not exist and the dimension of the vector may be high relative to the number of observations. We’re principally interested in a symmetric, positive semi-definite covariance matrix-like object <span class="math inline">\(\Sigma\)</span> or its corresponding correlation matrix, since:</p>
-<ul>
-<li>existing methods in finance lean heavily on covariance/correlation matrices (portfolio optimization, asset pricing, etc.)</li>
-<li>especially in the high-dimensional setting, we can’t expect to estimate a more general dependence structure very well</li>
-<li>given elliptical symmetry of the data, it’s a pretty reasonable model for (equity) returns</li>
-</ul>
-<p>In financial markets, distributions of returns (and log-returns, which are used interchangeably and often without distinction) often have heavy tails. This leads to the relaxation of the finite variance assumption. Even if a process has finite variance, my conjecture is that an estimator that admits heavy tails may be better (e.g.&nbsp;more efficient) in finite/small samples.</p>
-<p>In the literature, correlation and covariance matrices are used interchangably, since the correlation matrix is just a covariance matrix of an alternative dataset where the data have been standardized.</p>
-<section id="stable-distributions-and-heavy-tailed-random-vectors" class="level2">
-<h2 class="anchored" data-anchor-id="stable-distributions-and-heavy-tailed-random-vectors">Stable Distributions and Heavy-Tailed Random Vectors</h2>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Why Stable?
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>For the why behind using stable distributions to connect to theoretical results, see the page <a href="./why_stable.html">Why Stable?</a></p>
-</div>
-</div>
-<p>If we relax the assumption that variance is finite, then a reasonable model for returns is the stable distribution, which has no closed form pdf in general but has <a href="https://en.wikipedia.org/wiki/Multivariate_stable_distribution">a complicated characteristic function</a> where the dependence is fully defined by the spectral measure (typically denoted <span class="math inline">\(\Gamma\)</span>), a finite measure on the unit circle <span class="math inline">\(\mathbb S^d\)</span>.</p>
-<p>Stable distributions are a reasonable choice because they are infinitely divisible, and by the Generalized Central Limit Theorem of Gnedenko and Kolmogorov (1954), if sums of i.i.d. random variables converge to a distribution, it must be stable. This mirrors the justifications often used for the normal distribution in financial models.</p>
-<p>In fact, the normal distribution is a special case when the characteristic exponent <span class="math inline">\(\alpha = 2\)</span>. It is the only case where variance is finite. The two other closed form pdfs of the stable family are the Cauchy (<span class="math inline">\(\alpha = 1\)</span>) and the Lévy (<span class="math inline">\(\alpha = 1/2\)</span>).</p>
-<p>Stable distributions are admittedly confusing because of the complicated characteristic function and infinite variance, as well as the fact that some terms (e.g.&nbsp;sub-Gaussian) mean something totally different in the stable distribution context than in the broader statistics context.</p>
-<p>Likewise there are nearly a dozen known parameterizations of the stable distribution, which makes it hard to distinguish what an author means when they describe a result.</p>
-<p>A special case is the sub-Gaussian (aka subordinated Gaussian) symmetric <span class="math inline">\(\alpha\)</span>-stable distribution (to avoid confusion with sub-Gaussian tails, I’ll note this as <span class="math inline">\(\alpha\)</span>-SG(<span class="math inline">\(\Sigma\)</span>), as some texts do), which for a random vector X can be written:</p>
-<p><span class="math display">\[
-X = \sqrt W G
-\]</span></p>
-<p>Where W <span class="math inline">\(\sim S_{\alpha/2}(\cos(\pi \alpha/4)^{(2/\alpha)},1, 0;1)\)</span>, a maximally skewed scalar random variable with support on the positive real numbers, and <span class="math inline">\(G \sim N(0, \Sigma)\)</span>, a multivariate normal random vector independent of W.</p>
-<p>The proof of this representation can be found <a href="./sub_gaussian.html">here</a>.</p>
-<p>In this sub-Gaussian random vector, the spectral measure <span class="math inline">\(\Gamma\)</span> is fully determined by <span class="math inline">\(\Sigma\)</span>. In fact, <span class="math inline">\(\Gamma\)</span> symmetric (e.g.&nbsp;antipodal points have equal measure), and continuous. While it’s a bit counter-intuitive, even in the isotropic case where <span class="math inline">\(\Sigma = I_d\)</span>, the identity matrix, the components of X are not independent. Indeed, the idea of orthogonality isn’t defined (although some generalizations of this idea are), since X is not defined on a (pre-)Hilbert space when <span class="math inline">\(\alpha &lt; 2\)</span>. This actually turns out to be a desirable characteristic for a couple of reasons. For one, since tail dependence is asymptotically zero in the Gaussian case, a contributor to the failure of the Gaussian copula model for derivative pricing during the 2008 financial crisis. This model errs on the side of overestimating risk.</p>
-<p>When <span class="math inline">\(X \sim\)</span> <span class="math inline">\(\alpha\)</span>-SG(<span class="math inline">\(\sigma^2\)</span>), it has the following simplified, more familiar characteristic function:</p>
-<p><span class="math display">\[
-\mathbb E[e^{iu^\text T X}] = exp\bigg\{-\frac12 |u^\text T \Sigma u|^{\alpha/2}\bigg\}
-\]</span></p>
-<p>When <span class="math inline">\(\alpha =2\)</span>, this is the Gaussian CF.</p>
-<p>We want the best estimate of <span class="math inline">\(\Sigma\)</span> or its corresponding correlation matrix.</p>
-<p>The best reference on multivariate stable distributions is <em>Stable Non-Gaussian Random Processes</em> by Samoradnitsky and Taqqu (1994), which contains virtually all known theoretical results as of its publication (despite the book’s 30th anniversary, not much has changed). For a more modern treatment that’s limited to univariate stable random variables, John Nolan’s aptly-named <em>Univariate Stable Distributions: Models for Heavy Tailed Data</em> from 2020 is recommended.</p>
-<p>One important note is that parameterizations of stable distributions are very inconsistent in the literature.</p>
-</section>
-<section id="high-dimensional-dependence-estimation" class="level2">
-<h2 class="anchored" data-anchor-id="high-dimensional-dependence-estimation">High-Dimensional Dependence Estimation</h2>
-<p>The other piece of the research question puzzle is “high-dimensional” data. By high-dimensional, I mean that the dimension of the data is high relative to the number of observations; so 30 dimensions is quite high-dimensional when you only have 35 observations to estimate something like a covariance matrix from.</p>
-<p>The current state-of-the-art approach used in finance is the Optimal Rotationally-Invariant Estimator (RIE), which uses results from Random Matrix Theory to find the optimal way to “clean” the eigenvalues of a sample covariance matrix C so that the squared Frobenius distance <span class="math inline">\(||\Sigma - C||_F^2\)</span> is minimized, even without being able to observe the true <span class="math inline">\(\Sigma\)</span>, provided that the data are at least asymptotically normal.</p>
-<p>Initially, my plan was to explore how this recipe might change if the underlying data do not have finite variance (e.g.&nbsp;finding <span class="math inline">\(\Sigma\)</span> from a sub-Gaussian <span class="math inline">\(\alpha\)</span>-stable random vector described above). More recently, I’ve found some research that suggests that if <span class="math inline">\(1 &lt; \alpha \leq 2\)</span>, then the universality rules apply asymptotically and this same RIE formulation is appropriate to use for a Lévy matrix. If true, this would provide a theoretical justification for using this approach for heavy-tailed data.</p>
-</section>
-<section id="current-estimator" class="level2">
-<h2 class="anchored" data-anchor-id="current-estimator">Current Estimator</h2>
-<p>My candidate estimator, Median Oracle, takes a very simple heuristic approach to estimating the quasi-correlation from a matrix <span class="math inline">\(X\)</span> of returns. Assume <span class="math inline">\(X\)</span> is a <span class="math inline">\(t\times n\)</span> matrix consisting of <span class="math inline">\(t\)</span> independent observations of a market of <span class="math inline">\(n\)</span> assets, and a sub-sample size <span class="math inline">\(d_in\)</span>:</p>
-<ol start="0" type="1">
-<li><p>(Optional_ Rescale the columns of <span class="math inline">\(X\)</span> to be mean-zero with unit variance, such that we’re estimating <span class="math inline">\(\Sigma\)</span> as a correlation matrix.</p></li>
-<li><p>For <span class="math inline">\(i=1,..., B\)</span>:</p>
-<ol type="i">
-<li>Draw <span class="math inline">\(b \sim Unif[1,t-d_in)\)</span></li>
-<li>At each <span class="math inline">\(b\)</span>, subsample <span class="math inline">\(X_b = X_{b:(b+d_in-1)}, \cdot\)</span></li>
-<li>Compute the sample covariance matrix <span class="math inline">\(\Sigma_b = \frac{1}{d_{in}-1}X_b^\text T X_b\)</span>.</li>
-<li>Compute the Rotationally Invariant Estimator (RIE) adjustment to the eigenvalues <span class="math inline">\(\hat\lambda_{1}^{(1)}, ..., \hat\lambda_{i}^{(n)}\)</span> of <span class="math inline">\(\Sigma_b\)</span>, and store them in <span class="math inline">\(Q \in \mathbb R^{B \times n}\)</span></li>
-</ol></li>
-<li><p>For for each eigenvalue <span class="math inline">\(\lambda^{(j)}\)</span> of the covariance matrix, <span class="math inline">\(j = 1, ..., n\)</span>, estimate <span class="math inline">\(\hat \lambda^{(j)} = \text{median}(\hat\lambda_{i}^{(j)})\)</span>, the median across all <span class="math inline">\(B\)</span> samples.</p></li>
-<li><p>Reconstruct the covariance matrix using <span class="math inline">\(\hat\Lambda = \text{diag}(\hat \Lambda^{(n)},...,\hat \lambda^{(1)})\)</span> and the eigenvectors of the full-sample covariance matrix <span class="math inline">\(\Sigma = V^\text{T} \Lambda V\)</span>.</p></li>
-<li><p>Rescale by forecasted asset-wise standard deviation to get a final estimate of the underlying covariance matrix.</p></li>
+<p>This document aims to show a few things:</p>
+<ol type="1">
+<li><p>The Gaussian has the lowest Cramér-Rao lower bound for its scale parameter of any member of the <span class="math inline">\(\alpha\)</span>-stable family. This also extends to any scale-Gaussian mixture.</p></li>
+<li><p>We can bound any <span class="math inline">\(d\)</span>-dimensional scale-Gaussian mixture’s “optimal efficiency gap” (the difference between its MLE efficiency and that of its latent Gaussian) using a scalar multiplication factor <span class="math inline">\(\kappa\)</span> with <span class="math inline">\(\frac{d^2}{d(d+1)} \leq \kappa \leq 1\)</span>. This gap depends on the covariance matrix of the latent Gaussian.</p></li>
 </ol>
-<p>Taking the sample covariance and correlations of a dataset assumed to be generated by an infinite-variance process seems crazy initially, but in fact the eigenvalue spectrum of these subsampled covariance matrices are well defined distributions.</p>
+<p>I use the notation and conventions introduced in <a href="https://arxiv.org/abs/1306.6415">Besson &amp; Abramovich (2018)</a>, and the standard setup we’ve been using so far. I’m leaving out some of the verifications of regularity conditions from this page for the sake of space.</p>
+<section id="gaussian-crb-vs.-mixtures" class="level2">
+<h2 class="anchored" data-anchor-id="gaussian-crb-vs.-mixtures">Gaussian CRB vs.&nbsp;Mixtures</h2>
+<p>The idea that the latent Gaussian has the smallest Cramér-Rao lower bound of all Gaussian mixture scales comes from the missing information principle.</p>
+<p>Call <span class="math inline">\(\mathbf F_{\mathbf X}\)</span> the Fisher Information Matrix (FIM) of the scale parameters w/r/t the random vector X, and call <span class="math inline">\(\mathbf F_{\mathbf G}\)</span> the FIM w/r/t the latent Gaussian vector.</p>
+<p>Next, it’s clear that if we’re interested in the parameterization <span class="math inline">\(\pmb \theta = \text{vech}(\pmb \Sigma)\)</span>, the scores of <span class="math inline">\(\nabla_{\pmb\theta} \log f_{\mathbf X|W}(\mathbf X|W,\pmb\theta)=\nabla_{\pmb\theta} \log f_{\mathbf G}(\mathbf G,\pmb\theta)\)</span> (e.g.&nbsp;conditioning on W, the rescaling by a constant doesn’t change the information we have about the parameter vector).</p>
+<p>Applying Fisher’s identity to the score of the stable vector <span class="math inline">\(X\)</span>, since <span class="math inline">\(W\)</span> does not depend on the parameter vector <span class="math inline">\(\pmb\theta\)</span>, we get: <span class="math inline">\(\nabla_{\pmb\theta} \log f_\mathbf X(\mathbf X|\pmb\theta) = \mathbb E_W[\nabla_{\pmb\theta} \log f_{\mathbf X|W}(\mathbf X|W,\pmb\theta)|\mathbf X]\)</span>.</p>
+<p>Next, plugging this into the law of total variance for the Fisher information of the complete-data score:</p>
+<p><span class="math display">\[
+\begin{aligned}
+\mathbf F_{\mathbf G} &amp;= \text{Cov}(\nabla_{\pmb\theta} \log f_{\mathbf G}(\mathbf G,\pmb\theta)) \\ &amp;= \text{Cov}(\nabla_{\pmb\theta} \log f_{\mathbf X|W}(\mathbf X|W,\pmb\theta)) \\
+&amp; = \mathbb E_{\mathbf X}[\text{Cov}_{W}(\nabla_{\pmb\theta} \log f_{\mathbf X|W}(\mathbf X|W,\pmb\theta)|\mathbf X)] + \text{Cov}_{\mathbf X}[\mathbb E_{W}(\nabla_{\pmb\theta} \log f_{\mathbf X|W}(\mathbf X|W,\pmb\theta)|\mathbf X)] \\
+&amp; = \mathbb E_{\mathbf X}[\text{Cov}_{W}(\nabla_{\pmb\theta} \log f_{\mathbf X|W}(\mathbf X|W,\pmb\theta)|\mathbf X)] + \text{Cov}_{\mathbf X}[\nabla_{\pmb\theta} \log f_\mathbf X(\mathbf X|\pmb\theta) ]\\
+&amp;= \mathbb E_{\mathbf X}[\text{Cov}_{W}(\nabla_{\pmb\theta} \log f_{\mathbf X|W}(\mathbf X|W,\pmb\theta)|\mathbf X)] + \mathbf F_{\mathbf X}
+\end{aligned}
+\]</span></p>
+<p>So the Fisher information of <span class="math inline">\(\mathbf X\)</span> can be thought of as that of the latent Gaussian vector minus information loss that comes from the uncertainty of W. Since both terms are positive semi-definite matrices, <span class="math inline">\(\mathbf F_{\mathbf G} \succeq  \mathbf F_{\mathbf X} \implies \mathbf F_{\mathbf G}^{-1}\preceq \mathbf F_{\mathbf X}^{-1}\)</span>, and the Cramér-Rao lower bound matrix for <span class="math inline">\(\mathbf G\)</span> is the smallest possible of any Gaussian scale mixture in the positive semi-definite ordering.</p>
+</section>
+<section id="optimal-efficiency-gap-bounds" class="level2">
+<h2 class="anchored" data-anchor-id="optimal-efficiency-gap-bounds">Optimal Efficiency Gap Bounds</h2>
+<p>Besson &amp; Abramovich show that the Slepian-Bangs formula for the Gaussian FIM can be extended to the broader class of elliptically countoured distributions (including Gaussian scale mixtures) based on moments involving the density generator of the distribution in question and moments involving the modular variate <span class="math inline">\(\mathcal Q\)</span>.</p>
+<p>The stochastic representation <span class="math inline">\(\mathbf X = \sqrt W \mathbf G\)</span> simply decomposes the Gaussian vector into a uniform vector on the unit sphere:</p>
+<p><span class="math display">\[
+\begin{aligned}
+\mathbf X &amp;= \sqrt W \mathbf G \\
+&amp; \overset{d}{=} \sqrt W \mathbf C \mathbf Z \\
+&amp; = \sqrt W \mathbf C \xi \mathbf u \\
+&amp; = \mathcal Q \mathbf C\mathbf u
+\end{aligned}
+\]</span></p>
+<p>Where <span class="math inline">\(\xi\)</span> is chi-squared with d degrees of freedom, <span class="math inline">\(\mathbf C\)</span> is a <span class="math inline">\(d \times d\)</span> matrix with the property that <span class="math inline">\(\mathbf C\mathbf C^\top = \pmb \Sigma\)</span> (this new name is chosen to make it clear that this matrix is not unique) and <span class="math inline">\(\mathbf u\)</span> is uniform on <span class="math inline">\(\mathbb S^{d-1}\)</span>.</p>
+<p>Simplifying their equation (22) for our problem for the <span class="math inline">\(i,j\)</span>-th entry of the FIM for real-valued EC distributions:</p>
+<p><span class="math display">\[
+\begin{aligned}
+\mathbf {F_{\mathbf X}}_{ij} = 2N\frac{\mathbb E[\mathcal Q^2\phi^2(\mathcal Q)]}{d(d+2)} \text{tr}(\pmb \Sigma^{-1}\pmb \Sigma_i\pmb \Sigma^{-1}\pmb \Sigma_j)+ N\bigg(\frac{\mathbb E[\mathcal Q^2\phi^2(\mathcal Q)]}{d(d+2)}-\frac{1}{4}\bigg)\text{tr}(\pmb \Sigma^{-1}\pmb \Sigma_i)\text{tr}(\pmb \Sigma^{-1}\pmb \Sigma_j)
+\end{aligned}
+\]</span></p>
+<p>In the above, <span class="math inline">\(\pmb \Sigma_i = \frac{\partial \pmb \Sigma}{\partial \theta_i}\)</span>. When <span class="math inline">\(\mathbf X\)</span> is Gaussian, the well-known entry-wise Slepian-Bangs formula for the FIM is: <span class="math inline">\(\mathbf {F_{\mathbf X}}_{ij} = \frac{N}{2}\text{tr}(\pmb \Sigma^{-1}\pmb \Sigma_j\pmb \Sigma^{-1}\pmb \Sigma_k)\)</span>. This provides a simple way to rewrite the above in matrix form in terms of the Gaussian FIM, <span class="math inline">\(\mathbf F_{\mathbf G}\)</span>:</p>
+<p><span class="math display">\[
+\begin{aligned}
+\mathbf {F_{\mathbf X}} = \frac{4\mathbb E[\mathcal Q^2\phi^2(\mathcal Q)]}{d(d+2)}\mathbf {F_{\mathbf G}} + N\bigg(\frac{\mathbb E[\mathcal Q^2\phi^2(\mathcal Q)]}{d(d+2)}-\frac{1}{4}\bigg) \nabla_{\pmb\theta} \log(\det(\pmb \Sigma))\nabla_{\pmb\theta} \log(\det(\pmb \Sigma))^\top
+\end{aligned}
+\]</span></p>
+<p>Where <span class="math inline">\((\mathbf s\mathbf s^\top)_{ij}=s_i s_j = \text{tr}(\pmb \Sigma^{-1}\frac{\partial \pmb \Sigma}{\partial \theta_i})\text{tr}(\pmb \Sigma^{-1}\frac{\partial \pmb \Sigma}{\partial \theta_j})\)</span>. In other words, this term is the outer product of a vector of these derivative/inverse traces.</p>
+<p>Since the prefactor on the second term is always negative, this says any elliptically countoured scale-variance mixture has a FIM that can be written as the sum of a downscaled version of the corresponding Gaussian FIM minus a rank-one positive semi-definite matrix.</p>
+<p>For any elliptically-contoured distribution satisfying the regularity conditions in Besson &amp; Abramovich, <span class="math inline">\(\mathbb E[\mathcal Q\phi(\mathcal Q)]=-d/2\)</span>. So Jensen’s inequality gives <span class="math inline">\(\mathbb E[\mathcal Q^2\phi^2(\mathcal Q)]\geq d^2/4\)</span>. Since part 1 showed that the Gaussian has the largest FIM of any Gaussian scale mixture, that means <span class="math inline">\(d^2/4 \leq \mathbb E[\mathcal Q^2\phi^2(\mathcal Q)] \leq d(d+2)/4\)</span>, and so if we call the prefactor on <span class="math inline">\(\mathbf {F_{\mathbf G}}\)</span> <span class="math inline">\(\kappa\)</span>, we get <span class="math inline">\(\kappa\)</span> with <span class="math inline">\(\frac{d^2}{d(d+2)} \leq \kappa \leq 1\)</span>.</p>
+<p><span class="math display">\[
+\begin{aligned}
+\mathbf {F_{\mathbf X}} = \kappa\mathbf {F_{\mathbf G}} - \frac{N}{4}(1-\kappa) \nabla_{\pmb\theta} \log(\det(\pmb \Sigma))\nabla_{\pmb\theta} \log(\det(\pmb \Sigma))^\top\\
+\end{aligned}
+\]</span></p>
+<p>This scaling term gives us the ability to quantify the “optimal efficiency gap” we gain in the high-dimensional limit by transforming to an approximately Gaussian distribution rather than the original MLE. This benefit depends on the estimation dimension rather than the ambient dimension. This is an example of how the projective estimator takes advantage of additional information from additional dimensions for estimation in the higher ambient-dimensional setting.</p>
+<p>The advantage that we see from the the downscaling of <span class="math inline">\(\kappa\)</span> itself is modest when the dimensions are high, but when the eigenvalues of <span class="math inline">\(\nabla_{\pmb\theta} \log(\det(\pmb \Sigma))\nabla_{\pmb\theta} \log(\det(\pmb \Sigma))^\top\)</span> are large, we see potentially significant performance improvements.</p>
+<p>More realistically, looking at the impact of the <span class="math inline">\(s\mathbf s^\top\)</span> term…</p>
+<p>Since <span class="math inline">\(\nabla_{\pmb\theta} \log(\det(\pmb \Sigma))\nabla_{\pmb\theta} \log(\det(\pmb \Sigma))^\top\)</span> is a rank-1 psd matrix, its eigenvalue is just the trace of this matrix: <span class="math inline">\(\lambda_s = \sum_i (\text{tr}(\pmb\Sigma^{-1}\frac{\partial \pmb \Sigma}{\partial \theta_i})^2)\)</span>.</p>
+<hr>
+<p>“The information loss due to the heavy-tailed, non-Gaussian nature of the data is not uniform. It is an anisotropic penalty that is specifically directed along the gradient of the log-volume.</p>
+<p>In other words, the confounding effect of the random scaling W most severely degrades your ability to make inferences about the parameters that have the greatest impact on the overall volume of the uncertainty ellipsoid”</p>
+<p><strong>CHEAP FIM calculation for alpha stable distributions</strong> Make d large enough that d^2 is close enough to d(d+1). Then use the above formualtion using the gradient of the log determinant of Sigma.</p>
 
 
 </section>
