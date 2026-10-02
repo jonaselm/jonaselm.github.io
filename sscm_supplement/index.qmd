@@ -1,0 +1,12 @@
+---
+title: "Online Supplement"
+search: false
+resources:
+  - sscm_acc_extended.pdf
+include-in-header:
+  - text: |
+      <meta http-equiv="refresh" content="0; url=sscm_acc_extended.pdf">
+---
+
+Redirecting to the [online supplement](sscm_acc_extended.pdf) to
+*High-Dimensional Regularization of the Spatial Sign Covariance Matrix for Robust Shape Estimation*.
